@@ -9,7 +9,7 @@ namespace _1_Poker
     {
         static void Main(string[] args)
         {
-            PlayingCard c = new PlayingCard( PlayingCard.Rank.Ace, PlayingCard.Suit.Club );
+            PlayingCard c = new PlayingCard( PlayingCard.Value.Ace, PlayingCard.Suit.Club );
             System.Console.WriteLine(c);
             PokerHand hand = new PokerHand( c, c, c, c, c );
 
@@ -19,9 +19,9 @@ namespace _1_Poker
                 string[] cards = hands.Split(' ');
                 foreach( string card in cards ) 
                 {
-                    System.Console.WriteLine( card );
+                    System.Console.WriteLine( PlayingCard.getPlayingCardValueForChar( card[ 0 ] ) );
                 }
-                hands = System.Console.ReadLine();
+                hands = null; // System.Console.ReadLine();
             }
 
             
