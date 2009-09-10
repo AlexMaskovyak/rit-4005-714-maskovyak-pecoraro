@@ -19,7 +19,8 @@ namespace _1_Poker
                 string[] cards = hands.Split(' ');
                 foreach( string card in cards ) 
                 {
-                    System.Console.WriteLine( PlayingCard.getPlayingCardValueForChar( card[ 0 ] ) );
+                    c = new PlayingCard(card[0], card[1]);
+                    System.Console.WriteLine( c );
                 }
                 hands = null; // System.Console.ReadLine();
             }

@@ -39,10 +39,10 @@ namespace _1_Poker
         /// </summary>
         /// <param name="value">Character representing a playing card's value.</param>
         /// <param name="suit">Character representing a playing card's suit.</param>
-        public PlayingCard(char value, char suit)
-        {
-            this(PlayingCard.getPlayingCardValueForChar(value), PlayingCard.getPlayingCardSuitForChar(suit));
-        }
+        public PlayingCard(char value, char suit) : 
+            this(
+                PlayingCard.getPlayingCardValueForChar(value), PlayingCard.getPlayingCardSuitForChar(suit) ) { }
+            
 
         /// <summary>
         /// Obtains the suit of this card.
