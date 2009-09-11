@@ -24,6 +24,29 @@ namespace _1_Poker
         private PlayingCard.Value _value;
 
         /// <summary>
+        /// Obtains the suit of this card.
+        /// </summary>
+        public PlayingCard.Suit suit 
+        {
+            get
+            {
+                return _suit;
+            }
+        }
+
+        /// <summary>
+        /// Obtains the face value of this card.
+        /// </summary>
+        /// <returns>The card's value.</returns>
+        public PlayingCard.Value value 
+        {
+            get
+            {
+                return _value;
+            }
+        }
+
+        /// <summary>
         /// Default constructor.  Defines the two necessary components of a playing card.
         /// </summary>
         /// <param name="value">Playing card's value.</param>
@@ -43,18 +66,6 @@ namespace _1_Poker
             this(
                 PlayingCard.getPlayingCardValueForChar(value), PlayingCard.getPlayingCardSuitForChar(suit) ) { }
             
-
-        /// <summary>
-        /// Obtains the suit of this card.
-        /// </summary>
-        /// <returns>The card's suit.</returns>
-        public PlayingCard.Suit getSuit() { return _suit; }
-
-        /// <summary>
-        /// Obtains the face value of this card.
-        /// </summary>
-        /// <returns>The card's value.</returns>
-        public PlayingCard.Value getValue() { return _value; }
 
         /// <summary>
         /// Converts a character representation of a playing card value into a PlayingCard.Value.
@@ -107,5 +118,54 @@ namespace _1_Poker
             return String.Format( "{0} of {1}s", _value, _suit );
         }
 
+        /// <summary>
+        /// Checks for value equivalence between two PlayingCards.
+        /// </summary>
+        /// <param name="obj">Object whose values are to be inspected against the current object's values.</param>
+        /// <returns>True if the PlayingCard object passed in has the same value and suit as this one, false otherwise.</returns>
+        public override bool Equals(object obj)
+        {
+            // null returns false
+            if (obj == null)
+            {
+                return false;
+            }
+
+            // check that the parameter can be cast to PlayingCard
+            PlayingCard card = obj as PlayingCard;
+            if ((System.Object)card == null) 
+            {
+                return false;
+            }
+
+            // compare fields
+            return ( value == card.value && suit == card.suit );
+        }
+
+        /// <summary>
+        /// PlayingCard specific value equality.
+        /// </summary>
+        /// <param name="card">PlayingCard whose values are to be comapred to this one's.</param>
+        /// <returns>True if the specific PlayingCard's suit and value are equivalent to this one's, false otherwise.</returns>
+        public bool Equals(PlayingCard card)
+        {
+            // check that the parameter can be cast to PlayingCard
+            if ((object)card == null)
+            {
+                return false;
+            }
+
+            // compare fields
+            return ( value == card.value && suit == card.suit );
+        }
+
+        /// <summary>
+        /// PlayingCard specific hashcode generator.
+        /// </summary>
+        /// <returns>Hashcode for this PlayingCard.</returns>
+        public override int GetHashCode()
+        {
+            return (int)suit ^ (int)value;
+        }
     }
 }
