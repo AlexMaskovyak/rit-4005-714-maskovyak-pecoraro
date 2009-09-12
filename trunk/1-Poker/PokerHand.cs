@@ -82,7 +82,7 @@ namespace _1_Poker
             bool result = true;
             foreach (PlayingCard card in cards)
             {
-                if (PokerHand.MAX_HAND_SIZE == HandSize)
+                if (PokerHand.MAX_HAND_SIZE == HandSize())
                 {
                     return false;
                 }

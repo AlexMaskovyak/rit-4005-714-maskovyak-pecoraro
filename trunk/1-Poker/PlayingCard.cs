@@ -8,7 +8,7 @@ namespace _1_Poker
     /// <summary>
     /// Card holds values associated with a physical playing card.
     /// </summary>
-    public class PlayingCard
+    public class PlayingCard : IComparable<PlayingCard>
     {
         /// <summary>
         /// Playing card suits.
@@ -20,8 +20,8 @@ namespace _1_Poker
         /// </summary>
         public enum Value { Two=2, Three=3, Four=4, Five=5, Six=6, Seven=7, Eight=8, Nine=9, Ten=10, Jack=11, Queen=12, King=13, Ace=14  }
 
-        private PlayingCard.Suit _suit;
-        private PlayingCard.Value _value;
+        private readonly PlayingCard.Suit _suit;
+        private readonly PlayingCard.Value _value;
 
         /// <summary>
         /// Obtains the suit of this card.
@@ -56,6 +56,13 @@ namespace _1_Poker
             _value = value;
             _suit = suit;
         }
+
+        /// <summary>
+        /// Overload of constructor.  Allows for construction from a string containing two char values.
+        /// </summary>
+        /// <param name="valueSuitPair">String of two characters representing Value|Suit.</param>
+        public PlayingCard(string valueSuitPair) :
+            this( valueSuitPair[0], valueSuitPair[1] )  { }
 
         /// <summary>
         /// Overload of constructor.  Allows for construction from char values.
@@ -166,6 +173,22 @@ namespace _1_Poker
         public override int GetHashCode()
         {
             return (int)suit ^ (int)value;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="card"></param>
+        /// <returns></returns>
+        public int CompareTo(PlayingCard card)
+        {
+            if (value < card.value){
+                return -1;
+            }
+            if (value > card.value) {
+                return 1;
+            }
+            return 0;
         }
     }
 }
