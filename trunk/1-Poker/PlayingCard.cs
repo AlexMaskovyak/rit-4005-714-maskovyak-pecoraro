@@ -13,88 +13,78 @@ namespace _1_Poker
         /// <summary>
         /// Playing card suits.
         /// </summary>
-        public enum Suit { Club, Diamond, Heart, Spade }
+        public enum Suits { Club, Diamond, Heart, Spade }
         
         /// <summary>
         /// Playing card ranks/values.  The "number" of the card.
         /// </summary>
-        public enum Value { Two=2, Three=3, Four=4, Five=5, Six=6, Seven=7, Eight=8, Nine=9, Ten=10, Jack=11, Queen=12, King=13, Ace=14  }
+        public enum Ranks { NAR=-1, Two=2, Three=3, Four=4, Five=5, Six=6, Seven=7, Eight=8, Nine=9, Ten=10, Jack=11, Queen=12, King=13, Ace=14  }
 
-        private readonly PlayingCard.Suit _suit;
-        private readonly PlayingCard.Value _value;
+        private readonly PlayingCard.Suits _suit;
+        private readonly PlayingCard.Ranks _rank;
 
         /// <summary>
         /// Obtains the suit of this card.
         /// </summary>
-        public PlayingCard.Suit suit 
-        {
-            get
-            {
-                return _suit;
-            }
+        public PlayingCard.Suits Suit {
+            get { return _suit; }
         }
 
         /// <summary>
         /// Obtains the face value of this card.
         /// </summary>
         /// <returns>The card's value.</returns>
-        public PlayingCard.Value value 
-        {
-            get
-            {
-                return _value;
-            }
+        public PlayingCard.Ranks Rank {
+            get { return _rank; }
         }
 
         /// <summary>
         /// Default constructor.  Defines the two necessary components of a playing card.
         /// </summary>
-        /// <param name="value">Playing card's value.</param>
+        /// <param name="rank">Playing card's value.</param>
         /// <param name="suit">Playing card's suit.</param>
-        public PlayingCard( PlayingCard.Value value, PlayingCard.Suit suit ) 
-        {
-            _value = value;
+        public PlayingCard( PlayingCard.Ranks rank, PlayingCard.Suits suit ) {
+            _rank = rank;
             _suit = suit;
         }
 
         /// <summary>
         /// Overload of constructor.  Allows for construction from a string containing two char values.
         /// </summary>
-        /// <param name="valueSuitPair">String of two characters representing Value|Suit.</param>
-        public PlayingCard(string valueSuitPair) :
-            this( valueSuitPair[0], valueSuitPair[1] )  { }
+        /// <param name="rankSuitPair">String of two characters representing Value|Suit.</param>
+        public PlayingCard(string rankSuitPair) :
+            this(rankSuitPair[0], rankSuitPair[1]) { }
 
         /// <summary>
         /// Overload of constructor.  Allows for construction from char values.
         /// </summary>
-        /// <param name="value">Character representing a playing card's value.</param>
+        /// <param name="rank">Character representing a playing card's rank.</param>
         /// <param name="suit">Character representing a playing card's suit.</param>
-        public PlayingCard(char value, char suit) : 
+        public PlayingCard(char rank, char suit) : 
             this(
-                PlayingCard.getPlayingCardValueForChar(value), PlayingCard.getPlayingCardSuitForChar(suit) ) { }
+                PlayingCard.getPlayingCardRankForChar(rank), PlayingCard.getPlayingCardSuitForChar(suit) ) { }
             
 
         /// <summary>
         /// Converts a character representation of a playing card value into a PlayingCard.Value.
         /// </summary>
-        /// <param name="valueChar">Character representing a playing card value.</param>
+        /// <param name="rankChar">Character representing a playing card rank.</param>
         /// <returns>PlayingCard.Value that the character corresponds to.</returns>
-        public static PlayingCard.Value getPlayingCardValueForChar(char valueChar)
-        {
-            switch( valueChar ) {
-                case '2' : return PlayingCard.Value.Two;
-                case '3' : return PlayingCard.Value.Three;
-                case '4' : return PlayingCard.Value.Four;
-                case '5' : return PlayingCard.Value.Five;
-                case '6' : return PlayingCard.Value.Six;
-                case '7' : return PlayingCard.Value.Seven;
-                case '8' : return PlayingCard.Value.Eight;
-                case '9' : return PlayingCard.Value.Nine;
-                case 'T' : return PlayingCard.Value.Ten;
-                case 'J' : return PlayingCard.Value.Jack;
-                case 'Q' : return PlayingCard.Value.Queen;
-                case 'K' : return PlayingCard.Value.King;
-                case 'A' : return PlayingCard.Value.Ace;
+        public static PlayingCard.Ranks getPlayingCardRankForChar(char rankChar) {
+            switch( rankChar ) {
+                case '2' : return PlayingCard.Ranks.Two;
+                case '3' : return PlayingCard.Ranks.Three;
+                case '4' : return PlayingCard.Ranks.Four;
+                case '5' : return PlayingCard.Ranks.Five;
+                case '6' : return PlayingCard.Ranks.Six;
+                case '7' : return PlayingCard.Ranks.Seven;
+                case '8' : return PlayingCard.Ranks.Eight;
+                case '9' : return PlayingCard.Ranks.Nine;
+                case 'T' : return PlayingCard.Ranks.Ten;
+                case 'J' : return PlayingCard.Ranks.Jack;
+                case 'Q' : return PlayingCard.Ranks.Queen;
+                case 'K' : return PlayingCard.Ranks.King;
+                case 'A' : return PlayingCard.Ranks.Ace;
                 default : throw new ArgumentException( "Character could not be converted into a PlayingCard face value." );
             }
         }
@@ -104,14 +94,12 @@ namespace _1_Poker
         /// </summary>
         /// <param name="suitChar">Character representing a playing card suit.</param>
         /// <returns>PlayingCard.Suit that the character corresponds to.</returns>
-        public static PlayingCard.Suit getPlayingCardSuitForChar(char suitChar)
-        {
-            switch (suitChar)
-            {
-                case 'C': return PlayingCard.Suit.Club;
-                case 'D': return PlayingCard.Suit.Diamond;
-                case 'H': return PlayingCard.Suit.Heart;
-                case 'S': return PlayingCard.Suit.Spade;
+        public static PlayingCard.Suits getPlayingCardSuitForChar(char suitChar) {
+            switch (suitChar) {
+                case 'C': return PlayingCard.Suits.Club;
+                case 'D': return PlayingCard.Suits.Diamond;
+                case 'H': return PlayingCard.Suits.Heart;
+                case 'S': return PlayingCard.Suits.Spade;
                 default: throw new ArgumentException( "Character could not be converted into a PlayCard suit." );
             }
         }
@@ -120,9 +108,8 @@ namespace _1_Poker
         /// Override to return the full spoken/written name of a playing card.
         /// </summary>
         /// <returns>The contemporary spoken/written name of a playing card.</returns>
-        public override string ToString()
-        {
-            return String.Format( "{0} of {1}s", _value, _suit );
+        public override string ToString() {
+            return String.Format( "{0} of {1}s", _rank, _suit );
         }
 
         /// <summary>
@@ -133,20 +120,18 @@ namespace _1_Poker
         public override bool Equals(object obj)
         {
             // null returns false
-            if (obj == null)
-            {
+            if (obj == null) {
                 return false;
             }
 
             // check that the parameter can be cast to PlayingCard
             PlayingCard card = obj as PlayingCard;
-            if ((System.Object)card == null) 
-            {
+            if ((System.Object)card == null) {
                 return false;
             }
 
             // compare fields
-            return ( value == card.value && suit == card.suit );
+            return ( Rank == card.Rank && Suit == card.Suit );
         }
 
         /// <summary>
@@ -154,38 +139,44 @@ namespace _1_Poker
         /// </summary>
         /// <param name="card">PlayingCard whose values are to be comapred to this one's.</param>
         /// <returns>True if the specific PlayingCard's suit and value are equivalent to this one's, false otherwise.</returns>
-        public bool Equals(PlayingCard card)
-        {
+        public bool Equals(PlayingCard card) {
             // check that the parameter can be cast to PlayingCard
-            if ((object)card == null)
-            {
+            if ((object)card == null) {
                 return false;
             }
 
             // compare fields
-            return ( value == card.value && suit == card.suit );
+            return ( Rank == card.Rank && Suit == card.Suit );
         }
 
         /// <summary>
         /// PlayingCard specific hashcode generator.
         /// </summary>
         /// <returns>Hashcode for this PlayingCard.</returns>
-        public override int GetHashCode()
-        {
-            return (int)suit ^ (int)value;
+        public override int GetHashCode() {
+            return Suit.GetHashCode() ^ Rank.GetHashCode();
         }
 
         /// <summary>
-        /// 
+        /// Support IComparable, allow for the comparison of this PlayingCard with the specified PlayingCard.
         /// </summary>
-        /// <param name="card"></param>
-        /// <returns></returns>
-        public int CompareTo(PlayingCard card)
-        {
-            if (value < card.value){
+        /// <param name="card">PlayingCard to compare against this one.</param>
+        /// <returns>
+        ///     -1 if this PlayingCard is less than the one specified, 1 if this PlayingCard is greater than
+        ///     the one specified, and 0 if they are equivalent.  Cards are considered equivalent if they 
+        ///     have identical rank and suit values.
+        /// </returns>
+        public int CompareTo(PlayingCard card) {
+            if (Rank < card.Rank){
                 return -1;
             }
-            if (value > card.value) {
+            if (Rank > card.Rank) {
+                return 1;
+            }
+            if (Suit < card.Suit) {
+                return -1;                    
+            }
+            if (Suit > card.Suit) {
                 return 1;
             }
             return 0;
