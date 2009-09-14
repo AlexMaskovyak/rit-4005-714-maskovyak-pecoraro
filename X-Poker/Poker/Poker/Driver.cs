@@ -16,10 +16,10 @@ namespace Poker {
 
                 // TODO: REMOVE THIS
                 input = "2H 3D 5S 9C KD 2C 3H 4S AD AH"; // High Card, Pair
-                input = "2H 3D 4H 5D 6H 3C 4C 5C 6C 7C"; // Straight, Straight Flush
-                input = "2H 2D 3H 3D 4C AH AD TC TD TH"; // Two Pair, Full House (Correctly does 10)
-                input = "2H 2D 2C 4H 5H AH AD AC AS KD"; // 3Kind, 4Kind
-                input = "2H 4H 6H 8H TH 2D 4D 6D 8D TD"; // Flush (Tie)s
+                //input = "2H 3D 4H 5D 6H 3C 4C 5C 6C 7C"; // Straight, Straight Flush
+                //input = "2H 2D 3H 3D 4C AH AD TC TD TH"; // Two Pair, Full House (Correctly does 10)
+                //input = "2H 2D 2C 4H 5H AH AD AC AS KD"; // 3Kind, 4Kind
+                //input = "2H 4H 6H 8H TH 2D 4D 6D 8D TD"; // Flush (Tie)s
 
                 // No More Input (hackish way to detect end of input??)
                 //if (input.Length < 2) {
