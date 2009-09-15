@@ -22,7 +22,6 @@ namespace _1_Poker
         private HandRanks m_handRank;
         private PlayingCard.Ranks m_highCard;
 
-
         /// <summary>
         /// Create a new Score from a PokerHand.
         /// </summary>
@@ -30,11 +29,6 @@ namespace _1_Poker
         public Score(PokerHand hand) {
             PlayingCard[] cards = hand.Cards;
             Array.Sort(cards);
-
-            //for (int i = 0; i < cards.Length; ++i) {
-            //    Console.WriteLine(cards[i]);
-            //}
-            //Console.WriteLine();
 
             m_handRank = HandRanks.HighCard;
             m_highCard = PlayingCard.Ranks.NAR;
@@ -48,7 +42,6 @@ namespace _1_Poker
                 || isTwoPair(cards)
                 || isPair(cards)
                 || isHighCard(cards);
-
         }
 
         /// <summary>
@@ -89,7 +82,7 @@ namespace _1_Poker
         /// <summary>
         /// The full spoken name of this hand ranking and the high card contained within it.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The written name of the Poker Score.</returns>
         public override string ToString() {
             switch (m_handRank) {
                 case HandRanks.StraightFlush: return "Straight Flush " + m_highCard;
@@ -264,8 +257,7 @@ namespace _1_Poker
                 }
             }
 
-            if (pair == PlayingCard.Ranks.NAR || pair2 == PlayingCard.Ranks.NAR)
-            {
+            if (pair == PlayingCard.Ranks.NAR || pair2 == PlayingCard.Ranks.NAR) {
                 return false;
             }
 
