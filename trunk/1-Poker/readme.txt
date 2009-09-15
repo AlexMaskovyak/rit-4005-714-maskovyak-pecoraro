@@ -72,3 +72,8 @@ called "1-Poker.exe".
 
 This can be run at the command-line and input can be piped into standard-in 
 for program operation.
+
+For example, with the Windows PowerShell in the Project's directory:
+
+  pwr-shell> cat SampleHands.txt | ./bin/Debug/1-Poker.exe
+
