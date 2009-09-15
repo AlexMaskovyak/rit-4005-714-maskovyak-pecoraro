@@ -13,63 +13,60 @@ namespace _1_Poker
     {
         static void Main(string[] args)
         {
+            bool debug = (args.Length > 0);
+
             // Two Hands
             PokerHand black = new PokerHand();
             PokerHand white = new PokerHand();
 
             string input;
-            //while ((input = Console.ReadLine()) != null) {
-
-                // TODO: REMOVE THIS
-                input = "2H 3D 5S 9C KD 2C 3H 4S AD AH"; // High Card, Pair
+            while ((input = Console.ReadLine()) != null) {
+                
+                // Debug - Some Test Cases and Expected Results
+                //input = "2H 3D 5S 9C KD 2C 3H 4S AD AH"; // High Card, Pair
                 //input = "2H 3D 4H 5D 6H 3C 4C 5C 6C 7C"; // Straight, Straight Flush
                 //input = "2H 2D 3H 3D 4C AH AD TC TD TH"; // Two Pair, Full House (Correctly does 10)
                 //input = "2H 2D 2C 4H 5H AH AD AC AS KD"; // 3Kind, 4Kind
                 //input = "2H 4H 6H 8H TH 2D 4D 6D 8D TD"; // Flush (Tie)s
+                //input = "2H 4D 6H 8D AH 3H 4C 6D 7C AD"; // Both Ace High, Black has Better Kickers
+                //input = "2H 2D 4H 4D AH 2S 2C 4S 4C AC"; // Two Pair Real Tie
+                if (debug) { Console.WriteLine(input); }
 
-                // No More Input (hackish way to detect end of input??)
-                //if (input.Length < 2) {
-                //    break;
-                //}
+                // Clear the Hands
+                black.Clear();
+                white.Clear();
 
                 // Parse and load Hands
-                string[] cardStrings = input.Split(' ');
-                for (int i = 0; i < PokerHand.MAX_HAND_SIZE; ++i) {
-                    black.Add(new PlayingCard(cardStrings[i]));
+                try {
+                    string[] cardStrings = input.Split(' ');
+                    for (int i = 0; i < PokerHand.MAX_HAND_SIZE; ++i) {
+                        black.Add(new PlayingCard(cardStrings[i]));
+                    }
+                    for (int i = 0; i < PokerHand.MAX_HAND_SIZE; ++i) {
+                        white.Add(new PlayingCard(cardStrings[i + PokerHand.MAX_HAND_SIZE]));
+                    }
+                } catch (Exception e) {
+                    Console.WriteLine("Bad Card in the Mix");
+                    Console.WriteLine(e.StackTrace);
+                    continue;
                 }
-                for (int i = 0; i < PokerHand.MAX_HAND_SIZE; ++i) {
-                    white.Add(new PlayingCard(cardStrings[i + PokerHand.MAX_HAND_SIZE]));
+
+                // Debug - Output the Scores
+                if (debug) {
+                    Console.WriteLine("black score: " + black.ScoreHand().ToString());
+                    Console.WriteLine("white score: " + white.ScoreHand().ToString());
                 }
 
-                // Get the Score for Each Hand
-                Score blackScore = black.ScoreHand();
-                Score whiteScore = white.ScoreHand();
-
-                Console.WriteLine("black score: " + blackScore.ToString());
-                Console.WriteLine("white score: " + whiteScore.ToString());
-
-                int compare = black.CompareTo(white);// blackScore.CompareTo(whiteScore);
+                int compare = black.CompareTo(white);
                 if (compare == 0) {
                     Console.WriteLine("Tie.");
-                }
-                else if (compare < 0) {
+                } else if (compare < 0) {
                     Console.WriteLine("White wins.");
-                }
-                else {
+                } else {
                     Console.WriteLine("Black wins.");
                 }
 
-            // TODO: REMOVE THIS
-            //break;
-
-            //}
-        
-
-
-
-
-            Console.WriteLine("Hello World!");
-
+            }
         }
     }
 }

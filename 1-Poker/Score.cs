@@ -21,6 +21,8 @@ namespace _1_Poker
         // Members
         private HandRanks m_handRank;
         private PlayingCard.Ranks m_highCard;
+        private PlayingCard.Ranks m_lowPair;
+        private PlayingCard.Ranks[] m_kickers;
 
         /// <summary>
         /// Create a new Score from a PokerHand.
@@ -32,6 +34,8 @@ namespace _1_Poker
 
             m_handRank = HandRanks.HighCard;
             m_highCard = PlayingCard.Ranks.NAR;
+            m_lowPair = PlayingCard.Ranks.NAR;
+            m_kickers = null;
 
             bool ignored = IsStraightFlush(cards)
                 || IsFourOfAKind(cards)
@@ -59,6 +63,20 @@ namespace _1_Poker
         }
 
         /// <summary>
+        /// Extra Cards, Sorted High to Low, if the Score requires it
+        /// </summary>
+        public PlayingCard.Ranks[] Kickers {
+            get { return m_kickers; }
+        }
+
+        /// <summary>
+        /// The Low Pair in a TwoPair Hand. 
+        /// </summary>
+        public PlayingCard.Ranks LowPair {
+            get { return m_lowPair; }
+        }
+
+        /// <summary>
         /// Support IComparable, allow for the comparison of this Score with another Score.
         /// </summary>
         /// <param name="other">Score to compare against this one.</param>
@@ -76,6 +94,56 @@ namespace _1_Poker
                 return -1;
             if (m_highCard > other.HighCard)
                 return 1;
+
+            // Tie, But on Two Pair Check Bottom Pairs
+            if (m_handRank == HandRanks.TwoPair) {
+                if (m_lowPair < other.LowPair)
+                    return -1;
+                if (m_lowPair > other.LowPair)
+                    return 1;
+            }
+
+            // Tie, But Check Kickers in Some Cases
+            if (m_handRank == HandRanks.HighCard
+                || m_handRank == HandRanks.Pair
+                || m_handRank == HandRanks.TwoPair) {
+                return this.compareKickers(other);
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// For Some Hands you must compare excess cards.  This is private
+        /// and is assumed to be called if two Scores are otherwise Tied.
+        /// </summary>
+        /// <remarks>
+        ///     An Example Scenario Might be:
+        ///     
+        ///     <example>
+        ///       Player 1 has: 2H 2D 3H 3D AH
+        ///       Player 2 has: 2C 2S 3C 3S AC
+        ///     </example>
+        ///     
+        ///     Notice that both Players have a pair of 2s and 3s.  All
+        ///     remaining cards are kickers, those kickers must be compared.
+        ///     Note that the number of kickers are the same, and must be
+        ///     the same if the Hands are otherwise equal.
+        /// </remarks>
+        /// <param name="other">The other hand to compare against</param>
+        /// <returns>
+        ///     -1 if this loses to the other, 0 if tied, 1 if this
+        ///     wins over the other.
+        /// </returns>
+        private int compareKickers(Score other) {
+            PlayingCard.Ranks[] other_kickers = other.Kickers;
+            for (int i = 0; i < m_kickers.Length; ++i ) {
+                if (m_kickers[i] < other_kickers[i])
+                    return -1;
+                if (m_kickers[i] > other_kickers[i])
+                    return 1;
+            }
+
             return 0;
         }
 
@@ -85,15 +153,15 @@ namespace _1_Poker
         /// <returns>The written name of the Poker Score.</returns>
         public override string ToString() {
             switch (m_handRank) {
-                case HandRanks.StraightFlush: return "Straight Flush " + m_highCard;
-                case HandRanks.FourKind:      return "Four of a Kind " + m_highCard;
-                case HandRanks.FullHouse:     return "Full House " + m_highCard;
-                case HandRanks.Flush:         return "Flush " + m_highCard;
-                case HandRanks.Straight:      return "Straight " + m_highCard;
-                case HandRanks.ThreeKind:     return "Three of a Kind " + m_highCard;
-                case HandRanks.TwoPair:       return "Two Pair " + m_highCard;
-                case HandRanks.Pair:          return "Pair " + m_highCard;
-                case HandRanks.HighCard:      return "High Card " + m_highCard;
+                case HandRanks.StraightFlush: return m_highCard + " High Straight Flush";
+                case HandRanks.FourKind:      return "Four " + m_highCard + "s";
+                case HandRanks.FullHouse:     return "Full House with Three " + m_highCard + "s";
+                case HandRanks.Flush:         return m_highCard + " High Flush";
+                case HandRanks.Straight:      return m_highCard + " High Straight";
+                case HandRanks.ThreeKind:     return "Trip " + m_highCard + "s";
+                case HandRanks.TwoPair:       return "Two Pair - " + m_highCard + "s and " + m_lowPair + "s - " + m_kickers[0] + " Kicker";
+                case HandRanks.Pair:          return "Pair of " + m_highCard + "s"; // Ignore Kickers
+                case HandRanks.HighCard:      return m_highCard + " High"; // Ignore Kickers
                 default:                      return "Unknown";
             }
         }
@@ -262,7 +330,18 @@ namespace _1_Poker
             }
 
             m_handRank = HandRanks.TwoPair;
+            m_lowPair = pair;
             m_highCard = pair2;
+
+            m_kickers = new PlayingCard.Ranks[1];
+            for (int i = 0; i < cards.Length; ++i) {
+                PlayingCard.Ranks rank = cards[i].Rank;
+                if (rank != pair && rank != pair2) {
+                    m_kickers[0] = rank;
+                    break;
+                }
+            }
+
             return true;
         }
 
@@ -289,6 +368,15 @@ namespace _1_Poker
 
             m_handRank = HandRanks.Pair;
             m_highCard = pair;
+
+            m_kickers = new PlayingCard.Ranks[3];
+            int cnt = 0;
+            for (int i = cards.Length-1; i >= 0; --i) {
+                if (cards[i].Rank != pair) {
+                    m_kickers[cnt++] = cards[i].Rank;
+                }
+            }
+
             return true;
         }
 
@@ -300,6 +388,12 @@ namespace _1_Poker
         private bool isHighCard(PlayingCard[] cards) {
             m_handRank = HandRanks.HighCard;
             m_highCard = cards[cards.Length - 1].Rank;
+
+            m_kickers = new PlayingCard.Ranks[4];
+            for (int i = 3, j = 0; i >= 0; --i, ++j) {
+                m_kickers[j] = cards[i].Rank;
+            }
+
             return true;
         }
     }
