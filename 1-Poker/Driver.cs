@@ -57,6 +57,7 @@ namespace _1_Poker
                     Console.WriteLine("white score: " + white.ScoreHand().ToString());
                 }
 
+                // Compare Hands - Output the Winner
                 int compare = black.CompareTo(white);
                 if (compare == 0) {
                     Console.WriteLine("Tie.");
