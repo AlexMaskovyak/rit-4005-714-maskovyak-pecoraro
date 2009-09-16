@@ -53,7 +53,8 @@ namespace _1_Poker
         /// </summary>
         /// <param name="rankSuitPair">String of two characters representing Value|Suit.</param>
         public PlayingCard(string rankSuitPair) :
-            this(rankSuitPair[0], rankSuitPair[1]) { }
+            this(rankSuitPair[0], rankSuitPair[1])
+        {}
 
         /// <summary>
         /// Overload of constructor.  Allows for construction from char values.
@@ -61,8 +62,8 @@ namespace _1_Poker
         /// <param name="rank">Character representing a playing card's rank.</param>
         /// <param name="suit">Character representing a playing card's suit.</param>
         public PlayingCard(char rank, char suit) : 
-            this(
-                PlayingCard.getPlayingCardRankForChar(rank), PlayingCard.getPlayingCardSuitForChar(suit) ) { }
+            this(PlayingCard.getPlayingCardRankForChar(rank), PlayingCard.getPlayingCardSuitForChar(suit) )
+        {}
             
 
         /// <summary>
@@ -141,6 +142,7 @@ namespace _1_Poker
         /// <returns>True if the specific PlayingCard's suit and value are equivalent to this one's, false otherwise.</returns>
         public bool Equals(PlayingCard card) {
             // check that the parameter can be cast to PlayingCard
+            // see: http://msdn.microsoft.com/en-us/library/ms173147%28VS.80%29.aspx
             if ((object)card == null) {
                 return false;
             }
@@ -167,18 +169,14 @@ namespace _1_Poker
         ///     have identical rank and suit values.
         /// </returns>
         public int CompareTo(PlayingCard card) {
-            if (Rank < card.Rank){
+            if (Rank < card.Rank)
                 return -1;
-            }
-            if (Rank > card.Rank) {
+            if (Rank > card.Rank)
                 return 1;
-            }
-            if (Suit < card.Suit) {
-                return -1;                    
-            }
-            if (Suit > card.Suit) {
+            if (Suit < card.Suit)
+                return -1;
+            if (Suit > card.Suit)
                 return 1;
-            }
             return 0;
         }
     }
