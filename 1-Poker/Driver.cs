@@ -47,7 +47,7 @@ namespace _1_Poker
                     }
                 } catch (Exception e) {
                     Console.WriteLine("Bad Card in the Mix");
-                    if (debug) { Console.WriteLine(e.StackTrace); }
+                    if (debug) { Console.WriteLine(e.StackTrace); Console.WriteLine(e.Message);  }
                     continue;
                 }
 

@@ -86,7 +86,7 @@ namespace _1_Poker
                 case 'Q' : return PlayingCard.Ranks.Queen;
                 case 'K' : return PlayingCard.Ranks.King;
                 case 'A' : return PlayingCard.Ranks.Ace;
-                default : throw new ArgumentException( "Character could not be converted into a PlayingCard face value." );
+                default : throw new ArgumentException( "Character could not be converted into a PlayingCard face value: " + rankChar );
             }
         }
 
