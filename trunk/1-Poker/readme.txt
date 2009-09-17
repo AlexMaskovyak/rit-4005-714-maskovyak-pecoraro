@@ -37,7 +37,7 @@ Score.cs			// Ranks and scores card hands
 =========================================
  == 2. Resources Used for Development ==
 =========================================
-OS:				Windows Vista Home 64-Bit
+OS:				Snow Leopard using Parallels to run Windows XP Professional and Powershell
 Language:		C# 3.5
 IDE:			Microsoft Visual Studio 9.0
 SVN Repository:	Googlecode 
