@@ -57,7 +57,7 @@ namespace _2_PokerPuzzle
         /// <summary>
         /// Obtain genericized enumerator for the PlayingCards in this Deck.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IEnumerator of PlayingCards.</returns>
         public IEnumerator<PlayingCard> GetEnumerator() {
             return ((IEnumerable<PlayingCard>)_playingCards).GetEnumerator();
         }
@@ -65,7 +65,7 @@ namespace _2_PokerPuzzle
         /// <summary>
         /// Obtain an enumerator for the PlayingCards in this Deck.
         /// </summary>
-        /// <returns>IEnumerator</returns>
+        /// <returns>IEnumerator of PlayingCards.</returns>
         IEnumerator IEnumerable.GetEnumerator() {
            return this.GetEnumerator();
         }
