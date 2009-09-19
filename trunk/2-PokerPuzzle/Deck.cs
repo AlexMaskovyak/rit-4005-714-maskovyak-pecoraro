@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,27 +14,27 @@ namespace _2_PokerPuzzle
     /// <remarks>
     /// Provides mechanisms to manipulate a Deck of cards.
     /// </remarks>
-    public class Deck {
+    public class Deck : IEnumerable<PlayingCard> {
 
         /// <summary>
         /// The number of PlayingCards in a standard Deck of Cards.
         /// </summary>
         public const int DECK_SIZE = 52;
 
-        private readonly PlayingCard[] playingCards;
+        private readonly PlayingCard[] _playingCards;
 
         /// <summary>
         /// Default constructor.
         /// </summary>
         public Deck() {
-            playingCards = new PlayingCard[ Deck.DECK_SIZE ];
+            _playingCards = new PlayingCard[ Deck.DECK_SIZE ];
 
             int index = 0;
             // create playingcards
             foreach( PlayingCard.Suits suit in Enum.GetValues(typeof(PlayingCard.Suits)) ) {
                 foreach( PlayingCard.Ranks rank in Enum.GetValues(typeof(PlayingCard.Ranks)) ) {
                     if (rank == PlayingCard.Ranks.NAR) { continue;  }
-                    playingCards[index++] = new PlayingCard(rank, suit);
+                    _playingCards[index++] = new PlayingCard(rank, suit);
                 }
             }
         }
@@ -46,11 +47,27 @@ namespace _2_PokerPuzzle
             Random rng = new Random(); // default constructor automatically uses system time as a seed
             for(int i = Deck.DECK_SIZE - 1; i > 0; --i ) {
                 int randomNumber = rng.Next(i);
-                PlayingCard temp = playingCards[i];
-                playingCards[i] = playingCards[randomNumber];
-                playingCards[randomNumber] = temp;
+                PlayingCard temp = _playingCards[i];
+                _playingCards[i] = _playingCards[randomNumber];
+                _playingCards[randomNumber] = temp;
             }
-            return ((IEnumerable<PlayingCard>)playingCards).GetEnumerator();
+            return this.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Obtain genericized enumerator for the PlayingCards in this Deck.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<PlayingCard> GetEnumerator() {
+            return ((IEnumerable<PlayingCard>)_playingCards).GetEnumerator();
+        }
+
+        /// <summary>
+        /// Obtain an enumerator for the PlayingCards in this Deck.
+        /// </summary>
+        /// <returns>IEnumerator</returns>
+        IEnumerator IEnumerable.GetEnumerator() {
+           return this.GetEnumerator();
         }
 
         /// <summary>
@@ -59,6 +76,11 @@ namespace _2_PokerPuzzle
         public static void Main() {
             Deck deck = new Deck();
             deck.Shuffle();
+
+            foreach(PlayingCard card in deck ) {
+                Console.WriteLine(card);
+            }
+
         }
     }
 }
