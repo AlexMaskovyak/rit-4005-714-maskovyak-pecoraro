@@ -51,28 +51,28 @@ namespace _1_Poker
         /// <summary>
         /// Obtains the hand ranking of this Score object.
         /// </summary>
-        public HandRanks Level {
+        public virtual HandRanks Level {
             get { return m_handRank; }
         }
 
         /// <summary>
         /// Obtains the sub-rank of this hand ranking, the high card.
         /// </summary>
-        public PlayingCard.Ranks HighCard {
+        public virtual PlayingCard.Ranks HighCard {
             get { return m_highCard; }
         }
 
         /// <summary>
         /// Extra Cards, Sorted High to Low, if the Score requires it
         /// </summary>
-        public PlayingCard.Ranks[] Kickers {
+        public virtual PlayingCard.Ranks[] Kickers {
             get { return m_kickers; }
         }
 
         /// <summary>
         /// The Low Pair in a TwoPair Hand. 
         /// </summary>
-        public PlayingCard.Ranks LowPair {
+        public virtual PlayingCard.Ranks LowPair {
             get { return m_lowPair; }
         }
 
@@ -85,7 +85,7 @@ namespace _1_Poker
         ///     the one specified, and 0 if they are equivalent.  Scores are considered equivalent
         ///     if they have the same hand ranking and sub-ranking (high card).
         /// </returns>
-        public int CompareTo(Score other) {
+        public virtual int CompareTo(Score other) {
             if (m_handRank < other.Level)
                 return -1;
             if (m_handRank > other.Level)

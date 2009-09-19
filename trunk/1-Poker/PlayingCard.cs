@@ -168,7 +168,7 @@ namespace _1_Poker
         ///     the one specified, and 0 if they are equivalent.  Cards are considered equivalent if they 
         ///     have identical rank and suit values.
         /// </returns>
-        public int CompareTo(PlayingCard card) {
+        public virtual int CompareTo(PlayingCard card) {
             if (Rank < card.Rank)
                 return -1;
             if (Rank > card.Rank)
