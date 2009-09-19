@@ -77,6 +77,7 @@ namespace _2_PokerPuzzle
             Deck deck = new Deck();
             deck.Shuffle();
 
+            // debug to standard out
             foreach(PlayingCard card in deck ) {
                 Console.WriteLine(card);
             }
