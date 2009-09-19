@@ -30,9 +30,10 @@ namespace _2_PokerPuzzle
 
             int index = 0;
             // create playingcards
-            foreach( string suit in Enum.GetNames(typeof(PlayingCard.Suits)) ) {
-                foreach( string rank in Enum.GetNames(typeof(PlayingCard.Ranks)) ) {
-                    playingCards[index++] = new PlayingCard(rank[0], suit[0]);
+            foreach( PlayingCard.Suits suit in Enum.GetValues(typeof(PlayingCard.Suits)) ) {
+                foreach( PlayingCard.Ranks rank in Enum.GetValues(typeof(PlayingCard.Ranks)) ) {
+                    if (rank == PlayingCard.Ranks.NAR) { continue;  }
+                    playingCards[index++] = new PlayingCard(rank, suit);
                 }
             }
         }
@@ -52,6 +53,9 @@ namespace _2_PokerPuzzle
             return (IEnumerator<PlayingCard>)playingCards.GetEnumerator();
         }
 
+        public static void Main() {
+            Deck deck = new Deck();
+            deck.Shuffle();
+        }
     }
-
 }
