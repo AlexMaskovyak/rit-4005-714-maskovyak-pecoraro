@@ -50,9 +50,12 @@ namespace _2_PokerPuzzle
                 playingCards[i] = playingCards[randomNumber];
                 playingCards[randomNumber] = temp;
             }
-            return (IEnumerator<PlayingCard>)playingCards.GetEnumerator();
+            return ((IEnumerable<PlayingCard>)playingCards).GetEnumerator();
         }
 
+        /// <summary>
+        /// Debug Deck.
+        /// </summary>
         public static void Main() {
             Deck deck = new Deck();
             deck.Shuffle();
