@@ -75,7 +75,7 @@ namespace _1_Poker
             foreach (PlayingCard card in cards)
             {
                 if (PokerHand.MAX_HAND_SIZE == HandSize()) {
-                    return false;
+                    throw new System.ArgumentException("A PokerHand may only contain 5 cards.");
                 }
 
                 if (_playingCards.Contains(card)) {
@@ -107,7 +107,7 @@ namespace _1_Poker
         /// PokerHand against another.
         /// </summary>
         /// <returns>Score object representing the value of this PokerHand.</returns>
-        public Score ScoreHand() {
+        public virtual Score ScoreHand() {
             return new Score(this);
         }
 
@@ -127,8 +127,8 @@ namespace _1_Poker
         ///     -1 if this PokerHand's score is lower than the one specified, 1 if this PokerHand is
         ///     higher than the one specified, 0 if they have equivalent scores.
         /// </returns>
-        public int CompareTo(PokerHand pokerHand) {
-            return (new Score(this)).CompareTo(new Score(pokerHand));
+        public virtual int CompareTo(PokerHand pokerHand) {
+            return ScoreHand().CompareTo(pokerHand.ScoreHand());
         }
     }
 }
