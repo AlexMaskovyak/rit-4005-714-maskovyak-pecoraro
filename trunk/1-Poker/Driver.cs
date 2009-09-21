@@ -14,10 +14,11 @@ namespace _1_Poker
         static void Main(string[] args)
         {
             bool debug = (args.Length > 0);
+            int maxPokerHandSize = 5;
 
             // Two Hands
-            PokerHand black = new PokerHand();
-            PokerHand white = new PokerHand();
+            PokerHand black = new PokerHand(maxPokerHandSize);
+            PokerHand white = new PokerHand(maxPokerHandSize);
 
             string input;
             while ((input = Console.ReadLine()) != null) {
@@ -39,11 +40,11 @@ namespace _1_Poker
                 // Parse and load Hands
                 try {
                     string[] cardStrings = input.Split(' ');
-                    for (int i = 0; i < PokerHand.MAX_HAND_SIZE; ++i) {
+                    for (int i = 0; i < black.MaxHandSize; ++i) {
                         black.Add(new PlayingCard(cardStrings[i]));
                     }
-                    for (int i = 0; i < PokerHand.MAX_HAND_SIZE; ++i) {
-                        white.Add(new PlayingCard(cardStrings[i + PokerHand.MAX_HAND_SIZE]));
+                    for (int i = 0; i < white.MaxHandSize; ++i) {
+                        white.Add(new PlayingCard(cardStrings[i + black.MaxHandSize]));
                     }
                 } catch (Exception e) {
                     Console.WriteLine("Bad Card in the Mix");

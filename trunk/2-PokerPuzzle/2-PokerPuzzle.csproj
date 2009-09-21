@@ -52,6 +52,7 @@
   <ItemGroup>
     <Reference Include="1-Poker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <ExecutableExtension>.exe</ExecutableExtension>
       <HintPath>..\1-Poker\bin\Debug\1-Poker.exe</HintPath>
     </Reference>
     <Reference Include="System" />

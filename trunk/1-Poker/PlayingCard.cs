@@ -18,7 +18,12 @@ namespace _1_Poker
         /// <summary>
         /// Playing card ranks/values.  The "number" of the card.
         /// </summary>
-        public enum Ranks { NAR=-1, Two=2, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace }
+        public enum Ranks { 
+            /// <summary>
+            /// "Not a Rank", to be used during times where a Ranks is expected but where it could not
+            /// be generated.
+            /// </summary>
+            NAR=-1, Two=2, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace }
 
         private readonly PlayingCard.Suits _suit;
         private readonly PlayingCard.Ranks _rank;
