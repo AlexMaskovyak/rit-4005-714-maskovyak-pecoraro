@@ -21,6 +21,9 @@ namespace _2_PokerPuzzle
         /// </summary>
         public const int DECK_SIZE = 52;
 
+        /// <summary>
+        /// The cards in the Deck.
+        /// </summary>
         private readonly PlayingCard[] _playingCards;
 
         /// <summary>
@@ -81,7 +84,6 @@ namespace _2_PokerPuzzle
             foreach(PlayingCard card in deck ) {
                 Console.WriteLine(card);
             }
-
         }
     }
 }
