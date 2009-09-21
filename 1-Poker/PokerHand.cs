@@ -11,8 +11,13 @@ namespace _1_Poker
     /// </summary>
     public class PokerHand : IEnumerable, IComparable<PokerHand>
     {
-        private HashSet<PlayingCard> _playingCards;
-        private int _maxHandSize;
+        /// <summary>
+        /// Standard Poker Hand size.
+        /// </summary>
+        public const int StandardHandSize = 5;
+
+        protected HashSet<PlayingCard> _playingCards;
+        protected int _maxHandSize;
 
 
         /// <summary>
