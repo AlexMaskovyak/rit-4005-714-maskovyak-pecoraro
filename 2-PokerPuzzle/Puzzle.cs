@@ -11,67 +11,83 @@ namespace _2_PokerPuzzle
     /// Holds a series of PlayingCards and is capable of determining the best possible PokerHand that can
     /// be created from those hands.  SHOULD THIS INHERIT FROM POKERHAND?
     /// </summary>
-    class Puzzle
+    class Puzzle : PokerHand
     {
-        private HashSet<PlayingCard> _playingCards;
-        private int _maxSize;
+        
+        protected HashSet<PlayingCard> _selectedCards;
 
         /// <summary>
         /// Default constructor.
         /// </summary>
         /// <param name="maxSize">Maximum number of cards for this puzzle to hold.</param>
-        public Puzzle(int maxSize) {
-            _playingCards = new HashSet<PlayingCard>();
-            _maxSize = maxSize;
+        public Puzzle(int maxSize) : base(maxSize) {
+            _selectedCards = new HashSet<PlayingCard>();
         }
 
-        /// <summary>
-        /// Adds a PlayingCard to this puzzle.
+        /*/// <summary>
+        /// Selects a PlayingCard contained in this Puzzle.
         /// </summary>
-        /// <param name="card">PlayingCard to add.</param>
-        public void Add(PlayingCard card) {
-            //_playingCards.Count
-        }
-
-        /// <summary>
-        /// Attempts to add the PlayingCards to this Puzzle.  The cards will only be added if the hand is not currently full or if it is
-        /// a card that this hand does not already contain.
-        /// </summary>
-        /// <param name="cards">PlayingCards to be added.</param>
-        /// <returns>True if all of the cards were added, false otherwise.</returns>
-        public bool Add(params PlayingCard[] cards)
-        {
-            bool result = true;
-            foreach (PlayingCard card in cards)
-            {
-                if (_maxSize == _playingCards.Count) {
-                    throw new System.ArgumentException(String.Format("This Puzzle may only contain {0} cards.", _maxSize));
-                }
-
-                if (_playingCards.Contains(card)) {
-                    throw new System.ArgumentException("A Puzzle may only contain unique cards.");
-                }
-
-                result = result && _playingCards.Add(card);
+        /// <remarks>
+        /// The number of PlayingCards that can be selected is limited to the standard poker hand size.  Once this quantity
+        /// of cards has been selected this Puzzle object may be used to determine if the best possible hand has been selected.
+        /// </remarks>
+        /// <param name="card">PlayingCard in this Puzzle to select.</param>
+        public virtual void Select(PlayingCard card) {
+            // see if this card 
+            if( !base._playingCards.Contains( card ) ) {
+                throw new ArgumentException( "Only cards contained in this Puzzle may be selected." );
             }
 
-            return result;
+            // we can only select up to x number of cards, where x is the standard poker hand size
+            if( _selectedCards.Count == PokerHand.StandardHandSize ) {
+                throw new ArgumentException( String.Format("Only {0} cards may be selected at once.", PokerHand.StandardHandSize ) );
+            }
+
+            _selectedCards.Add(card);
+        }*/
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hand"></param>
+        /// <returns></returns>
+        public virtual bool IsBestHand(PokerHand hand) {
+
+        }
+
+        /// <summary>
+        /// Finds the best scoring PokerHand possible from the cards in this Puzzle.
+        /// </summary>
+        /// <returns>PokerHand containing the best score possible from the cards in this Puzzle.</returns>
+        public virtual PokerHand GetBestHandPossible() {
+
         }
 
         /// <summary>
         /// Used for testing and project requirements.
         /// </summary>
-        public void Main() {
+        public static void Main() {
             int cardMax = 7;
 
             Puzzle puzzle = new Puzzle(cardMax);
             Deck deck = new Deck();
             deck.Shuffle();
 
+            // add cards to the puzzle
             int cardNum = 1;
             foreach (PlayingCard card in deck) {
-
+                if (cardNum == cardMax) { break; }
+                puzzle.Add(card);
+                ++cardNum;
             }
+
+            // select the first five cards
+            /*cardNum = 1;
+            foreach (PlayingCard card in deck) {
+                if (cardNum == PokerHand.StandardHandSize) { break; }
+                puzzle.Select(card);
+                ++cardNum;
+            }*/
         }
     }
 }
