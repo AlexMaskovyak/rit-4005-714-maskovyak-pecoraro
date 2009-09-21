@@ -11,33 +11,48 @@ namespace _1_Poker
     /// </summary>
     public class PokerHand : IEnumerable, IComparable<PokerHand>
     {
+        private HashSet<PlayingCard> _playingCards;
+        private int _maxHandSize;
+
+
         /// <summary>
         /// Largest quantity of cards allowed in a 5-card hand of poker.
         /// </summary>
-        public const int MAX_HAND_SIZE = 5;
-
-        private HashSet<PlayingCard> _playingCards;
+        public int MaxHandSize {
+            get { return _maxHandSize; }
+        }
 
         /// <summary>
-        /// Default cosntructor for creating a hand of playing cards or a 5-card variant of poker.
+        /// Constructor for creating a hand of playing cards or a 5-card variant of poker.
         /// </summary>
-        /// <param name="playingCards">The playing cards to add to this hand.  0 through 5 cards may be passed in.</param>
-        public PokerHand( params PlayingCard[] playingCards ) {
-            // check size issues
-            if ( playingCards == null || playingCards.Length > PokerHand.MAX_HAND_SIZE ) {
-                throw new System.ArgumentException( "A PokerHand may only be constructed with 0 to 5 playing cards." );
-            }
+        /// <param name="playingCards">The playing cards to add to this hand.</param>
+        public PokerHand( params PlayingCard[] playingCards ) : 
+            this( playingCards.Length, playingCards )
+        { }
 
+        /// <summary>
+        /// Default constructor for creating an empty PokerHand with the specified size restriction.
+        /// </summary>
+        /// <param name="maxHandSize">Maximum number of cards for this PokerHand to contain.</param>
+        public PokerHand(int maxHandSize) :
+            this( maxHandSize, null )
+        { }
+
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="maxHandSize">Maximum number of cards for this PokerHand to contain.</param>
+        /// <param name="playingCards">Playing cards to add to this PokerHand.</param>
+        public PokerHand(int maxHandSize, params PlayingCard[] playingCards ) {
+
+            _maxHandSize = maxHandSize;
+            
             // create hashset and add cards to it
             _playingCards = new HashSet<PlayingCard>();
-            foreach (PlayingCard card in playingCards) {
-                _playingCards.Add(card);
-            }
 
-            // the number of cards in the set should match the number of cards passed in
-            // otherwise we have duplicates!
-            if( _playingCards.Count != playingCards.Length ) {
-                throw new System.ArgumentException( "A PokerHand may only contain one of any particular card type from a standard 52-card deck!  Cheater!" );
+            // add the cards
+            if (!Add(playingCards)) {
+                throw new System.ArgumentException("An error occurred when attempting to construct this PokerHand with the PlayingCards passed in.");
             }
         }
 
@@ -65,17 +80,26 @@ namespace _1_Poker
         }
 
         /// <summary>
-        /// Attempts to add the PlayingCards to this PokerHand.  The cards will only be added if the hand is not currently full or if it is
-        /// a card that this hand does not already contain.
+        /// Attempts to add the PlayingCards to this PokerHand.
         /// </summary>
+        /// <remarks>
+        /// The card(s) will only be added if the hand is not currently full or if it is a card that this hand does not already contain.
+        /// Adds as many cards as possible.
+        /// </remarks>
         /// <param name="cards">PlayingCards to be added.</param>
         /// <returns>True if all of the cards were added, false otherwise.</returns>
         public bool Add(params PlayingCard[] cards) {
             bool result = true;
-            foreach (PlayingCard card in cards)
-            {
-                if (PokerHand.MAX_HAND_SIZE == HandSize()) {
-                    throw new System.ArgumentException("A PokerHand may only contain 5 cards.");
+            // there is nothing to add so of course "adding" nothing succeeds
+            if (cards == null) {
+                return true;
+            }
+
+            // add each card to the set
+            foreach (PlayingCard card in cards) {
+                if (MaxHandSize == HandSize()) {
+                    throw new System.ArgumentException(
+                        String.Format("A PokerHand may only contain {0} cards.", MaxHandSize));
                 }
 
                 if (_playingCards.Contains(card)) {
