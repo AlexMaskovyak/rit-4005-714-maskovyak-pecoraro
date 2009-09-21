@@ -13,7 +13,7 @@ namespace _2_PokerPuzzle
     /// </summary>
     class Puzzle : PokerHand
     {
-        
+
         /// <summary>
         /// A set of cards from which to find the optimal card.
         /// </summary>
@@ -23,11 +23,14 @@ namespace _2_PokerPuzzle
         /// Default constructor.
         /// </summary>
         /// <param name="maxSize">Maximum number of cards for this puzzle to hold.</param>
-        public Puzzle(int maxSize) : base(maxSize) {
+        public Puzzle(int maxSize)
+            : base(maxSize)
+        {
 
             // We Compare Standard Poker Hands, so there must be at least the
             // Standard Poker Hand Size for the game to work
-            if (maxSize < 5) {
+            if (maxSize < 5)
+            {
                 throw new System.ArgumentException("Too Few Cards for the Puzzle");
             }
 
@@ -61,7 +64,8 @@ namespace _2_PokerPuzzle
         /// </summary>
         /// <param name="hand"></param>
         /// <returns></returns>
-        public virtual bool IsBestHand(PokerHand hand) {
+        public virtual bool IsBestHand(PokerHand hand)
+        {
             // TODO: Stub
             return true;
         }
@@ -70,10 +74,12 @@ namespace _2_PokerPuzzle
         /// Finds the best scoring PokerHand possible from the cards in this Puzzle.
         /// </summary>
         /// <returns>PokerHand containing the best score possible from the cards in this Puzzle.</returns>
-        public virtual PokerHand GetBestHandPossible() {
+        public virtual PokerHand GetBestHandPossible()
+        {
 
             Console.WriteLine(_playingCards.Count);
-            foreach (PlayingCard c in _playingCards) {
+            foreach (PlayingCard c in _playingCards)
+            {
                 Console.WriteLine(c);
             }
 
@@ -87,10 +93,12 @@ namespace _2_PokerPuzzle
             max.Add(l[0], l[1], l[2], l[3], l[4]);
 
             // Find Max
-            foreach (List<PlayingCard> lst in hands.Perms) {
+            foreach (List<PlayingCard> lst in hands.Perms)
+            {
                 PokerHand curr = new PokerHand(5);
                 curr.Add(lst[0], lst[1], lst[2], lst[3], lst[4]);
-                if (curr.CompareTo(max) > 0) {
+                if (curr.CompareTo(max) > 0)
+                {
                     max = curr;
                 }
             }
@@ -99,11 +107,70 @@ namespace _2_PokerPuzzle
             return max;
         }
 
+        /*/// <summary>
+        /// Finds the best scoring PokerHand possible from the cards in this Puzzle.
+        /// </summary>
+        /// <returns>PokerHand containing the best score possible from the cards in this Puzzle.</returns>
+        public virtual PokerHand GetBestHandPossible() {
+            return GetBestHandPossible( 
+                        base.Cards, 
+                        0, 
+                        PokerHand.StandardHandSize, 
+                        null, 
+                        new PlayingCard[0] );
+        }
+
+
+
+        private PokerHand GetBestHandPossible(
+                PlayingCard[] cards, 
+                int arrayPosition, 
+                int cardsToSelect,
+                PokerHand bestHand,
+                PlayingCard[] handInProgress
+            ) {
+
+            // we have the necessary quantity of cards to select for a PokerHand
+            if( handInProgress.Length == cardsToSelect ) {
+                return GetBestHand( bestHand, new PokerHand( handInProgress ) );
+            }
+            
+            // we have too few cards and have run out of cards to select
+            if( arrayPosition == cards.Length ) {
+                return bestHand;
+            }
+
+            // choose to not select this card and move on
+            PokerHand resultNoAdd = 
+                GetBestHandPossible(
+                    cards,
+                    arrayPosition + 1,
+                    cardsToSelect,
+                    bestHand,
+                    handInProgress);
+
+            // choose to select this card and move on
+            PlayingCard[] bestHand2 = new PlayingCard[handInProgress.Length + 1];
+            handInProgress.CopyTo(bestHand2, 0);
+            bestHand2[handInProgress.Length] = cards[arrayPosition];
+
+            PokerHand resultAdd =
+                GetBestHandPossible(
+                    cards,
+                    arrayPosition + 1,
+                    cardsToSelect,
+                    bestHand,
+                    handInProgress);
+
+            // compare the result and return the best one
+            return GetBestHand(resultNoAdd, resultAdd);
+        */
 
         /// <summary>
         /// Used for testing and project requirements.
         /// </summary>
-        public static void Main() {
+        public static void Main()
+        {
             int cardMax = 7;
 
             Puzzle puzzle = new Puzzle(cardMax);
@@ -112,17 +179,22 @@ namespace _2_PokerPuzzle
 
             // add cards to the puzzle
             int cardNum = 0;
-            foreach (PlayingCard card in deck) {
+            foreach (PlayingCard card in deck)
+            {
                 if (cardNum == cardMax) { break; }
                 puzzle.Add(card);
                 ++cardNum;
             }
 
             PokerHand bestHand = puzzle.GetBestHandPossible();
-            if (bestHand == null) {
+            if (bestHand == null)
+            {
                 Console.WriteLine("null");
-            } else {
-                foreach (PlayingCard c in bestHand) {
+            }
+            else
+            {
+                foreach (PlayingCard c in bestHand)
+                {
                     Console.WriteLine(c);
                 }
             }
@@ -139,3 +211,4 @@ namespace _2_PokerPuzzle
         }
     }
 }
+
