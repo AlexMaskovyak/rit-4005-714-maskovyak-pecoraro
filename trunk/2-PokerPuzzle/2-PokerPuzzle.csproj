@@ -90,6 +90,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Permutations.cs" />
     <Compile Include="Puzzle.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
