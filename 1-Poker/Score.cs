@@ -86,6 +86,10 @@ namespace _1_Poker
         ///     if they have the same hand ranking and sub-ranking (high card).
         /// </returns>
         public virtual int CompareTo(Score other) {
+            if (other == null) {
+                return 1;
+            }
+
             if (m_handRank < other.Level)
                 return -1;
             if (m_handRank > other.Level)
