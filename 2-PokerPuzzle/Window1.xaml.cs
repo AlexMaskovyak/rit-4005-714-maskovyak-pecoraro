@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Effects;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
@@ -29,6 +30,12 @@ namespace _2_PokerPuzzle
         /// <summary>URI Suffix for Card Images</summary>
         public const string PlayingCardURISuffix = ".png";
 
+        /// <summary>Text Displayed on Win</summary>
+        public const string WinningText = "Great!";
+
+        /// <summary>Text Displayed on Lose</summary>
+        public const string LosingText = "Oops, there is a better hand.";
+
         /// <summary>Number of Cards to Display</summary>
         private int _numCardsToDisplay;
 
@@ -47,8 +54,11 @@ namespace _2_PokerPuzzle
         /// <summary>Selected Cards Count</summary>
         private int _numSelected = 0;
 
-        /// <summary>The Selected Cards</summary>
+        /// <summary>Selected Cards</summary>
         private BitArray _selected;
+
+        /// <summary>Game elements are disabled.</summary>
+        private bool _disabled;
 
         /// <summary>Creates a GUI with the default, 7 Cards.</summary>
         public Window1(): this(7)
@@ -65,6 +75,7 @@ namespace _2_PokerPuzzle
             _deck = new Deck();
             _images = new List<Image>();
             _chks = new List<CheckBox>();
+            _disabled = false;
 
             // Create/Draw Components
             InitializeComponent();
@@ -128,35 +139,57 @@ namespace _2_PokerPuzzle
             int cardNum = 0;
             foreach (PlayingCard card in _deck) {
                 if (cardNum == _numCardsToDisplay) { break; }
-                _puzzle.Add(card);
+                Image img = _images[cardNum];
+                img.Source = new BitmapImage(CardToUri(card));
+                img.Effect = null;
                 _chks[cardNum].IsChecked = false;
-                _images[cardNum].Source = new BitmapImage(CardToUri(card));
                 _selected[cardNum] = false;
+                _puzzle.Add(card);
                 ++cardNum;
             }
 
-            // TODO: REMOVE Debug
-            foreach (PlayingCard c in _puzzle.Cards) {
-                Console.WriteLine(c);
-            }
+            // If Needed
+            EnableGameGUI();
+
         }
 
-        /// <summary>Evalutes the User's Selections</summary>
+        /// <summary>Evalutes the User's Selections and Displays Results</summary>
         private void EvaluateSelection() {
-            Console.WriteLine("Inside Evaluate selection");
+            DisableGameGUI();
+            lblResult.Content = "Computing...";
+            Result result = _puzzle.Selected(_selected);
+            HighlightCards(result.BestHandIndexes);
+            lblResult.Content = (result.Best ? WinningText : LosingText);
+        }
 
-            PokerHand bestHand = _puzzle.GetBestHandPossibleAlex();
-            Console.WriteLine();
-            Console.WriteLine("Best Hand: ");
-            Console.WriteLine(bestHand.ScoreHand());
-            foreach (PlayingCard c in bestHand) {
-                Console.WriteLine(c);
+        /// <summary>Highlight Cards Indicated by their Position</summary>
+        /// <param name="highlights">Positions of the Cards</param>
+        private void HighlightCards(BitArray highlights) {
+
+            // Red Color
+            Color color = new Color();
+            color.ScA = 1;
+            color.ScB = 0;
+            color.ScG = 0;
+            color.ScR = 200;
+
+            // Drop Shadow
+            DropShadowEffect drop = new DropShadowEffect();
+            drop.Color = color;
+            drop.Opacity = 0.5;
+            drop.ShadowDepth = 10;
+            drop.Direction = 320;
+
+            // Add Effect to the Best Hand
+            for (int i = 0; i < highlights.Length; ++i) {
+                if (highlights[i]) {
+                    _images[i].Effect = drop;
+                }
             }
 
         }
 
-        /// <summary>
-        /// Convert a Card to the URI for its Image</summary>
+        /// <summary>Convert a Card to the URI for its Image</summary>
         /// <param name="card">A valid PlayingCard</param>
         /// <returns>URI for the Card's image</returns>
         public Uri CardToUri(PlayingCard card) {
@@ -167,11 +200,30 @@ namespace _2_PokerPuzzle
                 case PlayingCard.Suits.Heart: suitIdentifier = 3; break;
                 case PlayingCard.Suits.Diamond: suitIdentifier = 4; break;
             }
-            int rankIdentifier = 0;
-            rankIdentifier = 14 - ((int)card.Rank);
+            int rankIdentifier = 14 - ((int)card.Rank); // 14 = Ace
             int cardIdentifier = (4 * (rankIdentifier)) + suitIdentifier;
             string uri = PlayingCardURIPrefix + cardIdentifier.ToString() + PlayingCardURISuffix;
             return new Uri(uri);
+        }
+
+        /// <summary>Disable the Game's GUI</summary>
+        private void DisableGameGUI() {
+            _disabled = true;
+            btnNewGame.IsEnabled = true;
+            lblResult.Visibility = Visibility.Visible;
+            foreach (CheckBox c in _chks) {
+                c.IsEnabled = false;
+            }
+        }
+
+        /// <summary>Enable the Game's GUI</summary>
+        private void EnableGameGUI() {
+            _disabled = false;
+            btnNewGame.IsEnabled = false;
+            lblResult.Visibility = Visibility.Hidden;
+            foreach (CheckBox c in _chks) {
+                c.IsEnabled = true;
+            }
         }
 
         /// <summary>"New Game" Button is Clicked</summary>
@@ -187,6 +239,7 @@ namespace _2_PokerPuzzle
 
         /// <summary>An Image is Clicked, Toggles the Appropriate Checkbox</summary>
         private void img_MouseDown(object sender, MouseButtonEventArgs e) {
+            if (_disabled) { return; }
             int index = _images.IndexOf((Image)sender);
             _chks[index].IsChecked = !_chks[index].IsChecked;
             selectedIndex(index);
