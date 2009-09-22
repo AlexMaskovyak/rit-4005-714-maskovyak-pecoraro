@@ -1,4 +1,5 @@
 ﻿using System;
+using BitArray = System.Collections.BitArray;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,71 +15,59 @@ namespace _2_PokerPuzzle
     class Puzzle : PokerHand
     {
 
-        /// <summary>
-        /// A set of cards from which to find the optimal card.
-        /// </summary>
-        protected HashSet<PlayingCard> _selectedCards;
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
+        /// <summary>Default constructor.</summary>
         /// <param name="maxSize">Maximum number of cards for this puzzle to hold.</param>
-        public Puzzle(int maxSize)
-            : base(maxSize)
+        public Puzzle(int maxSize) : base(maxSize)
         {
-
             // We Compare Standard Poker Hands, so there must be at least the
             // Standard Poker Hand Size for the game to work
-            if (maxSize < 5)
-            {
+            if (maxSize < 5) {
                 throw new System.ArgumentException("Too Few Cards for the Puzzle");
             }
-
-            _selectedCards = new HashSet<PlayingCard>();
         }
 
-        /*/// <summary>
-        /// Selects a PlayingCard contained in this Puzzle.
-        /// </summary>
-        /// <remarks>
-        /// The number of PlayingCards that can be selected is limited to the standard poker hand size.  Once this quantity
-        /// of cards has been selected this Puzzle object may be used to determine if the best possible hand has been selected.
-        /// </remarks>
-        /// <param name="card">PlayingCard in this Puzzle to select.</param>
-        public virtual void Select(PlayingCard card) {
-            // see if this card 
-            if( !base._playingCards.Contains( card ) ) {
-                throw new ArgumentException( "Only cards contained in this Puzzle may be selected." );
-            }
-
-            // we can only select up to x number of cards, where x is the standard poker hand size
-            if( _selectedCards.Count == PokerHand.StandardHandSize ) {
-                throw new ArgumentException( String.Format("Only {0} cards may be selected at once.", PokerHand.StandardHandSize ) );
-            }
-
-            _selectedCards.Add(card);
-        }*/
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="hand"></param>
-        /// <returns></returns>
-        public virtual bool IsBestHand(PokerHand hand)
-        {
-            // TODO: Stub
-            return true;
+        /// <summary>Simpler Accessor for the Best Hand</summary>
+        /// <remarks>This is Not Cached. It is recomputed each access.</remarks>
+        public PokerHand BestHand {
+            get { return GetBestHandPossibleAlex(); }
         }
+
+        /// <summary>Get the Results for some Selections</summary>
+        /// <param name="selections">Positions of the Card Selection</param>
+        /// <returns>A Result Object containing the Game Results</returns>
+        public virtual Result Selected(BitArray selections) {
+
+            // Determine the Selected Hand
+            PokerHand selectedHand = new PokerHand(5);
+            PlayingCard[] cards = _playingCards.ToArray<PlayingCard>();
+            for (int i = 0; i < selections.Length; ++i) {
+                if (selections[i]) {
+                    selectedHand.Add(cards[i]);
+                }
+            }
+
+            // Compare to the best
+            PokerHand bestHand = BestHand;
+            bool isBest = (bestHand.CompareTo(selectedHand) == 0);
+
+            // BitArray for the Best Hand
+            BitArray bestHandBits = new BitArray(selections.Length);
+            for (int i = 0; i < cards.Length; ++i) {
+                bestHandBits[i] = (bestHand.Cards.Contains(cards[i]));
+            }
+
+            return new Result(isBest, bestHandBits, bestHand, selectedHand);
+
+        }
+
 
         /// <summary>
         /// Finds the best scoring PokerHand possible from the cards in this Puzzle.
         /// </summary>
         /// <returns>PokerHand containing the best score possible from the cards in this Puzzle.</returns>
+        /*
         public virtual PokerHand GetBestHandPossible()
         {
-
-
-
             List<PlayingCard> cardList = _playingCards.ToList();
             Permutations<PlayingCard> hands = new Permutations<PlayingCard>(cardList, 5);
             Console.WriteLine(hands.Perms.Count);
@@ -102,10 +91,9 @@ namespace _2_PokerPuzzle
             Console.WriteLine(max.ScoreHand());
             return max;
         }
+        */
 
-        /// <summary>
-        /// Finds the best scoring PokerHand possible from the cards in this Puzzle.
-        /// </summary>
+        /// <summary>Finds the best scoring PokerHand possible from the cards in this Puzzle.</summary>
         /// <returns>PokerHand containing the best score possible from the cards in this Puzzle.</returns>
         public virtual PokerHand GetBestHandPossibleAlex() {
             return GetBestHandPossibleAlex( 
@@ -117,7 +105,14 @@ namespace _2_PokerPuzzle
         }
 
 
-
+        // TODO: Alex, Fill this in!
+        /// <summary>Recursive Algorithm to Find the Best Possible Hand</summary>
+        /// <param name="cards"></param>
+        /// <param name="arrayPosition"></param>
+        /// <param name="cardsToSelect"></param>
+        /// <param name="bestHand"></param>
+        /// <param name="handInProgress"></param>
+        /// <returns></returns>
         private PokerHand GetBestHandPossibleAlex(
                 PlayingCard[] cards, 
                 int arrayPosition, 
@@ -168,16 +163,20 @@ namespace _2_PokerPuzzle
             return bestHand;
         }
         
-        public PokerHand GetBestHand( PokerHand hand1, PokerHand hand2 ) {
+        /// <summary>Compares Two Hands and Returns the better</summary>
+        /// <param name="hand1">First Hand</param>
+        /// <param name="hand2">Second Hand</param>
+        /// <returns>The Hand with the Greater Score</returns>
+        protected virtual PokerHand GetBestHand( PokerHand hand1, PokerHand hand2 ) {
             if (hand1 == null) { return hand2; }
             if (hand2 == null) { return hand1; }
             return (hand2.CompareTo(hand1) == 1) ? hand2 : hand1; 
         }
-         
-        
-        /// <summary>
-        /// Used for testing and project requirements.
-        /// </summary>
+
+
+
+
+        /// <summary>Main Program</summary>
         [System.STAThreadAttribute()]
         public static void Main(string[] args)
         {
