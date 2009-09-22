@@ -4,6 +4,11 @@ using System.Linq;
 using System.Text;
 
 namespace _2_PokerPuzzle {
+
+    /// <summary>
+    /// Creates all permutations of a specified length for a given list of elements.
+    /// </summary>
+    /// <typeparam name="T">Type held by the lists to permute.</typeparam>
     class Permutations<T> {
 
         protected List<List<T>> _permutations;
