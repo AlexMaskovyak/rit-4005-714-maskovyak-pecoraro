@@ -1,4 +1,5 @@
 ﻿using System;
+using BitArray = System.Collections.BitArray;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,6 +44,12 @@ namespace _2_PokerPuzzle
         /// <summary>Checkbox GUI Element References</summary>
         private List<CheckBox> _chks;
 
+        /// <summary>Selected Cards Count</summary>
+        private int _numSelected = 0;
+
+        /// <summary>The Selected Cards</summary>
+        private BitArray _selected;
+
         /// <summary>Creates a GUI with the default, 7 Cards.</summary>
         public Window1(): this(7)
         {}
@@ -53,6 +60,7 @@ namespace _2_PokerPuzzle
 
             // Initialize Data Structures
             _numCardsToDisplay = cardsToDisplay;
+            _selected = new BitArray(_numCardsToDisplay);
             _puzzle = new Puzzle(_numCardsToDisplay);
             _deck = new Deck();
             _images = new List<Image>();
@@ -62,12 +70,80 @@ namespace _2_PokerPuzzle
             InitializeComponent();
             CreateGUIObjects();
             this.Width = (100 * _numCardsToDisplay) + 50; // 25px padding both sides
-            
-            // TODO: Add Game Loop Here?
 
             // Run the Game
             RestartPuzzle();
 
+        }
+
+        /// <summary>Programmatically Creates StackPanels with Images and Checkboxes</summary>
+        public void CreateGUIObjects() {
+            int initialLeftMargin = 20;
+            int offsetLeftMargin = 0;
+            for (int i = 0; i < _numCardsToDisplay; ++i) {
+
+                // Image
+                Image img = new Image();
+                img.Height = 96;
+                img.Width = 72;
+                img.Stretch = Stretch.Fill;
+                _images.Add(img);
+
+                // Checkbox
+                CheckBox chk = new CheckBox();
+                chk.Margin = new Thickness(15);
+                chk.Height = 16.25;
+                chk.Width = 16.25;
+                _chks.Add(chk);
+
+                // StackPanel
+                int leftMargin = initialLeftMargin + offsetLeftMargin;
+                StackPanel panel = new StackPanel();
+                panel.Width = 100;
+                panel.HorizontalAlignment = HorizontalAlignment.Left;
+                panel.Margin = new Thickness(leftMargin, 12.5, 0, 60);
+                panel.Children.Add(img);
+                panel.Children.Add(chk);
+
+                // Event Listeners
+                img.MouseDown += new MouseButtonEventHandler(img_MouseDown);
+                chk.Click += new RoutedEventHandler(chk_Click);
+
+                // Add to the Grid
+                grid.Children.Add(panel);
+                offsetLeftMargin += 100;
+            }
+        }
+
+        /// <summary>Displays a new Puzzle.</summary>
+        /// <remarks>Shuffles First!</remarks>
+        public void RestartPuzzle() {
+
+            // Handle Data Structures
+            _deck.Shuffle();
+            _puzzle.Clear();
+            _numSelected = 0;
+
+            // Pick New Cards and Update GUIs
+            int cardNum = 0;
+            foreach (PlayingCard card in _deck) {
+                if (cardNum == _numCardsToDisplay) { break; }
+                _puzzle.Add(card);
+                _chks[cardNum].IsChecked = false;
+                _images[cardNum].Source = new BitmapImage(CardToUri(card));
+                _selected[cardNum] = false;
+                ++cardNum;
+            }
+
+            // TODO: REMOVE Debug
+            foreach (PlayingCard c in _puzzle.Cards) {
+                Console.WriteLine(c);
+            }
+        }
+
+        /// <summary>Evalutes the User's Selections</summary>
+        private void EvaluateSelection() {
+            Console.WriteLine("Inside Evaluate selection");
 
             PokerHand bestHand = _puzzle.GetBestHandPossibleAlex();
             Console.WriteLine();
@@ -78,59 +154,6 @@ namespace _2_PokerPuzzle
             }
 
         }
-
-
-        /// <summary>Programmatically Creates StackPanels with Images and Checkboxes</summary>
-        public void CreateGUIObjects() {
-            int initialLeftMargin = 20;
-            int offsetLeftMargin = 0;
-            for (int i = 0; i < _numCardsToDisplay; ++i) {
-
-                Image img = new Image();
-                img.Height = 96;
-                img.Width = 72;
-                img.Stretch = Stretch.Fill;
-                _images.Add(img);
-
-                CheckBox chk = new CheckBox();
-                chk.Margin = new Thickness(15);
-                chk.Height = 16.25;
-                chk.Width = 16.25;
-                _chks.Add(chk);
-
-                int leftMargin = initialLeftMargin + offsetLeftMargin;
-                StackPanel panel = new StackPanel();
-                panel.Width = 100;
-                panel.HorizontalAlignment = HorizontalAlignment.Left;
-                panel.Margin = new Thickness(leftMargin, 12.5, 0, 60);
-                panel.Children.Add(img);
-                panel.Children.Add(chk);
-                
-                grid.Children.Add(panel);
-                offsetLeftMargin += 100;
-            }
-        }
-
-
-        /// <summary>Displays a new Puzzle.</summary>
-        /// <remarks>Shuffles First!</remarks>
-        public void RestartPuzzle() {
-            _deck.Shuffle();
-            _puzzle.Clear();
-            int cardNum = 0;
-            foreach (PlayingCard card in _deck) {
-                if (cardNum == _numCardsToDisplay) { break; }
-                _puzzle.Add(card);
-                _images[cardNum].Source = new BitmapImage(CardToUri(card));
-                ++cardNum;
-            }
-
-            // TODO: REMOVE Debug
-            foreach (PlayingCard c in _puzzle.Cards) {
-                Console.WriteLine(c);
-            }
-        }
-
 
         /// <summary>
         /// Convert a Card to the URI for its Image</summary>
@@ -151,10 +174,33 @@ namespace _2_PokerPuzzle
             return new Uri(uri);
         }
 
-
-        /// <summary>Click the "New Game" Button</summary>
+        /// <summary>"New Game" Button is Clicked</summary>
         private void btnNewGame_Click(object sender, RoutedEventArgs e) {
             RestartPuzzle();
+        }
+
+        /// <summary>Checkbox is Clicked</summary>
+        private void chk_Click(object sender, RoutedEventArgs e) {
+            int index = _chks.IndexOf((CheckBox)sender);
+            selectedIndex(index);
+        }
+
+        /// <summary>An Image is Clicked, Toggles the Appropriate Checkbox</summary>
+        private void img_MouseDown(object sender, MouseButtonEventArgs e) {
+            int index = _images.IndexOf((Image)sender);
+            _chks[index].IsChecked = !_chks[index].IsChecked;
+            selectedIndex(index);
+        }
+
+        /// <summary>Handle when an item is selected</summary>
+        /// <param name="index">The index of the item in stored lists</param>
+        private void selectedIndex(int index) {
+            CheckBox chk = _chks[index];
+            _selected[index] = !_selected[index];
+            _numSelected += (chk.IsChecked == true) ? 1 : -1;
+            if (_numSelected >= 5) { // Should never be greater
+                EvaluateSelection();
+            }
         }
 
     }
