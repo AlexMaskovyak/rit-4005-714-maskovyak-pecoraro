@@ -77,11 +77,7 @@ namespace _2_PokerPuzzle
         public virtual PokerHand GetBestHandPossible()
         {
 
-            Console.WriteLine(_playingCards.Count);
-            foreach (PlayingCard c in _playingCards)
-            {
-                Console.WriteLine(c);
-            }
+
 
             List<PlayingCard> cardList = _playingCards.ToList();
             Permutations<PlayingCard> hands = new Permutations<PlayingCard>(cardList, 5);
@@ -179,63 +175,17 @@ namespace _2_PokerPuzzle
         }
          
         
-
         /// <summary>
         /// Used for testing and project requirements.
         /// </summary>
-        public static void Main()
+        [System.STAThreadAttribute()]
+        public static void Main(string[] args)
         {
-            int cardMax = 7;
-
-            Puzzle puzzle = new Puzzle(cardMax);
-            Deck deck = new Deck();
-            deck.Shuffle();
-
-            // add cards to the puzzle
-            int cardNum = 0;
-            foreach (PlayingCard card in deck)
-            {
-                if (cardNum == cardMax) { break; }
-                puzzle.Add(card);
-                ++cardNum;
-            }
-
-            PokerHand bestHand = puzzle.GetBestHandPossible();
-            if (bestHand == null)
-            {
-                Console.WriteLine("null");
-            }
+            App app = new App();
+            if (args != null && args.Length >= 2)
+                app.Run(new Window1(int.Parse(args[0])));
             else
-            {
-                foreach (PlayingCard c in bestHand)
-                {
-                    Console.WriteLine(c);
-                }
-            }
-
-            Console.WriteLine("on to alex's");
-
-            PokerHand alexBestHand = puzzle.GetBestHandPossibleAlex();
-            if (alexBestHand == null)
-            {
-                Console.WriteLine("null");
-            }
-            else
-            {
-                Console.WriteLine(alexBestHand.ScoreHand());
-                foreach (PlayingCard c in bestHand)
-                {
-                    Console.WriteLine(c);
-                }
-            }
-
-            // select the first five cards
-            /*cardNum = 1;
-            foreach (PlayingCard card in deck) {
-                if (cardNum == PokerHand.StandardHandSize) { break; }
-                puzzle.Select(card);
-                ++cardNum;
-            }*/
+                app.Run(new Window1());
         }
     }
 }
