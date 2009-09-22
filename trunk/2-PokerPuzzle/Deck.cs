@@ -73,17 +73,28 @@ namespace _2_PokerPuzzle
            return this.GetEnumerator();
         }
 
-        /// <summary>
-        /// Debug Deck.
-        /// </summary>
+        /// <summary>Debug Deck.</summary>
+        /// <remarks>Creates a deck, outputs the deck, shuffles the deck, and then outputs the first 5 shuffled cards.</remarks>
         public static void Main() {
-            Deck deck = new Deck();
-            deck.Shuffle();
 
-            // debug to standard out
-            foreach(PlayingCard card in deck ) {
-                Console.WriteLine(card);
+            // debug information
+            Console.WriteLine( "==Creating Deck...==" );
+            Deck deck = new Deck();
+
+            Console.WriteLine("==Outputting Deck...==");
+            foreach (PlayingCard card in deck) {
+                Console.WriteLine( String.Format("  {0}", card ) );
             }
+            
+            Console.WriteLine("==Shuffling Deck...==");
+            IEnumerable<PlayingCard> deckEnumerable = deck.Shuffle();
+
+            Console.WriteLine("==Outputting 5 cards from shuffled deck...==");
+
+            foreach (PlayingCard card in deckEnumerable.Take<PlayingCard>(PokerHand.StandardHandSize)) {
+                Console.WriteLine( String.Format( " {0}", card ) );
+            }
+            
         }
     }
 }
