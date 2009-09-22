@@ -46,7 +46,7 @@ namespace _2_PokerPuzzle
         /// Shuffles the PlayingCard s in this deck using Knuth's algorithm.
         /// </summary>
         /// <returns>Enerator for the newly shuffled deck.</returns>
-        public IEnumerator<PlayingCard> Shuffle() {
+        public IEnumerable<PlayingCard> Shuffle() {
             Random rng = new Random(); // default constructor automatically uses system time as a seed
             for(int i = Deck.DECK_SIZE - 1; i > 0; --i ) {
                 int randomNumber = rng.Next(i);
@@ -54,7 +54,7 @@ namespace _2_PokerPuzzle
                 _playingCards[i] = _playingCards[randomNumber];
                 _playingCards[randomNumber] = temp;
             }
-            return this.GetEnumerator();
+            return (IEnumerable<PlayingCard>)_playingCards;
         }
 
         /// <summary>
