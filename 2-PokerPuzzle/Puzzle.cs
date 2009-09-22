@@ -61,11 +61,11 @@ namespace _2_PokerPuzzle
         }
 
 
+        /*
         /// <summary>
         /// Finds the best scoring PokerHand possible from the cards in this Puzzle.
         /// </summary>
         /// <returns>PokerHand containing the best score possible from the cards in this Puzzle.</returns>
-        /*
         public virtual PokerHand GetBestHandPossible()
         {
             List<PlayingCard> cardList = _playingCards.ToList();
