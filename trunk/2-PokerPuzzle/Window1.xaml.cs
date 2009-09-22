@@ -21,7 +21,9 @@ namespace _2_PokerPuzzle
     {
         public Window1()
         {
+            
             InitializeComponent(); // do not delete this "makes the picture"
+            
         }
 
     }

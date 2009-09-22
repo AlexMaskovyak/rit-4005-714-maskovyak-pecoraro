@@ -164,6 +164,13 @@ namespace _2_PokerPuzzle
 
             // compare the result and return the best one
             return GetBestHand(resultNoAdd, resultAdd);
+        }
+        
+        public PokerHand GetBestHand( PokerHand hand1, PokerHand hand2 ) {
+            return (hand1.CompareTo(hand2) == 1) ? hand1 : hand2; 
+        }
+         
+         * 
         */
 
         /// <summary>
