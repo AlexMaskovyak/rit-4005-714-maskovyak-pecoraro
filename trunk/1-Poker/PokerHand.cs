@@ -11,44 +11,57 @@ namespace _1_Poker
     /// </summary>
     public class PokerHand : IEnumerable, IComparable<PokerHand>
     {
-        /// <summary>
-        /// Standard Poker Hand size.
-        /// </summary>
+        /// <summary>Standard Poker Hand size.</summary>
         public const int StandardHandSize = 5;
 
+        /// <summary>Set storing all playing cards held in this hand.</summary>
         protected HashSet<PlayingCard> _playingCards;
+        /// <summary>
+        /// Holds the maximum hand size.
+        /// </summary>
         protected int _maxHandSize;
 
 
-        /// <summary>
-        /// Largest quantity of cards allowed in a 5-card hand of poker.
-        /// </summary>
+        /// <summary>Largest quantity of cards allowed in a 5-card hand of poker.</summary>
         public int MaxHandSize {
             get { return _maxHandSize; }
         }
 
-        /// <summary>
-        /// Constructor for creating a hand of playing cards or a 5-card variant of poker.
-        /// </summary>
-        /// <param name="playingCards">The playing cards to add to this hand.</param>
-        public PokerHand( params PlayingCard[] playingCards ) : 
-            this( playingCards.Length, playingCards )
+        /// <summary>Default constructor.</summary>
+        /// <remarks>Creates a PokerHand with a maximum hand size set to the PokerHand's standard size.</remarks>
+        public PokerHand() 
+            : this( PokerHand.StandardHandSize ) 
         { }
 
-        /// <summary>
-        /// Default constructor for creating an empty PokerHand with the specified size restriction.
-        /// </summary>
+        /// <summary>Constructor for creating an empty PokerHand with the specified size restriction.</summary>
         /// <param name="maxHandSize">Maximum number of cards for this PokerHand to contain.</param>
-        public PokerHand(int maxHandSize) :
-            this( maxHandSize, null )
+        public PokerHand( int maxHandSize )
+            : this(maxHandSize, null)
         { }
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
+        /// <summary>Constructor for creating a hand of playing cards.</summary>
+        /// <param name="playingCards">List of playing cards to be added to this hand.</param>
+        public PokerHand( List<PlayingCard> playingCards )
+            : this(playingCards.ToArray())
+        { }
+
+        /// <summary>Constructor for creating a hand of playing cards.</summary>
+        /// <param name="playingCards">Enumerable object of PlayingCards.</param>
+        public PokerHand( IEnumerable<PlayingCard> playingCards ) 
+            : this(playingCards.ToArray())
+        { }
+
+        /// <summary>Constructor for creating a hand of playing cards.</summary>
+        /// <param name="playingCards">The playing cards to add to this hand.</param>
+        public PokerHand( params PlayingCard[] playingCards ) 
+            : this( playingCards.Length, playingCards )
+        { }
+
+        /// <summary>Constructor for creating a hand of playing cards.</summary>
+        /// <remarks>This is the work-horse constructor which fulfills creation functionality for all other constructors.</remarks>
         /// <param name="maxHandSize">Maximum number of cards for this PokerHand to contain.</param>
         /// <param name="playingCards">Playing cards to add to this PokerHand.</param>
-        public PokerHand(int maxHandSize, params PlayingCard[] playingCards ) {
+        public PokerHand( int maxHandSize, params PlayingCard[] playingCards ) {
 
             _maxHandSize = maxHandSize;
             
@@ -57,8 +70,42 @@ namespace _1_Poker
 
             // add the cards
             if (!Add(playingCards)) {
-                throw new System.ArgumentException("An error occurred when attempting to construct this PokerHand with the PlayingCards passed in.");
+                throw new System.ArgumentException(
+                    "An error occurred when attempting to construct this PokerHand with the PlayingCards passed in.");
             }
+        }
+
+        /// <summary>Attempts to add the PlayingCards to this PokerHand.</summary>
+        /// <remarks>
+        /// The card(s) will only be added if the hand is not currently full or if it is a card that this hand does not already contain.
+        /// Adds as many cards as possible.
+        /// </remarks>
+        /// <param name="cards">PlayingCards to be added.</param>
+        /// <returns>True if all of the cards were added, false otherwise.</returns>
+        public bool Add(params PlayingCard[] cards)
+        {
+            bool result = true;
+            // there is nothing to add so of course "adding" nothing succeeds
+            if (cards == null) {
+                return true;
+            }
+
+            // add each card to the set
+            foreach (PlayingCard card in cards) {
+                if (MaxHandSize == HandSize()) {
+                    throw new System.ArgumentException(
+                        String.Format("A PokerHand may only contain {0} cards.", MaxHandSize));
+                }
+
+                if (_playingCards.Contains(card)) {
+                    throw new System.ArgumentException(
+                        "A PokerHand may only contain one of any particular card type from a standard 52-card deck!  Cheater!");
+                }
+
+                result = result && _playingCards.Add(card);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -84,45 +131,8 @@ namespace _1_Poker
             return _playingCards.Count;
         }
 
-        /// <summary>
-        /// Attempts to add the PlayingCards to this PokerHand.
-        /// </summary>
-        /// <remarks>
-        /// The card(s) will only be added if the hand is not currently full or if it is a card that this hand does not already contain.
-        /// Adds as many cards as possible.
-        /// </remarks>
-        /// <param name="cards">PlayingCards to be added.</param>
-        /// <returns>True if all of the cards were added, false otherwise.</returns>
-        public bool Add(params PlayingCard[] cards) {
-            bool result = true;
-            // there is nothing to add so of course "adding" nothing succeeds
-            if (cards == null) {
-                return true;
-            }
-
-            // add each card to the set
-            foreach (PlayingCard card in cards) {
-                if (MaxHandSize == HandSize()) {
-                    throw new System.ArgumentException(
-                        String.Format("A PokerHand may only contain {0} cards.", MaxHandSize));
-                }
-
-                if (_playingCards.Contains(card)) {
-                    throw new System.ArgumentException("A PokerHand may only contain one of any particular card type from a standard 52-card deck!  Cheater!");
-                }
-
-                result = result && _playingCards.Add(card);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Obtains an array containing the cards from this hand.
-        /// </summary>
-        /// <returns>
-        /// An array of PlayingCards contained within this PokerHand.
-        /// </returns>
+        /// <summary>Obtains an array containing the cards from this hand.</summary>
+        /// <returns>An array of PlayingCards contained within this PokerHand.</returns>
         public PlayingCard[] Cards {
             get {
                 PlayingCard[] playingCardsArray = new PlayingCard[ HandSize() ];
@@ -140,17 +150,13 @@ namespace _1_Poker
             return new Score(this);
         }
 
-        /// <summary>
-        /// Obtain an Enumerator for the PlayingCards in this PokerHand.
-        /// </summary>
+        /// <summary>Obtain an Enumerator for the PlayingCards in this PokerHand.</summary>
         /// <returns>Enumerator for the PlayingCards in this PokerHand.</returns>
         public virtual IEnumerator GetEnumerator() {
             return _playingCards.GetEnumerator();
         }
 
-        /// <summary>
-        /// Compares this PokerHand's score to another PokerHand's score.
-        /// </summary>
+        /// <summary>Compares this PokerHand's score to another PokerHand's score.</summary>
         /// <param name="pokerHand">PokerHand whose hand score is to be compared to this one.</param>
         /// <returns>
         ///     -1 if this PokerHand's score is lower than the one specified, 1 if this PokerHand is
