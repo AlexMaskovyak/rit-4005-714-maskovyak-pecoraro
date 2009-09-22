@@ -24,17 +24,24 @@ namespace _2_PokerPuzzle
     public partial class Window1 : Window
     {
 
+// Constants
+
         /// <summary>URI Prefix for Card Images</summary>
         public const string PlayingCardURIPrefix = "http://www.cs.rit.edu/~jjp1820/csharp/classic-cards/";
 
         /// <summary>URI Suffix for Card Images</summary>
         public const string PlayingCardURISuffix = ".png";
 
+        /// <summary>Text Displayed when Computing</summary>
+        public const string ComputingText = "Computing...";
+
         /// <summary>Text Displayed on Win</summary>
         public const string WinningText = "Great!";
 
         /// <summary>Text Displayed on Lose</summary>
         public const string LosingText = "Oops, there is a better hand.";
+
+// Members
 
         /// <summary>Number of Cards to Display</summary>
         private int _numCardsToDisplay;
@@ -60,6 +67,8 @@ namespace _2_PokerPuzzle
         /// <summary>Game elements are disabled.</summary>
         private bool _disabled;
 
+// Constructors
+
         /// <summary>Creates a GUI with the default, 7 Cards.</summary>
         public Window1(): this(7)
         {}
@@ -72,9 +81,9 @@ namespace _2_PokerPuzzle
             _numCardsToDisplay = cardsToDisplay;
             _selected = new BitArray(_numCardsToDisplay);
             _puzzle = new Puzzle(_numCardsToDisplay);
-            _deck = new Deck();
             _images = new List<Image>();
             _chks = new List<CheckBox>();
+            _deck = new Deck();
             _disabled = false;
 
             // Create/Draw Components
@@ -87,10 +96,14 @@ namespace _2_PokerPuzzle
 
         }
 
+// Methods
+
         /// <summary>Programmatically Creates StackPanels with Images and Checkboxes</summary>
         public void CreateGUIObjects() {
             int initialLeftMargin = 20;
             int offsetLeftMargin = 0;
+            MouseButtonEventHandler mousedown = new MouseButtonEventHandler(img_MouseDown);
+            RoutedEventHandler click = new RoutedEventHandler(chk_Click);
             for (int i = 0; i < _numCardsToDisplay; ++i) {
 
                 // Image
@@ -117,8 +130,8 @@ namespace _2_PokerPuzzle
                 panel.Children.Add(chk);
 
                 // Event Listeners
-                img.MouseDown += new MouseButtonEventHandler(img_MouseDown);
-                chk.Click += new RoutedEventHandler(chk_Click);
+                img.MouseDown += mousedown;
+                chk.Click += click;
 
                 // Add to the Grid
                 grid.Children.Add(panel);
@@ -156,7 +169,7 @@ namespace _2_PokerPuzzle
         /// <summary>Evalutes the User's Selections and Displays Results</summary>
         private void EvaluateSelection() {
             DisableGameGUI();
-            lblResult.Content = "Computing...";
+            lblResult.Content = ComputingText;
             Result result = _puzzle.Selected(_selected);
             HighlightCards(result.BestHandIndexes);
             lblResult.Content = (result.Best ? WinningText : LosingText);
@@ -171,13 +184,13 @@ namespace _2_PokerPuzzle
             color.ScA = 1;
             color.ScB = 0;
             color.ScG = 0;
-            color.ScR = 200;
+            color.ScR = 2;
 
             // Drop Shadow
             DropShadowEffect drop = new DropShadowEffect();
             drop.Color = color;
-            drop.Opacity = 0.5;
-            drop.ShadowDepth = 10;
+            drop.Opacity = 0.6;
+            drop.ShadowDepth = 11;
             drop.Direction = 320;
 
             // Add Effect to the Best Hand
@@ -225,6 +238,8 @@ namespace _2_PokerPuzzle
                 c.IsEnabled = true;
             }
         }
+
+// Event Handlers
 
         /// <summary>"New Game" Button is Clicked</summary>
         private void btnNewGame_Click(object sender, RoutedEventArgs e) {
