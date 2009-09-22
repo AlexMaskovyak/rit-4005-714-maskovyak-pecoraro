@@ -107,22 +107,22 @@ namespace _2_PokerPuzzle
             return max;
         }
 
-        /*/// <summary>
+        /// <summary>
         /// Finds the best scoring PokerHand possible from the cards in this Puzzle.
         /// </summary>
         /// <returns>PokerHand containing the best score possible from the cards in this Puzzle.</returns>
-        public virtual PokerHand GetBestHandPossible() {
-            return GetBestHandPossible( 
+        public virtual PokerHand GetBestHandPossibleAlex() {
+            return GetBestHandPossibleAlex( 
                         base.Cards, 
                         0, 
                         PokerHand.StandardHandSize, 
-                        null, 
+                        new PokerHand(base.Cards[0], base.Cards[1], base.Cards[2], base.Cards[3], base.Cards[4]), 
                         new PlayingCard[0] );
         }
 
 
 
-        private PokerHand GetBestHandPossible(
+        private PokerHand GetBestHandPossibleAlex(
                 PlayingCard[] cards, 
                 int arrayPosition, 
                 int cardsToSelect,
@@ -142,7 +142,7 @@ namespace _2_PokerPuzzle
 
             // choose to not select this card and move on
             PokerHand resultNoAdd = 
-                GetBestHandPossible(
+                GetBestHandPossibleAlex(
                     cards,
                     arrayPosition + 1,
                     cardsToSelect,
@@ -150,28 +150,35 @@ namespace _2_PokerPuzzle
                     handInProgress);
 
             // choose to select this card and move on
-            PlayingCard[] bestHand2 = new PlayingCard[handInProgress.Length + 1];
-            handInProgress.CopyTo(bestHand2, 0);
-            bestHand2[handInProgress.Length] = cards[arrayPosition];
+            PlayingCard[] bestHandOfCards2 = new PlayingCard[handInProgress.Length + 1];
+            handInProgress.CopyTo(bestHandOfCards2, 0);
+            bestHandOfCards2[handInProgress.Length] = cards[arrayPosition];
 
             PokerHand resultAdd =
-                GetBestHandPossible(
+                GetBestHandPossibleAlex(
                     cards,
                     arrayPosition + 1,
                     cardsToSelect,
                     bestHand,
-                    handInProgress);
+                    bestHandOfCards2);
 
             // compare the result and return the best one
-            return GetBestHand(resultNoAdd, resultAdd);
+            if (resultNoAdd.HandSize() == PokerHand.StandardHandSize &&
+                resultAdd.HandSize() == PokerHand.StandardHandSize)
+            {
+                return GetBestHand(resultNoAdd, resultAdd);
+            }
+
+            return bestHand;
         }
         
         public PokerHand GetBestHand( PokerHand hand1, PokerHand hand2 ) {
-            return (hand1.CompareTo(hand2) == 1) ? hand1 : hand2; 
+            if (hand1 == null) { return hand2; }
+            if (hand2 == null) { return hand1; }
+            return (hand2.CompareTo(hand1) == 1) ? hand2 : hand1; 
         }
          
-         * 
-        */
+        
 
         /// <summary>
         /// Used for testing and project requirements.
@@ -206,7 +213,21 @@ namespace _2_PokerPuzzle
                 }
             }
 
+            Console.WriteLine("on to alex's");
 
+            PokerHand alexBestHand = puzzle.GetBestHandPossibleAlex();
+            if (alexBestHand == null)
+            {
+                Console.WriteLine("null");
+            }
+            else
+            {
+                Console.WriteLine(alexBestHand.ScoreHand());
+                foreach (PlayingCard c in bestHand)
+                {
+                    Console.WriteLine(c);
+                }
+            }
 
             // select the first five cards
             /*cardNum = 1;
