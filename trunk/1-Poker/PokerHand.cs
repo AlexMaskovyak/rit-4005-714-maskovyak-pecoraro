@@ -165,5 +165,15 @@ namespace _1_Poker
         public virtual int CompareTo(PokerHand pokerHand) {
             return ScoreHand().CompareTo(pokerHand.ScoreHand());
         }
+
+        /// <summary>Return a String representation of the Puzzle</summary>
+        /// <returns>String of the format "{card_1} {card_2} ... {card_n}"</returns>
+        public override string ToString() {
+            StringBuilder builder = new StringBuilder();
+            foreach (PlayingCard card in this) {
+                builder.Append("[" + card + "] ");
+            }
+            return builder.ToString();
+        }
     }
 }
