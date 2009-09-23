@@ -271,5 +271,15 @@ namespace _2_PokerPuzzle
             }
         }
 
+        /// <summary>Main Program</summary>
+        [System.STAThreadAttribute()]
+        public static void Main(string[] args)
+        {
+            App app = new App();
+            if (args != null && args.Length >= 2)
+                app.Run(new Window1(int.Parse(args[0])));
+            else
+                app.Run(new Window1());
+        }
     }
 }

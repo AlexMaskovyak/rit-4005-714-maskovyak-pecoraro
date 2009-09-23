@@ -180,7 +180,6 @@ namespace _2_PokerPuzzle
 
             return bestHand;
         }
-
         
         /// <summary>Compares Two Hands and Returns the better</summary>
         /// <param name="hand1">First Hand</param>
@@ -192,18 +191,28 @@ namespace _2_PokerPuzzle
             return (hand2.CompareTo(hand1) == 1) ? hand2 : hand1; 
         }
 
-
-
-
         /// <summary>Main Program</summary>
-        [System.STAThreadAttribute()]
         public static void Main(string[] args)
         {
-            App app = new App();
-            if (args != null && args.Length >= 2)
-                app.Run(new Window1(int.Parse(args[0])));
-            else
-                app.Run(new Window1());
+            // create puzzle
+            Puzzle puzzle = new Puzzle(7);
+
+            // create Deck
+            Deck deck = new Deck();
+            IEnumerable<PlayingCard> shuffledDeck = deck.Shuffle();
+
+            // add cards to puzzle
+            foreach (PlayingCard card in shuffledDeck.Take<PlayingCard>(7)) {
+                puzzle.Add(card);
+            }
+
+            // lets show the puzzle, compuute the best hand, and show that
+            Console.WriteLine("Puzzle cards: " + puzzle.ToString());
+
+            PokerHand bestHand = puzzle.GetBestHandPossible();
+
+            Console.WriteLine("Best hand: " + bestHand.ToString() );
+            Console.WriteLine("Score: " + bestHand.ScoreHand() );
         }
     }
 }
