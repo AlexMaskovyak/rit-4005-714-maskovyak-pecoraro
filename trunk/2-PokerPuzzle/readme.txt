@@ -9,14 +9,15 @@ Author: Alex Maskovyak & Joe Pecoraro
 Date: 2009/09/22
 ==============================================================================
 
-=========================
- == Table of Contents ==
-=========================
+===================================
+ == Table of Contents           ==
+===================================
 1. Structure of the Archive
 2. Resources Used for Development
 3. Setup
-3. Executing the Program
-=========================
+4. Executing the Program
+5. Explanation of Assignment 1 Use
+===================================
 
 
 ===================================
@@ -27,6 +28,9 @@ readme.txt 			// this file, which describes the contents of
 					// this deliverable and details written 
 					// information required by the homework 
 					// assignment
+					
+== C# Referenced Assembly ==
+1-Poker.exe			// contains updated version of the first assignment
 
 == C# source files (/2-PokerPuzzle/*) ==
 Deck.cs				// contains Main method for execution
@@ -79,12 +83,27 @@ name and selecting "Build".
 =================================
  == 4.  Executing the Program ==
 =================================
-Building a project will create an executable in the "bin/Debug/" directory 
-called "2-PokerPuzzle.exe".
+All Main methods can be run from inside Visual Studio.  
+These include:
+ Deck.Main		// demonstrates deck construction and shuffling
+ Puzzle.Main	// demonstrates puzzle creation and the determination of the
+					best had possible
+ Windows1.xaml.cs	// runs the gui program
+ 
+Be sure that the project is set to "Console Application" in 
+Properties > "Application" > "Output Type" when running the Deck and Puzzle
+methods.  Be sure that it is set to "Windows Application when running 
+Windwos1.xaml.cs.
 
-This can be run at the command-line and input can be piped into standard-in 
-for program operation.
-
-For example, with the Windows PowerShell in the Project's directory:
-
-  pwr-shell> cat SampleHands.txt | ./bin/Debug/1-Poker.exe
+  
+===========================================
+ == 5.  Explanation of Assignment 1 Use ==
+===========================================
+Assignment 1 could have been reused for this one, however, we determined that
+Puzzle had significant similarities to PokerHand.  In the course of developing
+Puzzle it became apparent that we were re-implementing very many of the same
+operations.  Puzzle seemingly is a special case of PokerHand, one which can
+have 5 or greater cards.  PokerHand stores cards, adds cards, displays them, 
+score's itself, and compares its score against others.  This is all functionality
+that Puzzle required.  So we rebuilt PokerHand to have additional constructors,
+and to allow for certain methods to be overriden by Puzzle.
