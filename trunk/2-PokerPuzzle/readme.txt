@@ -29,7 +29,7 @@ readme.txt 			// this file, which describes the contents of
 					// information required by the homework 
 					// assignment
 					
-== C# Referenced Assembly ==
+== C# Referenced Assembly (/2-PokerPuzzle/*) ==
 1-Poker.exe			// contains updated version of the first assignment
 
 == C# source files (/2-PokerPuzzle/*) ==
@@ -43,6 +43,7 @@ Windows1.xsml.cs	// C# gui construction
 == Visual Studio project (/2-PokerPuzzle/*) ==
 2-PokerPuzzle.csproj
 
+== Documentation (/2-PokerPuzzle-DocProject/*) ==
 
 
 =========================================
