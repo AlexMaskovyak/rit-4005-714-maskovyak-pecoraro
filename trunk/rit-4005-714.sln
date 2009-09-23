@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2-PokerPuzzle", "2-PokerPuz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1-Poker-DocProject", "1-Poker-DocProject\1-Poker-DocProject.csproj", "{B16DB233-2DDE-407E-90C6-7709B8D483DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2-PokerPuzzle-DocProject", "2-PokerPuzzle-DocProject\2-PokerPuzzle-DocProject.csproj", "{F776A681-8B15-4540-833F-AA77BCC4E637}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -41,6 +43,10 @@ Global
 		{B16DB233-2DDE-407E-90C6-7709B8D483DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B16DB233-2DDE-407E-90C6-7709B8D483DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B16DB233-2DDE-407E-90C6-7709B8D483DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F776A681-8B15-4540-833F-AA77BCC4E637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F776A681-8B15-4540-833F-AA77BCC4E637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F776A681-8B15-4540-833F-AA77BCC4E637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F776A681-8B15-4540-833F-AA77BCC4E637}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

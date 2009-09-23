@@ -21,7 +21,7 @@ namespace _2_PokerPuzzle
         {
             // We Compare Standard Poker Hands, so there must be at least the
             // Standard Poker Hand Size for the game to work
-            if (maxSize < 5) {
+            if (maxSize < PokerHand.StandardHandSize) {
                 throw new System.ArgumentException("Too Few Cards for the Puzzle");
             }
         }
