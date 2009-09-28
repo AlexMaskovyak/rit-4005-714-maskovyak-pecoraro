@@ -3,14 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using IEnumerable = System.Collections.Generic.IEnumerable<int>;
+
+
 namespace _3_SudokuModel
 {
+    /// <summary> what a Sudoku Model must do. </summary>
     public interface IBoard
     {
+        /// <summary> set a digit into a cell. </summary>
         void Set(int cell, int digit);
-        IEnumerable<int> Row(int cell);
-        IEnumerable<int> Column(int cell);
-        IEnumerable<int> Shape(int cell);
-        IEnumerable<int> Context(int cell);
+        /// <summary> indices in same row. </summary>
+        IEnumerable Row(int cell);
+        /// <summary> indices in same column. </summary>
+        IEnumerable Column(int cell);
+        /// <summary> indices in same shape. </summary>
+        IEnumerable Shape(int cell);
+        /// <summary> indices in context of cell. </summary>
+        IEnumerable Context(int cell);
     }
 }
