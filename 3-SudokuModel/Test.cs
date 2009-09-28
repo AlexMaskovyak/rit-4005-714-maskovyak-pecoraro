@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace _3_SudokuModel
-{
+namespace _3_SudokuModel {
     /// <summary>Driver class for testing the capabilities of Board.</summary>
-    public class Test
-    {
-        public static void Main(string[] args)
-        {
+    public class Test {
+        public static void Main(string[] args) {
             // determine whether to display output
             bool debug = (args.Length > 0);
 
@@ -29,13 +26,13 @@ namespace _3_SudokuModel
             int cellIndex = 1;
             int valueIndex = 2;
             while ((input = Console.ReadLine().Trim()) != null && !input.Equals("")) {
-                
+
                 setCommandArgs = input.Split(' ', ':');
                 if (!setCommandArgs[commandIndex].Equals("set") || setCommandArgs.Length != 3) {
                     break;
                 }
                 board.Set(
-                    int.Parse(setCommandArgs[cellIndex]), 
+                    int.Parse(setCommandArgs[cellIndex]),
                     int.Parse(setCommandArgs[valueIndex]));
             }
 

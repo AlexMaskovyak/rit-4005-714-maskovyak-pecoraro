@@ -10,7 +10,7 @@ namespace _3_SudokuModel
     {
         private Boolean _validValue;
 
-
+        /*
         public override int Value {
             get { return base.Value; }
             set { _value = value; base.observers(this); }
@@ -29,5 +29,6 @@ namespace _3_SudokuModel
             shape.Observe(cell);
             cell.Value = 2;
         }
+         * */
     }
 }
