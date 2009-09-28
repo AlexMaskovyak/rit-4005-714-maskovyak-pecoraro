@@ -12,7 +12,7 @@
     <AssemblyName>3-SudokuModel</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <StartupObject>_3_SudokuModel.Test</StartupObject>
+    <StartupObject>_3_SudokuModel.CellRegion</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Board.cs" />
-    <Compile Include="AssignableCell.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="CellRegion.cs" />
     <Compile Include="DelegateDemo.cs" />
