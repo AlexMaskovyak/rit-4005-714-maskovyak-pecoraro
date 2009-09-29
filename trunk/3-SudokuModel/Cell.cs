@@ -11,40 +11,33 @@ namespace _3_SudokuModel {
         /// <summary>Constant Representation of All Values</summary>
         static int[] AllValues = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
+        /// <summary>Sudoku Board this Cell belongs too</summary>
+        protected Board _board;
+
         /// <summary>Unique id</summary>
         protected int _id;
 
         /// <summary>List of possible values for this cell.</summary>
         protected int[] _values;
 
-        /// <summary>Observable event when a Value is Changed.</summary>
-        public event ValueAssigned _observers;
+// Constructors
 
-        /// <summary>Board to which this Cell belongs.</summary>
-        public IBoard _board;
+        /// <summary>Default constructor.</summary>
+        public Cell(Board board, int id): this(board, id, null) { }
 
-        /// <summary>Observable delegate for value-assigning events.</summary>
-        /// <param name="cell"></param>
-        public delegate void ValueAssigned(Cell cell);
-
-        /// <summary>Accessor/mutator for a Cell's delegate.</summary>
-        public virtual ValueAssigned Observers {
-            get { return _observers; }
-            set { _observers = value; }
+        /// <summary>Constructor.</summary>
+        /// <param name="values">Values for this cell to hold.</param>
+        public Cell(Board board, int id, params int[] values) {
+            _id = id;
+            _board = board;
+            _values = (values == null ? AllValues : values);
         }
 
-        /// <summary>Accessor/mutator for a Cell's Value.</summary>
-        /// <remarks>Setting with a new value will notify the Listeners only if the value is a singleton.</remarks>
-        public virtual int[] Values {
-            get { return _values; }
-            set {
-                if (_values.Length != value.Length) {
-                    _values = value;
-                    if (_values.Length == 1) {
-                        Notify();
-                    }
-                }
-            }
+// Properties
+
+        /// <summary>Accessor for the Cell's Singular Value.  null if more then one possible value.</summary>
+        public virtual int Digit {
+            get { return (_values.Length == 1 ? _values[0] : 0); }
         }
 
         /// <summary>Accessor for a Cell's id.</summary>
@@ -52,25 +45,32 @@ namespace _3_SudokuModel {
             get { return _id; }
         }
 
-        public virtual IBoard Board {
-            get { return _board;  }
-            set { _board = value;  }
+        /// <summary>Accessor for the board a Cell is in</summary>
+        public virtual Board Board {
+            get { return _board; }
         }
 
-        /// <summary>Default constructor.</summary>
-        public Cell(int id, IBoard board): this(id, board, null) { }
-
-        /// <summary>Constructor.</summary>
-        /// <param name="values">Values for this cell to hold.</param>
-        public Cell(int id, IBoard board, params int[] values) {
-            _id = id;
-            Board = board;
-            _values = (values == null ? AllValues : values);
+        /// <summary>Accessor for the ContextCells for this Cell</summary>
+        public virtual IEnumerable<Cell> ContextCells {
+            get { return _board.ContextCells(_id); }
         }
 
-        /// <summary>Notifies Observers of an event.</summary>
-        public virtual void Notify() {
-            _observers(this);
+        /// <summary>Accessor/mutator for a Cell's Potential Values.</summary>
+        public virtual int[] Values {
+            get { return _values; }
+            set { _values = value; }
+        }
+
+// Public Methods
+
+        /// <summary>Set the Value of this Cell</summary>
+        /// <remarks>Update all other Cells in this Cell's context.</remarks>
+        /// <param name="value">The New Value to set</param>
+        public virtual void Set(int value) {
+            _values = new int[] { value };
+            foreach (Cell c in ContextCells) {
+                c.RespondToSet(value);
+            }
         }
 
         /// <summary>Respond to a Cell in this Cell's Context that was set to the given value</summary>
