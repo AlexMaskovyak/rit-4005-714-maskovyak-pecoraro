@@ -20,6 +20,9 @@ namespace _3_SudokuModel {
         /// <summary>Observable event when a Value is Changed.</summary>
         public event ValueAssigned _observers;
 
+        /// <summary>Board to which this Cell belongs.</summary>
+        public IBoard _board;
+
         /// <summary>Observable delegate for value-assigning events.</summary>
         /// <param name="cell"></param>
         public delegate void ValueAssigned(Cell cell);
@@ -49,13 +52,19 @@ namespace _3_SudokuModel {
             get { return _id; }
         }
 
+        public virtual IBoard Board {
+            get { return _board;  }
+            set { _board = value;  }
+        }
+
         /// <summary>Default constructor.</summary>
-        public Cell(int id): this(id, null) { }
+        public Cell(int id, IBoard board): this(id, board, null) { }
 
         /// <summary>Constructor.</summary>
         /// <param name="values">Values for this cell to hold.</param>
-        public Cell(int id, params int[] values) {
+        public Cell(int id, IBoard board, params int[] values) {
             _id = id;
+            Board = board;
             _values = (values == null ? AllValues : values);
         }
 
