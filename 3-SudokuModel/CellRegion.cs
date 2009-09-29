@@ -35,7 +35,7 @@ namespace _3_SudokuModel {
 
         /// <summary>Registers this CellRegion's updating method to be fired when the specified cell indicates it has an assignment event.</summary>
         /// <param name="cell">Cell to observe.</param>
-        public void Observe(Cell cell) {
+        public virtual void Observe(Cell cell) {
             cell.Observers += new Cell.ValueAssigned(this.Update);
         }
 
