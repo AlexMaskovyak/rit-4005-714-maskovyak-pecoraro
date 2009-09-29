@@ -9,14 +9,14 @@ namespace _3_SudokuModel {
     public class Cell {
 
         protected int[] _values;
-        protected ValueAssigned _observers;
+        protected event ValueAssigned _observers;
 
         /// <summary>Observable delegate for value-assigning events.</summary>
         /// <param name="cell"></param>
         public delegate void ValueAssigned(Cell cell);
 
         /// <summary>Accessor/mutator for a Cell's delegate.</summary>
-        public ValueAssigned Observers {
+        public virtual ValueAssigned Observers {
             get { return _observers; }
             set { _observers = value; }
         }
