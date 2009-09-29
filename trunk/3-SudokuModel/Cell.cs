@@ -29,8 +29,8 @@ namespace _3_SudokuModel {
         /// <param name="values">Values for this cell to hold.</param>
         public Cell(Board board, int id, params int[] values) {
             _id = id;
-            _board = board;
-            _values = (values == null ? AllValues : values);
+            Board = board;
+            Values = (values == null ? AllValues : values);
         }
 
 // Properties
