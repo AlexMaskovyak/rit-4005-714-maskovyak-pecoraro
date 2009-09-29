@@ -80,7 +80,7 @@ namespace _3_SudokuModel {
 
 
         public static void Main() {
-            Cell cell = new Cell(1);
+            Cell cell = new Cell(1, new Board(new string[] { "111", "222", "333"} ) );
             CellRegion column = new CellRegion("column");
             CellRegion row = new CellRegion("row");
             CellRegion shape = new CellRegion("shape");
