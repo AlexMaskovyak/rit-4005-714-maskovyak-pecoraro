@@ -15,17 +15,17 @@ namespace _3_SudokuModel {
         }
 
         /// <summary>Default constructor.</summary>
-        public ReadonlyCell() : base() { }
+        public ReadonlyCell(int id) : base(id) { }
 
         /// <summary>Constructor.</summary>
         /// <remarks>Constructs a new read-only cell from the cell specified.</remarks>
         /// <param name="cell">Cell from which to create a new read-only version.</param>
-        public ReadonlyCell(Cell cell) : this(cell.Values) { }
+        public ReadonlyCell(Cell cell) : this(cell.Id, cell.Values) { }
 
         /// <summary>Constructor.</summary>
         /// <remarks>Creates a non-assignable Cell with the specified permanent value.</remarks>
         /// <param name="values">Value for this Cell to hold.</param>
-        public ReadonlyCell(int[] values) : base(values) { }
+        public ReadonlyCell(int id, int[] values) : base(id, values) { }
     }
 
 }
