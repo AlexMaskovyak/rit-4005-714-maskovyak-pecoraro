@@ -19,6 +19,8 @@ namespace _3_SudokuModel {
         /// <summary>Total list of cells</summary>
         protected Cell[] _cells;
 
+        protected int _dimension;
+
         /// <summary>Default constructor.</summary>
         /// <param name="rows">Board format as strings.</param>
         public Board(string[] rows) {
@@ -50,6 +52,7 @@ namespace _3_SudokuModel {
         protected virtual void ParseRows(string[] rows) {
             int dimension = rows.Length;
 
+            _dimension = dimension;
             _rowRegions = new CellRegion[dimension];
             _columnRegions = new CellRegion[dimension];
             _shapeRegions = new CellRegion[dimension];
@@ -61,10 +64,10 @@ namespace _3_SudokuModel {
                 _shapeRegions[i] = new CellRegion("shapes");
             }
 
-            for (int col = 0; col < dimension; ++col) {
-                for (int row = 0; row < dimension; ++row) {
-                    int id = col + (col * row);
-                    int shapeId = int.Parse(rows[row][col].ToString()) - 1; // minus 1 to go from 1 indexed to 0 indexed
+            for (int row = 0; row < dimension; ++row) {
+                for (int col = 0; col < dimension; ++col) {
+                    int id = col + (row*dimension);
+                    int shapeId = int.Parse(rows[row][col].ToString()) - 1;
                     Cell c = new Cell(id);
                     _cells[id] = c;
                     _rowRegions[row].Add(c);
@@ -72,6 +75,7 @@ namespace _3_SudokuModel {
                     _shapeRegions[shapeId].Add(c);
                 }
             }
+
         }
 
 // TODO: improve docs here
@@ -88,29 +92,25 @@ namespace _3_SudokuModel {
 
 
         public virtual IEnumerable<int> Row(int cell) {
-            CellRegion region = getRowRegionForCell(_cells[cell]);
+            CellRegion region = getRowRegionForCell(cell);
             return EnumerateIds(region.Cells);
         }
 
         public virtual IEnumerable<int> Column(int cell) {
-            CellRegion region = getColumnRegionForCell(_cells[cell]);
+            CellRegion region = getColumnRegionForCell(cell);
             return EnumerateIds(region.Cells);
         }
 
         public virtual IEnumerable<int> Shape(int cell) {
-            CellRegion region = getShapeRegionForCell(_cells[cell]);
+            CellRegion region = getShapeRegionForCell(cell);
             return EnumerateIds(region.Cells);
         }
 
         public virtual IEnumerable<int> Context(int cell) {
-            Cell theCell = _cells[cell];
-            CellRegion rowRegion = getRowRegionForCell(theCell);
-            CellRegion columnRegion = getColumnRegionForCell(theCell);
-            CellRegion shapeRegion = getShapeRegionForCell(theCell);
             HashSet<Cell> cells = new HashSet<Cell>();
-            cells.UnionWith(rowRegion.Cells);
-            cells.UnionWith(columnRegion.Cells);
-            cells.UnionWith(shapeRegion.Cells);
+            cells.UnionWith(getRowRegionForCell(cell).Cells);
+            cells.UnionWith(getColumnRegionForCell(cell).Cells);
+            cells.UnionWith(getShapeRegionForCell(cell).Cells);           
             return EnumerateIds(cells);
         }
 
@@ -126,6 +126,20 @@ namespace _3_SudokuModel {
 // TODO: Document from here down
 // TODO: Change accessors to protected virtual?
 
+        private CellRegion getRowRegionForCell(int cell) {
+            // return getRegionContainingCell(_cells[cell], _rowRegions); // Generic
+            return _rowRegions[rowIndexForCell(cell)];
+        }
+
+        private CellRegion getColumnRegionForCell(int cell) {
+            // return getRegionContainingCell(_cells[cell], _columnRegions); // Generic
+            return _columnRegions[columnIndexForCell(cell)];
+        }
+
+        private CellRegion getShapeRegionForCell(int cell) {
+            return getRegionContainingCell(_cells[cell], _shapeRegions);
+        }
+
         private CellRegion getRegionContainingCell(Cell cell, CellRegion[] regions) {
             foreach (CellRegion region in regions) {
                 if (region.Contains(cell)) {
@@ -135,16 +149,15 @@ namespace _3_SudokuModel {
             return null;
         }
 
-        private CellRegion getRowRegionForCell(Cell cell) {
-            return getRegionContainingCell(cell, _rowRegions);
+// Unused, dependent on a Square Board
+// Would be an excellent optimization.
+
+        private int rowIndexForCell(int cell) {
+            return (cell / _dimension);
         }
 
-        private CellRegion getColumnRegionForCell(Cell cell) {
-            return getRegionContainingCell(cell, _columnRegions);
-        }
-
-        private CellRegion getShapeRegionForCell(Cell cell) {
-            return getRegionContainingCell(cell, _shapeRegions);
+        private int columnIndexForCell(int cell) {
+            return (cell % _dimension);
         }
 
     }

@@ -23,6 +23,44 @@ namespace _3_SudokuTester {
             Board board = new Board(rows.ToArray<string>());
             Console.WriteLine("Board Done");
 
+
+            // TEST WHAT WE KNOW
+            if (debug) {
+
+                // Enumerate the Rows
+                for (int i = 0; i < 9; ++i) {
+                    Console.Write("Row {0}: ", i);
+                    int rowStarter = i * 9;
+                    foreach (int id in board.Row(rowStarter)) {
+                        Console.Write(id + " ");
+                    }
+                    Console.WriteLine();
+                }
+
+                // Enumerate the Cols
+                for (int i = 0; i < 9; ++i) {
+                    Console.Write("Col {0}: ", i);
+                    foreach (int id in board.Column(i)) {
+                        Console.Write(id + " ");
+                    }
+                    Console.WriteLine();
+                }
+
+                // Enumerate the Shapes
+                int[] shapeStarters = {0,4,7,18,23,42,54,58,69};
+                for (int i = 0; i < 9; ++i) {
+                    int start = shapeStarters[i];
+                    Console.Write("Shape {0}: ", i);
+                    foreach (int id in board.Shape(start)) {
+                        Console.Write(id + " ");
+                    }
+                    Console.WriteLine();
+                }
+
+            }
+
+
+
             // await set # # commands
             string[] setCommandArgs;
             //int commandIndex = 0;
