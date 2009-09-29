@@ -64,9 +64,17 @@ namespace _3_SudokuModel {
         /// <param name="cell">Initial cell whose value has changed.</param>
         public void Update(Cell cell) {
 
-            int[] i = cell.Values;
+            // TODO: Test
 
-            Console.WriteLine(String.Format("{0} has found cell has: {1}", _name, cell.Values[0]));
+            int[] values = cell.Values;
+            if (values.Length == 1) {
+                Console.WriteLine(String.Format("{0} has found cell has: {1}", _name, cell.Values[0]));
+                foreach (Cell c in _cells) {
+                    if (c.Id != cell.Id) {
+                        c.RespondToSet(values[0]);
+                    }
+                }
+            }
         }
 
 
