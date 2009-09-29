@@ -45,7 +45,7 @@ namespace _3_SudokuModel {
             Console.WriteLine("setting {0} with {1}", cell, digit);
             try {
                 _cells[cell].Values = new int[] { digit };
-            } catch (Exception e) { }
+            } catch (Exception) { }
         }
 
 

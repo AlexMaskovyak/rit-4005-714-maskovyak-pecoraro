@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using IEnumerable = System.Collections.Generic.IEnumerable<int>;
-
+﻿using IEnumerable = System.Collections.Generic.IEnumerable<int>;
 
 namespace _3_SudokuModel
 {
