@@ -29,8 +29,8 @@ namespace _3_SudokuTester {
 
                 // Enumerate the Rows
                 for (int i = 0; i < 9; ++i) {
-                    Console.Write("Row {0}: ", i);
                     int rowStarter = i * 9;
+                    Console.Write("Row {0}: ({1}) ", i, rowStarter);
                     foreach (int id in board.Row(rowStarter)) {
                         Console.Write(id + " ");
                     }
@@ -39,7 +39,7 @@ namespace _3_SudokuTester {
 
                 // Enumerate the Cols
                 for (int i = 0; i < 9; ++i) {
-                    Console.Write("Col {0}: ", i);
+                    Console.Write("Col {0}: ({1}) ", i, i);
                     foreach (int id in board.Column(i)) {
                         Console.Write(id + " ");
                     }
@@ -50,7 +50,7 @@ namespace _3_SudokuTester {
                 int[] shapeStarters = {0,4,7,18,23,42,54,58,69};
                 for (int i = 0; i < 9; ++i) {
                     int start = shapeStarters[i];
-                    Console.Write("Shape {0}: ", i);
+                    Console.Write("Shape {0}: ({1}) ", i, start);
                     foreach (int id in board.Shape(start)) {
                         Console.Write(id + " ");
                     }
