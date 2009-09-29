@@ -5,17 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8E51356B-8821-4B52-BD62-02556DADDE22}</ProjectGuid>
+    <ProjectGuid>{E848B8EE-B4F6-46D1-83AA-06E3041396F6}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>_3_SudokuModelAdvanced</RootNamespace>
-    <AssemblyName>3-SudokuModelAdvanced</AssemblyName>
+    <RootNamespace>_3_SudokuTesterAdvanced</RootNamespace>
+    <AssemblyName>3-SudokuTesterAdvanced</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,16 +45,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoardAdvanced.cs" />
-    <Compile Include="ClearableCell.cs" />
-    <Compile Include="IBoardAdvanced.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestAdvanced.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\3-SudokuModel\3-SudokuModel.csproj">
       <Project>{92F5B71B-DD33-4EE3-B214-DF95A3EFB5DA}</Project>
       <Name>3-SudokuModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SudokuModelAdvanced\3-SudokuModelAdvanced.csproj">
+      <Project>{8E51356B-8821-4B52-BD62-02556DADDE22}</Project>
+      <Name>3-SudokuModelAdvanced</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SudokuTester\3-SudokuTester.csproj">
+      <Project>{6066E417-B298-4585-8F15-26D6376FFFE5}</Project>
+      <Name>3-SudokuTester</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

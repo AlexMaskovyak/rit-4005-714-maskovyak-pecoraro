@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3-SudokuModelAdvanced", "Su
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3-SudokuTester", "SudokuTester\3-SudokuTester.csproj", "{6066E417-B298-4585-8F15-26D6376FFFE5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3-SudokuTesterAdvanced", "3-SudokuTesterAdvanced\3-SudokuTesterAdvanced.csproj", "{E848B8EE-B4F6-46D1-83AA-06E3041396F6}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -65,6 +67,10 @@ Global
 		{6066E417-B298-4585-8F15-26D6376FFFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6066E417-B298-4585-8F15-26D6376FFFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6066E417-B298-4585-8F15-26D6376FFFE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E848B8EE-B4F6-46D1-83AA-06E3041396F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E848B8EE-B4F6-46D1-83AA-06E3041396F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E848B8EE-B4F6-46D1-83AA-06E3041396F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E848B8EE-B4F6-46D1-83AA-06E3041396F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
