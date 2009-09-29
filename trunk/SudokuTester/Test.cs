@@ -8,108 +8,102 @@ using _3_SudokuModel;
 namespace _3_SudokuTester {
     /// <summary>Driver class for testing the capabilities of Board.</summary>
     public class Test {
-        public static void Main(string[] args) {
-            // determine whether to display output
-            bool debug = (args.Length > 0);
 
-            // create the string array of rows to build our Board
-            List<string> rows = new List<string>();
+        /// <summary>Sudoku Board</summary>
+        protected IBoard _board;
+
+        /// <summary>General Driver for Testing a Board</summary>
+        public Test() {
+
+            // Create a Board
+            List<string> boardLines = ReadBoardLines();
+            _board = CreateBoard(boardLines.ToArray<string>());
+
+            // Read Command Lines
+            List<string> commandLines = ReadCommandLines();
+            RunCommands(commandLines);
+
+        }
+
+        /// <summary>Reads lines from Standard Input until the first blank line</summary>
+        /// <returns>The list of lines</returns>
+        protected virtual List<string> ReadBoardLines() {
+            return ReadUntilBlankOrEnd();
+        }
+
+        /// <summary>Reads lines from Standard Input until the first blank line</summary>
+        /// <returns>The list of lines</returns>
+        protected virtual List<string> ReadCommandLines() {
+            return ReadUntilBlankOrEnd();
+        }
+
+        /// <summary>Reads lines from Standard Input until the first blank line</summary>
+        /// <returns>The list of lines</returns>
+        protected virtual List<string> ReadUntilBlankOrEnd() {
             string input;
-            while ((input = Console.ReadLine().Trim()) != null && !input.Equals("")) {
-                rows.Add(input.Trim());
-            }
-
-            // build the board
-            Board board = new Board(rows.ToArray<string>());
-            Console.WriteLine("Board Done");
-
-
-            // TEST WHAT WE KNOW
-            if (debug) {
-
-                // Enumerate the Rows
-                for (int i = 0; i < 9; ++i) {
-                    int rowStarter = i * 9;
-                    Console.Write("Row {0}: ({1}) ", i, rowStarter);
-                    foreach (int id in board.Row(rowStarter)) {
-                        Console.Write(id + " ");
-                    }
-                    Console.WriteLine();
-                }
-
-                // Enumerate the Cols
-                for (int i = 0; i < 9; ++i) {
-                    Console.Write("Col {0}: ({1}) ", i, i);
-                    foreach (int id in board.Column(i)) {
-                        Console.Write(id + " ");
-                    }
-                    Console.WriteLine();
-                }
-
-                // Enumerate the Shapes
-                int[] shapeStarters = {0,4,7,18,23,42,54,58,69,4};
-                for (int i = 0; i < 9; ++i) {
-                    int start = shapeStarters[i];
-                    Console.Write("Shape {0}: ({1}) ", i, start);
-                    foreach (int id in board.Shape(start)) {
-                        Console.Write(id + " ");
-                    }
-                    Console.WriteLine();
-                }
-
-                // Enumerate the Context of some nodes
-                for (int i = 0; i < 10; ++i) {
-                    int start = shapeStarters[i];
-                    Console.Write("Context {0}: ({1}) ", i, start);
-                    foreach (int id in board.Context(start)) {
-                        Console.Write(id + " ");
-                    }
-                    Console.WriteLine();
-                }
-
-            }
-
-
-
-            // await set # # commands
-            string[] setCommandArgs;
-            //int commandIndex = 0;
-            int cellIndex = 0;
-            int valueIndex = 1;
-            while ( (input = Console.ReadLine()) != null ) {
-
-                // End on a Blank Line
+            List<string> rows = new List<string>();
+            while ((input = Console.ReadLine()) != null) {
                 input = input.Trim();
                 if (input.Equals("")) {
                     break;
+                } else {
+                    rows.Add(input);
                 }
+            }
+            return rows;
+        }
+
+        /// <summary>Creates a Board object with the given lines describing a board.</summary>
+        /// <param name="boardLines">Strings describing a board</param>
+        /// <returns>A new Board</returns>
+        protected virtual IBoard CreateBoard(string[] boardLines) {
+            return new Board(boardLines);
+        }
+
+        /// <summary>Process commands.</summary>
+        /// <param name="commands">The command lines.</param>
+        protected virtual void RunCommands(List<string> commands) {
+            foreach (string line in commands) {
+
+                // DEBUG: Command
+                Console.WriteLine(line);
 
                 // Split the Arguments to determine the action
-                setCommandArgs = input.Split(' ', ':');
-                int cell = int.Parse(setCommandArgs[cellIndex]);
-                int value = int.Parse(setCommandArgs[valueIndex]);
-                Console.WriteLine("set in {0}:{1}", cell, value);
+                string[] command = line.Split(' ');
+                
+                // Known to be a set command
+                ProcessSetCommand(command);
+            }
+        }
 
-                // Set
-                board.Set(cell, value);
+        /// <summary>Process a Set Command</summary>
+        /// <param name="cell"></param>
+        /// <param name="value"></param>
+        protected void ProcessSetCommand(string[] command) {
+            int cell = int.Parse(command[0]);
+            int value = int.Parse(command[1]);
+            Console.WriteLine("set in {0}:{1}", cell, value);
+            _board.Set(cell, value);
 
-                // Print board after every set
-                if (debug) {
-                    board.Debug();
-                    Console.WriteLine();
-                }
+            // DEBUG
+            ((Board)_board).Debug();
+            Console.WriteLine();
 
-                // Print how the context changed
-                foreach (int id in board.Context(cell)) {
-                    Cell c = board.getCell(id);
-                    Console.Write("possible in {0}: ", c.Id);
-                    foreach (int v in c.Values) { Console.Write(v + " "); }
-                    Console.WriteLine();
-                }
-
+            // DEBUG: Print how the context changed
+            foreach (int id in _board.Context(cell)) {
+                Cell c = ((Board)_board).getCell(id);
+                Console.Write("possible in {0}: ", c.Id);
+                foreach (int v in c.Values) { Console.Write(v + " "); }
+                Console.WriteLine();
             }
 
-            Console.WriteLine("-- Done --");
+        }
+
+        /// <summary>Main Method</summary>
+        /// <param name="args">Command Line Arguments</param>
+        public static void Main(string[] args) {
+            bool debug = (args.Length > 0);
+            Test tester = new Test();
         }
     }
 }
