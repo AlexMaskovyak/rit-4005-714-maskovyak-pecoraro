@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1-Poker-DocProject", "1-Pok
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2-PokerPuzzle-DocProject", "2-PokerPuzzle-DocProject\2-PokerPuzzle-DocProject.csproj", "{F776A681-8B15-4540-833F-AA77BCC4E637}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3-SudokuModel", "3-SudokuModel\3-SudokuModel.csproj", "{92F5B71B-DD33-4EE3-B214-DF95A3EFB5DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3-SudokuModelAdvanced", "SudokuModelAdvanced\3-SudokuModelAdvanced.csproj", "{8E51356B-8821-4B52-BD62-02556DADDE22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3-SudokuTester", "SudokuTester\3-SudokuTester.csproj", "{6066E417-B298-4585-8F15-26D6376FFFE5}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -47,6 +53,18 @@ Global
 		{F776A681-8B15-4540-833F-AA77BCC4E637}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F776A681-8B15-4540-833F-AA77BCC4E637}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F776A681-8B15-4540-833F-AA77BCC4E637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92F5B71B-DD33-4EE3-B214-DF95A3EFB5DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92F5B71B-DD33-4EE3-B214-DF95A3EFB5DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92F5B71B-DD33-4EE3-B214-DF95A3EFB5DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92F5B71B-DD33-4EE3-B214-DF95A3EFB5DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E51356B-8821-4B52-BD62-02556DADDE22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E51356B-8821-4B52-BD62-02556DADDE22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E51356B-8821-4B52-BD62-02556DADDE22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E51356B-8821-4B52-BD62-02556DADDE22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6066E417-B298-4585-8F15-26D6376FFFE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6066E417-B298-4585-8F15-26D6376FFFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6066E417-B298-4585-8F15-26D6376FFFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6066E417-B298-4585-8F15-26D6376FFFE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

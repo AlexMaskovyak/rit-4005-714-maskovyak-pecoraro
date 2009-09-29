@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace _3_SudokuModel {
+using _3_SudokuModel;
+
+namespace _3_SudokuTester {
     /// <summary>Driver class for testing the capabilities of Board.</summary>
     public class Test {
         public static void Main(string[] args) {
