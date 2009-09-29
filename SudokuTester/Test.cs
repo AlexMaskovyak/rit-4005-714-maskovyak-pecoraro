@@ -21,24 +21,33 @@ namespace _3_SudokuTester {
 
             // build the board
             Board board = new Board(rows.ToArray<string>());
+            Console.WriteLine("Board Done");
 
             // await set # # commands
             string[] setCommandArgs;
-            int commandIndex = 0;
-            int cellIndex = 1;
-            int valueIndex = 2;
-            while ((input = Console.ReadLine().Trim()) != null && !input.Equals("")) {
+            //int commandIndex = 0;
+            int cellIndex = 0;
+            int valueIndex = 1;
+            while ( (input = Console.ReadLine()) != null ) {
 
-                setCommandArgs = input.Split(' ', ':');
-                if (!setCommandArgs[commandIndex].Equals("set") || setCommandArgs.Length != 3) {
+                // End on a Blank Line
+                input = input.Trim();
+                if (input.Equals("")) {
                     break;
                 }
-                board.Set(
-                    int.Parse(setCommandArgs[cellIndex]),
-                    int.Parse(setCommandArgs[valueIndex]));
+
+                // Split the Arguments to determine the action
+                setCommandArgs = input.Split(' ', ':');
+                int cell = int.Parse(setCommandArgs[cellIndex]);
+                int value = int.Parse(setCommandArgs[valueIndex]);
+                Console.WriteLine("set in {0}:{1}", cell, value);
+
+                // Set
+                board.Set(cell, value);
+
             }
 
-            Console.WriteLine("tada");
+            Console.WriteLine("-- Done --");
         }
     }
 }

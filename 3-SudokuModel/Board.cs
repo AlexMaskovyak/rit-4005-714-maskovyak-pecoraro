@@ -8,20 +8,46 @@ namespace _3_SudokuModel {
     public class Board : IBoard {
 
         /// <summary>Monitors for rows</summary>
-        CellRegion[] _rowRegions;
+        protected CellRegion[] _rowRegions;
 
         /// <summary>Monitors for columns</summary>
-        CellRegion[] _columnRegions;
+        protected CellRegion[] _columnRegions;
 
         /// <summary>Monitors for shapes</summary>
-        CellRegion[] _shapeRegions;
+        protected CellRegion[] _shapeRegions;
 
         /// <summary>Total list of cells</summary>
-        Cell[] _cells;
+        protected Cell[] _cells;
 
         /// <summary>Default constructor.</summary>
-        /// <param name="rows">String array in the format: 111222333 that specifies a row of a Sudoku board.  Numbers specify a "shape".</param>
+        /// <param name="rows">Board format as strings.</param>
         public Board(string[] rows) {
+            ParseRows(rows);
+        }
+
+        /// <summary>Parse the Rows provided to the Constructor</summary>
+        /// <remarks>
+        ///     This is outside of the constructor, and declared virtual because it is expected
+        ///     that you can subclass Board and override this in order to Parse difference input
+        ///     without needing to change anything else.
+        ///     
+        ///     This version takes a String array in the format shown below.  Each line specifies
+        ///     a "row" of a Sudoku board.  Numbers specify a "shape":
+        ///     
+        ///     <code>
+        ///     111122233
+        ///     111122233
+        ///     441225333
+        ///     444425533
+        ///     444555666
+        ///     775586666
+        ///     777588966
+        ///     778889999
+        ///     778889999
+        ///     </code>
+        /// </remarks>
+        /// <param name="rows">Board format as strings</param>
+        protected virtual void ParseRows(string[] rows) {
             int dimension = rows.Length;
 
             _rowRegions = new CellRegion[dimension];
@@ -38,16 +64,18 @@ namespace _3_SudokuModel {
             for (int col = 0; col < dimension; ++col) {
                 for (int row = 0; row < dimension; ++row) {
                     int id = col + (col * row);
+                    int shapeId = int.Parse(rows[row][col].ToString()) - 1; // minus 1 to go from 1 indexed to 0 indexed
                     Cell c = new Cell(id);
                     _cells[id] = c;
                     _rowRegions[row].Add(c);
                     _columnRegions[col].Add(c);
-                    _shapeRegions[int.Parse(rows[col])].Add(c);
+                    _shapeRegions[shapeId].Add(c);
                 }
             }
         }
 
-        // TODO: improve docs here
+// TODO: improve docs here
+
         /// <summary>Sets the cells value at the specified index.</summary>
         /// <param name="cellIndex"></param>
         /// <param name="value"></param>
