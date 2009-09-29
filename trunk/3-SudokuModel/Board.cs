@@ -76,7 +76,7 @@ namespace _3_SudokuModel
                 {
                     int id = col + (row * dimension);
                     int shapeId = int.Parse(rows[row][col].ToString()) - 1;
-                    Cell c = new Cell(id);
+                    Cell c = new Cell(id, this);
                     _cells[id] = c;
                     _rowRegions[row].Add(c);
                     _columnRegions[col].Add(c);
