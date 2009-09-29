@@ -32,10 +32,12 @@ namespace _3_SudokuModel {
         }
 
         /// <summary>Add a cell to this region.</summary>
+        /// <remarks>We maintain a set of cells. So adding the same cell twice will do nothing.</remarks>
         /// <param name="cell">Cell to add to this region and begin observing.</param>
         public virtual void Add(Cell cell) {
-            _cells.Add(cell);
-            Observe(cell);
+            if (_cells.Add(cell)) {
+                Observe(cell);
+            }
         }
 
         /// <summary>Remove the cell from this region.</summary>
