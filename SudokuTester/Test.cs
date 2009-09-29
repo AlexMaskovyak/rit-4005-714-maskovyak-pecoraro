@@ -57,6 +57,16 @@ namespace _3_SudokuTester {
                     Console.WriteLine();
                 }
 
+                // Enumerator the Context of some nodes
+                for (int i = 0; i < 9; ++i) {
+                    int start = shapeStarters[i];
+                    Console.Write("Context {0}: ({1}) ", i, start);
+                    foreach (int id in board.Context(start)) {
+                        Console.Write(id + " ");
+                    }
+                    Console.WriteLine();
+                }
+
             }
 
 
