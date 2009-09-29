@@ -8,6 +8,9 @@ namespace _3_SudokuModel {
     /// <summary>Atomic elements of a Sudoku table.</summary>
     public class Cell {
 
+        /// <summary>Constant Representation of All Values</summary>
+        static int[] AllValues = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
         /// <summary>Unique id</summary>
         protected int _id;
 
@@ -28,13 +31,15 @@ namespace _3_SudokuModel {
         }
 
         /// <summary>Accessor/mutator for a Cell's Value.</summary>
-        /// <remarks>Setting with a new value will notify the Listeners.</remarks>
+        /// <remarks>Setting with a new value will notify the Listeners only if the value is a singleton.</remarks>
         public virtual int[] Values {
             get { return _values; }
             set {
-                if (_values == null || _values.Length != value.Length) {
+                if (_values.Length != value.Length) {
                     _values = value;
-                    Notify();
+                    if (_values.Length == 1) {
+                        Notify();
+                    }
                 }
             }
         }
@@ -51,7 +56,7 @@ namespace _3_SudokuModel {
         /// <param name="values">Values for this cell to hold.</param>
         public Cell(int id, params int[] values) {
             _id = id;
-            _values = (values == null ? new int[] {1,2,3,4,5,6,7,8,9} : values);
+            _values = (values == null ? AllValues : values);
         }
 
         /// <summary>Notifies Observers of an event.</summary>
@@ -59,16 +64,11 @@ namespace _3_SudokuModel {
             _observers(this);
         }
 
-// TODO: Document
-
+        /// <summary>Respond to a Cell in this Cell's Context that was set to the given value</summary>
+        /// <param name="value">The value that was set on another cell.</param>
         public virtual void RespondToSet(int value) {
-            List<int> newValues = new List<int>();
-            foreach (int i in _values) {
-                if (i != value) {
-                    newValues.Add(i);
-                }
-            }
-
+            List<int> newValues = new List<int>(_values);
+            newValues.Remove(value);
             Values = newValues.ToArray<int>();
         }
     }
