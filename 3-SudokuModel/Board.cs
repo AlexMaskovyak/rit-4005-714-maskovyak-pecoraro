@@ -19,6 +19,7 @@ namespace _3_SudokuModel {
         /// <summary>Total list of cells</summary>
         protected Cell[] _cells;
 
+        /// <summary>The default board is assumed to be square. This is the dimension size.</summary>
         protected int _dimension;
 
         /// <summary>Default constructor.</summary>
@@ -90,56 +91,82 @@ namespace _3_SudokuModel {
             } catch (Exception) { }
         }
 
-
+        /// <summary>List of cell ids for cells in the same row as the provided cell.</summary>
+        /// <param name="cell">The cell id to find others in the same row.</param>
+        /// <returns>The cell ids of all other cells in the same row.</returns>
         public virtual IEnumerable<int> Row(int cell) {
             CellRegion region = getRowRegionForCell(cell);
-            return EnumerateIds(region.Cells);
+            return EnumerateIds(region.Cells, cell);
         }
 
+        /// <summary>List of cell ids for cells in the same column as the provided cell.</summary>
+        /// <param name="cell">The cell id to find others in the same column.</param>
+        /// <returns>The cell ids of all other cells in the same column.</returns>
         public virtual IEnumerable<int> Column(int cell) {
             CellRegion region = getColumnRegionForCell(cell);
-            return EnumerateIds(region.Cells);
+            return EnumerateIds(region.Cells, cell);
         }
 
+        /// <summary>List of cell ids for cells in the same shape as the provided cell.</summary>
+        /// <param name="cell">The cell id to find others in the same shape.</param>
+        /// <returns>The cell ids of all other cells in the same shape.</returns>
         public virtual IEnumerable<int> Shape(int cell) {
             CellRegion region = getShapeRegionForCell(cell);
-            return EnumerateIds(region.Cells);
+            return EnumerateIds(region.Cells, cell);
         }
 
+        /// <summary>List of cell ids for cells in the same context as the provided cell.</summary>
+        /// <remarks>The "context" is the union of the Row, Column, and Shape for the provided cell.</remarks>
+        /// <param name="cell">The cell id to find others in the same context.</param>
+        /// <returns>The cell ids of all other cells in the same context.</returns>
         public virtual IEnumerable<int> Context(int cell) {
             HashSet<Cell> cells = new HashSet<Cell>();
             cells.UnionWith(getRowRegionForCell(cell).Cells);
             cells.UnionWith(getColumnRegionForCell(cell).Cells);
             cells.UnionWith(getShapeRegionForCell(cell).Cells);           
-            return EnumerateIds(cells);
+            return EnumerateIds(cells, cell);
         }
 
         /// <summary>IEnumerable of ids for an IEnumerable of cells</summary>
         /// <param name="cells">The list of cells</param>
         /// <returns>A list of ids</returns>
-        private IEnumerable<int> EnumerateIds(IEnumerable<Cell> cells) {
+        private IEnumerable<int> EnumerateIds(IEnumerable<Cell> cells, int without) {
             foreach (Cell c in cells) {
-                yield return c.Id;
+                if (c.Id != without) {
+                    yield return c.Id;
+                }
             }
         }
 
-// TODO: Document from here down
-// TODO: Change accessors to protected virtual?
+// TODO: Change some accessors below to protected virtual?
 
+        /// <summary>Get the CellRegion of the Row for a cell id</summary>
+        /// <param name="cell">The cell id.</param>
+        /// <returns>The CellRegion representing that Row.</returns>
         private CellRegion getRowRegionForCell(int cell) {
             // return getRegionContainingCell(_cells[cell], _rowRegions); // Generic
             return _rowRegions[rowIndexForCell(cell)];
         }
 
+        /// <summary>Get the CellRegion of the Column for a cell id</summary>
+        /// <param name="cell">The cell id.</param>
+        /// <returns>The CellRegion representing that Column.</returns>
         private CellRegion getColumnRegionForCell(int cell) {
             // return getRegionContainingCell(_cells[cell], _columnRegions); // Generic
             return _columnRegions[columnIndexForCell(cell)];
         }
 
+        /// <summary>Get the CellRegion of the Shape for a cell id</summary>
+        /// <param name="cell">The cell id.</param>
+        /// <returns>The CellRegion representing that Shape.</returns>
         private CellRegion getShapeRegionForCell(int cell) {
             return getRegionContainingCell(_cells[cell], _shapeRegions);
         }
 
+        /// <summary>A generic way to find a cell in a list of CellRegions</summary>
+        /// <param name="cell">The cell to find.</param>
+        /// <param name="regions">The regions to search.</param>
+        /// <returns>The region containing the cell, null if none of the regions.</returns>
         private CellRegion getRegionContainingCell(Cell cell, CellRegion[] regions) {
             foreach (CellRegion region in regions) {
                 if (region.Contains(cell)) {
@@ -149,15 +176,33 @@ namespace _3_SudokuModel {
             return null;
         }
 
-// Unused, dependent on a Square Board
-// Would be an excellent optimization.
-
-        private int rowIndexForCell(int cell) {
+        /// <summary>Calculate the row for a cell</summary>
+        /// <param name="cell">The cell id.</param>
+        /// <returns>The row index (0-indexed)</returns>
+        protected virtual int rowIndexForCell(int cell) {
             return (cell / _dimension);
         }
 
-        private int columnIndexForCell(int cell) {
+        /// <summary>Calculate the column for a cell</summary>
+        /// <param name="cell">The cell id.</param>
+        /// <returns>The column index (0-indexed)</returns>
+        protected virtual int columnIndexForCell(int cell) {
             return (cell % _dimension);
+        }
+
+        /// <summary>Calculate the shape for a cell</summary>
+        /// <param name="cell">The cell id.</param>
+        /// <returns>The shape index (0-indexed), -1 if not found</returns>
+        protected virtual int shapeIndexForCell(int cell) {
+            Cell c = _cells[cell];
+            for (int i=0; i<_shapeRegions.Length; ++i) {
+                CellRegion region = _shapeRegions[i];
+                if (region.Contains(c)) {
+                    return i;
+                }
+            }
+
+            return -1;
         }
 
     }
