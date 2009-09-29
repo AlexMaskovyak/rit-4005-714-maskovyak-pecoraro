@@ -47,7 +47,7 @@ namespace _3_SudokuTester {
                 }
 
                 // Enumerate the Shapes
-                int[] shapeStarters = {0,4,7,18,23,42,54,58,69};
+                int[] shapeStarters = {0,4,7,18,23,42,54,58,69,4};
                 for (int i = 0; i < 9; ++i) {
                     int start = shapeStarters[i];
                     Console.Write("Shape {0}: ({1}) ", i, start);
@@ -57,8 +57,8 @@ namespace _3_SudokuTester {
                     Console.WriteLine();
                 }
 
-                // Enumerator the Context of some nodes
-                for (int i = 0; i < 9; ++i) {
+                // Enumerate the Context of some nodes
+                for (int i = 0; i < 10; ++i) {
                     int start = shapeStarters[i];
                     Console.Write("Context {0}: ({1}) ", i, start);
                     foreach (int id in board.Context(start)) {
@@ -92,6 +92,20 @@ namespace _3_SudokuTester {
 
                 // Set
                 board.Set(cell, value);
+
+                // Print board after every set
+                if (debug) {
+                    board.Debug();
+                    Console.WriteLine();
+                }
+
+                // Print how the context changed
+                foreach (int id in board.Context(cell)) {
+                    Cell c = board.getCell(id);
+                    Console.Write("possible in {0}: ", c.Id);
+                    foreach (int v in c.Values) { Console.Write(v + " "); }
+                    Console.WriteLine();
+                }
 
             }
 

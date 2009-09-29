@@ -76,7 +76,6 @@ namespace _3_SudokuModel {
                     _shapeRegions[shapeId].Add(c);
                 }
             }
-
         }
 
 // TODO: improve docs here
@@ -86,9 +85,11 @@ namespace _3_SudokuModel {
         /// <param name="value"></param>
         public virtual void Set(int cell, int digit) {
             Console.WriteLine("setting {0} with {1}", cell, digit);
-            try {
+            //try {
                 _cells[cell].Values = new int[] { digit };
-            } catch (Exception) { }
+            //} catch (Exception e) {
+                //Console.WriteLine(e.StackTrace);
+            //}
         }
 
         /// <summary>List of cell ids for cells in the same row as the provided cell.</summary>
@@ -203,6 +204,31 @@ namespace _3_SudokuModel {
             }
 
             return -1;
+        }
+
+
+// TODO: Remove this later
+// Debug output of the board
+
+        public void Debug() {
+            for (int i = 0; i < _cells.Length; ++i) {
+                if ((i % _dimension) == 0) {
+                    Console.WriteLine();
+                }
+                Cell c = _cells[i];
+                if (c.Values.Length == 1) {
+                    Console.Write(c.Values[0] + " ");
+                } else {
+                    Console.Write("- ");
+                }
+            }
+        }
+
+// TODO: Remove this public accessor, or genericize it to just return a BitArray of Values
+// this is currently only available for debugging.
+
+        public Cell getCell(int cell) {
+            return _cells[cell];
         }
 
     }
