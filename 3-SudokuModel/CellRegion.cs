@@ -8,15 +8,27 @@ namespace _3_SudokuModel {
     /// <remarks>CellRegion monitors a group of cells for value change events for a game of Sudoku.</remarks>
     public class CellRegion {
         private string _name;
-        private List<Cell> _cells;
+        private HashSet<Cell> _cells;
         private HashSet<int> _valuesHeld;
 
         /// <summary>Default constructor.</summary>
         /// <param name="name">Identity of this CellRegion...GET RID OF THIS AFTER TESTING.</param>
         public CellRegion(string name) {
             _name = name;
-            _cells = new List<Cell>();
+            _cells = new HashSet<Cell>();
             _valuesHeld = new HashSet<int>();
+        }
+
+        /// <summary>Accessor for the Cells this contains</summary>
+        public HashSet<Cell> Cells {
+            get { return _cells; }
+        }
+
+        /// <summary>Check if this Region contains a cell.</summary>
+        /// <param name="cell">The cell to check for.</param>
+        /// <returns>True if contained, False otherwise.</returns>
+        public virtual bool Contains(Cell cell) {
+            return _cells.Contains(cell);
         }
 
         /// <summary>Add a cell to this region.</summary>
@@ -58,7 +70,7 @@ namespace _3_SudokuModel {
 
 
         public static void Main() {
-            Cell cell = new Cell();
+            Cell cell = new Cell(1);
             CellRegion column = new CellRegion("column");
             CellRegion row = new CellRegion("row");
             CellRegion shape = new CellRegion("shape");

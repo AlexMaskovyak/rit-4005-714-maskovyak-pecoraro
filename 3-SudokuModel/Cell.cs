@@ -8,6 +8,7 @@ namespace _3_SudokuModel {
     /// <summary>Atomic elements of a Sudoku table.</summary>
     public class Cell {
 
+        protected int _id;
         protected int[] _values;
         protected event ValueAssigned _observers;
 
@@ -24,16 +25,23 @@ namespace _3_SudokuModel {
         /// <summary>Accessor/mutator for a Cell's Value.</summary>
         public virtual int[] Values {
             get { return _values; }
-            set { _values = value; Notify(); }
+            set { _values = value; Notify(); } //TODO: Don't notify if no change.
+        }
+
+        /// <summary>Accessor for a Cell's id.</summary>
+        public virtual int Id {
+            get { return _id; }
         }
 
         /// <summary>Default constructor.</summary>
-        public Cell() { }
+        public Cell(int id) {
+            _id = id;
+        }
 
         /// <summary>Constructor.</summary>
         /// <param name="values">Values for this cell to hold.</param>
-        public Cell(params int[] values)
-            : this() {
+        public Cell(int id, params int[] values) {
+            _id = id;
             Values = values;
         }
 
