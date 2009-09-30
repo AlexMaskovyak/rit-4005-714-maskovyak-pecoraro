@@ -31,13 +31,13 @@ namespace _3_SudokuModel {
         /// <summary>Parse the Rows provided to the Constructor</summary>
         /// <remarks>
         ///     This is outside of the constructor, and declared virtual because it is expected
-        ///     that you can subclass Board and override this in order to Parse difference input
-        ///     without needing to change anything else.
+        ///     that you can subclass Board and override this in order to Parse different input
+        ///     without needing to change anything else or put it in a Constructor.
         ///     
         ///     This version takes a String array in the format shown below.  Each line specifies
         ///     a "row" of a Sudoku board.  Numbers specify a "shape":
         ///     
-        ///     <code>
+        ///     <example>
         ///     111122233
         ///     111122233
         ///     441225333
@@ -47,7 +47,7 @@ namespace _3_SudokuModel {
         ///     777588966
         ///     778889999
         ///     778889999
-        ///     </code>
+        ///     </example>
         /// </remarks>
         /// <param name="rows">Board format as strings</param>
         protected virtual void ParseRows(string[] rows) {
