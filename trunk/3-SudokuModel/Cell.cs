@@ -5,7 +5,7 @@ using System.Text;
 
 namespace _3_SudokuModel {
 
-    /// <summary>Atomic elements of a Sudoku table.</summary>
+    /// <summary>Individual elements of a Sudoku table.</summary>
     public class Cell {
 
         /// <summary>Constant containing all the values allowed for a Cell</summary>

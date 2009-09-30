@@ -21,6 +21,7 @@ namespace _3_SudokuModelAdvanced {
         }
 
         /// <summary>Clear this Cell's value</summary>
+        /// <remarks>The Value of the Cell is automatically inferred from the set of possible values from its Context.</remarks>
         public virtual void Clear() {
 
             // Do nothing if not set

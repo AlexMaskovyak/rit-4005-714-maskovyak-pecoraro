@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 
 namespace _3_SudokuModel {
+
     /// <summary>A collection of Cells.</summary>
-    /// <remarks>CellRegion monitors a group of cells for value change events for a game of Sudoku.</remarks>
+    /// <remarks>CellRegion is typically a Row, Column, or Shape in a Sudoku Board.</remarks>
     public class CellRegion {
-        private string _name;
-        private HashSet<Cell> _cells;
+
+        /// <summary>Cells containing in this Region.</summary>
+        protected HashSet<Cell> _cells;
 
         /// <summary>Default constructor.</summary>
-        /// <param name="name">Identity of this CellRegion...GET RID OF THIS AFTER TESTING.</param>
-        public CellRegion(string name) {
-            _name = name;
+        public CellRegion() {
             _cells = new HashSet<Cell>();
         }
 
         /// <summary>Accessor for the Cells this contains</summary>
-        public HashSet<Cell> Cells {
+        public virtual HashSet<Cell> Cells {
             get { return _cells; }
         }
 
