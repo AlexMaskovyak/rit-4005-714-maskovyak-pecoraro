@@ -69,13 +69,20 @@ namespace _3_SudokuModel {
                 for (int col = 0; col < dimension; ++col) {
                     int id = col + (row*dimension);
                     int shapeId = int.Parse(rows[row][col].ToString()) - 1;
-                    Cell c = new Cell(this, id);
+                    Cell c = CreateCell(id);
                     _cells[id] = c;
                     _rowRegions[row].Add(c);
                     _columnRegions[col].Add(c);
                     _shapeRegions[shapeId].Add(c);
                 }
             }
+        }
+
+        /// <summary>Factory Method for Creating cells</summary>
+        /// <param name="id">The Cell's id</param>
+        /// <returns>A new cell</returns>
+        public virtual Cell CreateCell(int id) {
+            return new Cell(this, id);
         }
 
 // TODO: improve docs here

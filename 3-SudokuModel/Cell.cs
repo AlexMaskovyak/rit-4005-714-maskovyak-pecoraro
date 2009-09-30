@@ -8,8 +8,8 @@ namespace _3_SudokuModel {
     /// <summary>Atomic elements of a Sudoku table.</summary>
     public class Cell {
 
-        /// <summary>Constant Representation of All Values</summary>
-        static int[] AllValues = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        /// <summary>Constant containing all the values allowed for a Cell</summary>
+        protected readonly static int[] AllValues = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
         /// <summary>Sudoku Board this Cell belongs too</summary>
         protected Board _board;
@@ -29,7 +29,7 @@ namespace _3_SudokuModel {
         /// <param name="values">Values for this cell to hold.</param>
         public Cell(Board board, int id, params int[] values) {
             _id = id;
-            Board = board;
+            _board = board;
             Values = (values == null ? AllValues : values);
         }
 
@@ -37,7 +37,7 @@ namespace _3_SudokuModel {
 
         /// <summary>Accessor for the Cell's Singular Value.  null if more then one possible value.</summary>
         public virtual int Digit {
-            get { return (_values.Length == 1 ? _values[0] : 0); }
+            get { return (Values.Length == 1 ? _values[0] : 0); }
         }
 
         /// <summary>Accessor for a Cell's id.</summary>
@@ -63,6 +63,19 @@ namespace _3_SudokuModel {
 
 // Public Methods
 
+        /// <summary>Check if this Cell can be a Particular Value</summary>
+        /// <param name="value">The value to check</param>
+        /// <returns>True if it can be, False otherwise.</returns>
+        public virtual bool CanBe(int value) {
+            foreach (int x in Values) {
+                if (x == value) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>Set the Value of this Cell</summary>
         /// <remarks>Update all other Cells in this Cell's context.</remarks>
         /// <param name="value">The New Value to set</param>
@@ -76,7 +89,7 @@ namespace _3_SudokuModel {
         /// <summary>Respond to a Cell in this Cell's Context that was set to the given value</summary>
         /// <param name="value">The value that was set on another cell.</param>
         public virtual void RespondToSet(int value) {
-            List<int> newValues = new List<int>(_values);
+            List<int> newValues = new List<int>(Values);
             newValues.Remove(value);
             Values = newValues.ToArray<int>();
         }
