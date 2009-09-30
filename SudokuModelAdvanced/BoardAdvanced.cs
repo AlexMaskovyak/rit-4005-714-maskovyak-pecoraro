@@ -23,7 +23,7 @@ namespace _3_SudokuModelAdvanced {
 
         /// <summary>Unset a Cell's Value</summary>
         /// <param name="cell">The cell to clear.</param>
-        public void Clear(int cell) {
+        public virtual void Clear(int cell) {
             // TODO: look up "as" syntax
             ((ClearableCell)_cells[cell]).Clear();
         }

@@ -60,9 +60,9 @@ namespace _3_SudokuModel {
             _cells = new Cell[dimension * dimension];
 
             for (int i = 0; i < dimension; ++i) {
-                _rowRegions[i] = new CellRegion("rows");
-                _columnRegions[i] = new CellRegion("columns");
-                _shapeRegions[i] = new CellRegion("shapes");
+                _rowRegions[i] = new CellRegion();
+                _columnRegions[i] = new CellRegion();
+                _shapeRegions[i] = new CellRegion();
             }
 
             for (int row = 0; row < dimension; ++row) {
@@ -85,13 +85,10 @@ namespace _3_SudokuModel {
             return new Cell(this, id);
         }
 
-// TODO: improve docs here
-
-        /// <summary>Sets the cells value at the specified index.</summary>
-        /// <param name="cellIndex"></param>
-        /// <param name="value"></param>
+        /// <summary>Set the Digit of a Cell</summary>
+        /// <param name="cell">The id of the cell to set.</param>
+        /// <param name="digit">The value to set it.</param>
         public virtual void Set(int cell, int digit) {
-            Console.WriteLine("setting {0} with {1}", cell, digit);
             _cells[cell].Set(digit);
         }
 
@@ -131,15 +128,6 @@ namespace _3_SudokuModel {
             return EnumerateIds(cells, cell);
         }
 
-        /// <summary>Get the Context as Cells instead of Ids</summary>
-        /// <param name="cell">The cell id to find the others in the same context.</param>
-        /// <returns>The other cells in the same context.</returns>
-        public virtual IEnumerable<Cell> ContextCells(int cell) {
-            foreach (int id in Context(cell)) {
-                yield return _cells[id];
-            }
-        }
-
         /// <summary>IEnumerable of ids for an IEnumerable of cells</summary>
         /// <param name="cells">The list of cells</param>
         /// <returns>A list of ids</returns>
@@ -151,12 +139,19 @@ namespace _3_SudokuModel {
             }
         }
 
-// TODO: Change some accessors below to protected virtual?
+        /// <summary>Get the Context as Cells instead of Ids</summary>
+        /// <param name="cell">The cell id to find the others in the same context.</param>
+        /// <returns>The other cells in the same context.</returns>
+        public virtual IEnumerable<Cell> ContextCells(int cell) {
+            foreach (int id in Context(cell)) {
+                yield return _cells[id];
+            }
+        }
 
         /// <summary>Get the CellRegion of the Row for a cell id</summary>
         /// <param name="cell">The cell id.</param>
         /// <returns>The CellRegion representing that Row.</returns>
-        private CellRegion getRowRegionForCell(int cell) {
+        protected virtual CellRegion getRowRegionForCell(int cell) {
             // return getRegionContainingCell(_cells[cell], _rowRegions); // Generic
             return _rowRegions[rowIndexForCell(cell)];
         }
@@ -164,7 +159,7 @@ namespace _3_SudokuModel {
         /// <summary>Get the CellRegion of the Column for a cell id</summary>
         /// <param name="cell">The cell id.</param>
         /// <returns>The CellRegion representing that Column.</returns>
-        private CellRegion getColumnRegionForCell(int cell) {
+        protected virtual CellRegion getColumnRegionForCell(int cell) {
             // return getRegionContainingCell(_cells[cell], _columnRegions); // Generic
             return _columnRegions[columnIndexForCell(cell)];
         }
@@ -172,7 +167,7 @@ namespace _3_SudokuModel {
         /// <summary>Get the CellRegion of the Shape for a cell id</summary>
         /// <param name="cell">The cell id.</param>
         /// <returns>The CellRegion representing that Shape.</returns>
-        private CellRegion getShapeRegionForCell(int cell) {
+        protected virtual CellRegion getShapeRegionForCell(int cell) {
             return getRegionContainingCell(_cells[cell], _shapeRegions);
         }
 
@@ -180,7 +175,7 @@ namespace _3_SudokuModel {
         /// <param name="cell">The cell to find.</param>
         /// <param name="regions">The regions to search.</param>
         /// <returns>The region containing the cell, null if none of the regions.</returns>
-        private CellRegion getRegionContainingCell(Cell cell, CellRegion[] regions) {
+        protected virtual CellRegion getRegionContainingCell(Cell cell, CellRegion[] regions) {
             foreach (CellRegion region in regions) {
                 if (region.Contains(cell)) {
                     return region;
