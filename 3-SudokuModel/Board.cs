@@ -228,8 +228,8 @@ namespace _3_SudokuModel {
                     Console.WriteLine();
                 }
                 Cell c = _cells[i];
-                if (c.Values.Length == 1) {
-                    Console.Write(c.Values[0] + " ");
+                if (c.Digit != 0) {
+                    Console.Write(c.Digit + " ");
                 } else {
                     Console.Write("- ");
                 }

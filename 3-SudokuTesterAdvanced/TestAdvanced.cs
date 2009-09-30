@@ -50,7 +50,20 @@ namespace _3_SudokuTesterAdvanced {
         protected virtual void ProcessClearCommand(string[] command) {
             int cell = int.Parse(command[0]);
             BoardAdvanced board = (BoardAdvanced) _board;
+            Console.WriteLine("clear in {0}", cell);
             board.Clear(cell);
+
+            // DEBUG
+            ((Board)_board).Debug();
+            Console.WriteLine();
+
+            // DEBUG: Print how the context changed
+            foreach (int id in _board.Context(cell)) {
+                Cell c = ((Board)_board).getCell(id);
+                Console.Write("possible in {0}: ", c.Id);
+                foreach (int v in c.Values) { Console.Write(v + " "); }
+                Console.WriteLine();
+            }
         }
 
         /// <summary>Main Method</summary>
