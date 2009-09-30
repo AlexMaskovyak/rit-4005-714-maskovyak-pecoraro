@@ -52,7 +52,6 @@
     <Compile Include="Board.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="CellRegion.cs" />
-    <Compile Include="DelegateDemo.cs" />
     <Compile Include="IBoard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadonlyCell.cs" />
