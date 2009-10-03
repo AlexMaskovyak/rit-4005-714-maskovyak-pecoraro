@@ -36,23 +36,23 @@ ReadonlyCell.cs		// Sudoku atomic which cannot be modified (not currently used)
 
 
 == 3-SudokuModelAdvanced ==
-== C# source files (/3-SudokuModelAdvanced/*) ==
+== C# source files (/SudokuModelAdvanced/*) ==
 BoardAdvanced.cs	// contains Sudoku board model, implements IBoardAdvanced (features Clear method)
 ClearableCell.cs	// Sudoku atomic, stores list of potential/actual values, allows for clearing
 IBoardAdvanced.cs	// Sudoku board model interface with Clear method.
 
-== Visual Studio project (/3-SudokuModel/*) ==
+== Visual Studio project (/SudokuModel/Advanced/*) ==
 3-SudokuModelAdvanced.csproj
 
 
 == 3-SudokuTester ==
-== C# source files (/3-SudokuTester/*) ==
+== C# source files (/SudokuTester/*) ==
 Test.cs				// creates a board and sets cells from a test file
 
-== Input (/3-SudokuTester/*) ==
+== Input (/SudokuTester/*) ==
 board.txt			// test file which defines a board and set commands
 
-== Executable (/3-SudokuTester/bin/Debug/*) ==
+== Executable (/SudokuTester/bin/Debug/*) ==
 3-SudokuTester.exe	// allows execution of the Tester program
 
 

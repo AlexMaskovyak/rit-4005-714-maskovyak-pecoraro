@@ -5,7 +5,10 @@ using System.Text;
 
 namespace _3_SudokuModel {
     /// <summary>Implementation of the IBoard interface.  Holds the state of a Sudoku board.</summary>
-    public class Board : IBoard {
+    public class Board : IBoard
+    {
+        /// <summary>Object to lock against.</summary>
+        protected Object _locker = new Object();
 
         /// <summary>Monitors for rows</summary>
         protected CellRegion[] _rowRegions;
@@ -48,26 +51,32 @@ namespace _3_SudokuModel {
         ///     778889999
         ///     778889999
         ///     </example>
+        ///     
+        ///     This does no currently check to ensure that the dimension restriction is met by
+        ///     all cell containing regions (rows, columns, and shapes).
         /// </remarks>
         /// <param name="rows">Board format as strings</param>
         protected virtual void ParseRows(string[] rows) {
             int dimension = rows.Length;
 
+            // assign protected members
             _dimension = dimension;
             _rowRegions = new CellRegion[dimension];
             _columnRegions = new CellRegion[dimension];
             _shapeRegions = new CellRegion[dimension];
             _cells = new Cell[dimension * dimension];
 
+            // create regions to contain cells
             for (int i = 0; i < dimension; ++i) {
                 _rowRegions[i] = new CellRegion();
                 _columnRegions[i] = new CellRegion();
                 _shapeRegions[i] = new CellRegion();
             }
 
+            // go through all rows and assign cells to their regions
             for (int row = 0; row < dimension; ++row) {
                 for (int col = 0; col < dimension; ++col) {
-                    int id = col + (row*dimension);
+                    int id = col + (row * dimension);
                     int shapeId = int.Parse(rows[row][col].ToString()) - 1;
                     Cell c = CreateCell(id);
                     _cells[id] = c;
@@ -89,14 +98,16 @@ namespace _3_SudokuModel {
         /// <param name="cell">The id of the cell to set.</param>
         /// <param name="digit">The value to set it.</param>
         public virtual void Set(int cell, int digit) {
-            _cells[cell].Set(digit);
+            lock (_locker) {
+                _cells[cell].Set(digit);
+            }
         }
 
         /// <summary>List of cell ids for cells in the same row as the provided cell.</summary>
         /// <param name="cell">The cell id to find others in the same row.</param>
         /// <returns>The cell ids of all other cells in the same row.</returns>
         public virtual IEnumerable<int> Row(int cell) {
-            CellRegion region = getRowRegionForCell(cell);
+            CellRegion region = GetRowRegionForCell(cell);
             return EnumerateIds(region.Cells, cell);
         }
 
@@ -104,7 +115,7 @@ namespace _3_SudokuModel {
         /// <param name="cell">The cell id to find others in the same column.</param>
         /// <returns>The cell ids of all other cells in the same column.</returns>
         public virtual IEnumerable<int> Column(int cell) {
-            CellRegion region = getColumnRegionForCell(cell);
+            CellRegion region = GetColumnRegionForCell(cell);
             return EnumerateIds(region.Cells, cell);
         }
 
@@ -112,7 +123,7 @@ namespace _3_SudokuModel {
         /// <param name="cell">The cell id to find others in the same shape.</param>
         /// <returns>The cell ids of all other cells in the same shape.</returns>
         public virtual IEnumerable<int> Shape(int cell) {
-            CellRegion region = getShapeRegionForCell(cell);
+            CellRegion region = GetShapeRegionForCell(cell);
             return EnumerateIds(region.Cells, cell);
         }
 
@@ -122,14 +133,15 @@ namespace _3_SudokuModel {
         /// <returns>The cell ids of all other cells in the same context.</returns>
         public virtual IEnumerable<int> Context(int cell) {
             HashSet<Cell> cells = new HashSet<Cell>();
-            cells.UnionWith(getRowRegionForCell(cell).Cells);
-            cells.UnionWith(getColumnRegionForCell(cell).Cells);
-            cells.UnionWith(getShapeRegionForCell(cell).Cells);           
+            cells.UnionWith(GetRowRegionForCell(cell).Cells);
+            cells.UnionWith(GetColumnRegionForCell(cell).Cells);
+            cells.UnionWith(GetShapeRegionForCell(cell).Cells);
             return EnumerateIds(cells, cell);
         }
 
         /// <summary>IEnumerable of ids for an IEnumerable of cells</summary>
         /// <param name="cells">The list of cells</param>
+        /// <param name="without">Cell to be excluded from enumeration.</param>
         /// <returns>A list of ids</returns>
         private IEnumerable<int> EnumerateIds(IEnumerable<Cell> cells, int without) {
             foreach (Cell c in cells) {
@@ -151,31 +163,31 @@ namespace _3_SudokuModel {
         /// <summary>Get the CellRegion of the Row for a cell id</summary>
         /// <param name="cell">The cell id.</param>
         /// <returns>The CellRegion representing that Row.</returns>
-        protected virtual CellRegion getRowRegionForCell(int cell) {
+        protected virtual CellRegion GetRowRegionForCell(int cell) {
             // return getRegionContainingCell(_cells[cell], _rowRegions); // Generic
-            return _rowRegions[rowIndexForCell(cell)];
+            return _rowRegions[RowIndexForCell(cell)];
         }
 
         /// <summary>Get the CellRegion of the Column for a cell id</summary>
         /// <param name="cell">The cell id.</param>
         /// <returns>The CellRegion representing that Column.</returns>
-        protected virtual CellRegion getColumnRegionForCell(int cell) {
+        protected virtual CellRegion GetColumnRegionForCell(int cell) {
             // return getRegionContainingCell(_cells[cell], _columnRegions); // Generic
-            return _columnRegions[columnIndexForCell(cell)];
+            return _columnRegions[ColumnIndexForCell(cell)];
         }
 
         /// <summary>Get the CellRegion of the Shape for a cell id</summary>
         /// <param name="cell">The cell id.</param>
         /// <returns>The CellRegion representing that Shape.</returns>
-        protected virtual CellRegion getShapeRegionForCell(int cell) {
-            return getRegionContainingCell(_cells[cell], _shapeRegions);
+        protected virtual CellRegion GetShapeRegionForCell(int cell) {
+            return GetRegionContainingCell(_cells[cell], _shapeRegions);
         }
 
         /// <summary>A generic way to find a cell in a list of CellRegions</summary>
         /// <param name="cell">The cell to find.</param>
         /// <param name="regions">The regions to search.</param>
         /// <returns>The region containing the cell, null if none of the regions.</returns>
-        protected virtual CellRegion getRegionContainingCell(Cell cell, CellRegion[] regions) {
+        protected virtual CellRegion GetRegionContainingCell(Cell cell, CellRegion[] regions) {
             foreach (CellRegion region in regions) {
                 if (region.Contains(cell)) {
                     return region;
@@ -187,37 +199,43 @@ namespace _3_SudokuModel {
         /// <summary>Calculate the row for a cell</summary>
         /// <param name="cell">The cell id.</param>
         /// <returns>The row index (0-indexed)</returns>
-        protected virtual int rowIndexForCell(int cell) {
+        protected virtual int RowIndexForCell(int cell) {
             return (cell / _dimension);
         }
 
         /// <summary>Calculate the column for a cell</summary>
         /// <param name="cell">The cell id.</param>
         /// <returns>The column index (0-indexed)</returns>
-        protected virtual int columnIndexForCell(int cell) {
+        protected virtual int ColumnIndexForCell(int cell) {
             return (cell % _dimension);
         }
 
         /// <summary>Calculate the shape for a cell</summary>
         /// <param name="cell">The cell id.</param>
         /// <returns>The shape index (0-indexed), -1 if not found</returns>
-        protected virtual int shapeIndexForCell(int cell) {
+        protected virtual int ShapeIndexForCell(int cell) {
             Cell c = _cells[cell];
-            for (int i=0; i<_shapeRegions.Length; ++i) {
+            for (int i = 0; i < _shapeRegions.Length; ++i) {
                 CellRegion region = _shapeRegions[i];
                 if (region.Contains(c)) {
                     return i;
                 }
             }
-
             return -1;
         }
 
 
-// TODO: Remove this later
-// Debug output of the board
 
-        public void Debug() {
+        /// <summary>Convenience method to obtain the potential assignable values for a cell at the specified cell index.</summary>
+        /// <remarks>Used for debuggin.</remarks>
+        /// <param name="cellIndex">Index of the cell whose values are to be retrieved.</param>
+        /// <returns>Array of potential values this cell can be assigned.</returns>
+        public int[] GetPotentialCellValues(int cellIndex) {
+            return _cells[cellIndex].Values;
+        }
+
+        
+        /*public void Debug() {
             for (int i = 0; i < _cells.Length; ++i) {
                 if ((i % _dimension) == 0) {
                     Console.WriteLine();
@@ -225,18 +243,11 @@ namespace _3_SudokuModel {
                 Cell c = _cells[i];
                 if (c.Digit != 0) {
                     Console.Write(c.Digit + " ");
-                } else {
+                }
+                else {
                     Console.Write("- ");
                 }
             }
-        }
-
-// TODO: Remove this public accessor, or genericize it to just return a BitArray of Values
-// this is currently only available for debugging.
-
-        public Cell getCell(int cell) {
-            return _cells[cell];
-        }
-
+        }*/
     }
 }
