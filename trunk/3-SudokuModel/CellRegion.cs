@@ -31,13 +31,13 @@ namespace _3_SudokuModel {
 
         /// <summary>Add a cell to this region.</summary>
         /// <remarks>We maintain a set of cells. So adding the same cell twice will do nothing.</remarks>
-        /// <param name="cell">Cell to add to this region and begin observing.</param>
+        /// <param name="cell">Cell to add to this region.</param>
         public virtual void Add(Cell cell) {
             _cells.Add(cell);
         }
 
         /// <summary>Remove the cell from this region.</summary>
-        /// <param name="cell">Cell to remove from this region and which we should halt observing.</param>
+        /// <param name="cell">Cell to remove from this region.</param>
         public virtual void Remove(Cell cell) {
             _cells.Remove(cell);
         }

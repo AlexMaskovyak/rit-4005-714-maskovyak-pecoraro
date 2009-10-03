@@ -58,7 +58,7 @@ namespace _3_SudokuModel {
         /// <summary>Accessor/mutator for a Cell's Potential Values.</summary>
         public virtual int[] Values {
             get { return _values; }
-            set { _values = value; }
+            set { _values = value; Array.Sort(_values);  }
         }
 
 // Public Methods
