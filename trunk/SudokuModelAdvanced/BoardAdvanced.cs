@@ -25,7 +25,9 @@ namespace _3_SudokuModelAdvanced {
         /// <param name="cell">The cell to clear.</param>
         public virtual void Clear(int cell) {
             // TODO: look up "as" syntax
-            ((ClearableCell)_cells[cell]).Clear();
+            lock (_locker) {
+                ((ClearableCell)_cells[cell]).Clear();
+            }
         }
 
     }

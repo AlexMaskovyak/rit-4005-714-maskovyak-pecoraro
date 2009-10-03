@@ -28,7 +28,7 @@ namespace _3_SudokuTesterAdvanced {
             foreach (string line in commands) {
 
                 // DEBUG: Command
-                Console.WriteLine(line);
+                // Console.WriteLine(line);
 
                 // Split the Arguments to determine the action
                 string[] command = line.Split(' ');
@@ -54,22 +54,25 @@ namespace _3_SudokuTesterAdvanced {
             board.Clear(cell);
 
             // DEBUG
-            ((Board)_board).Debug();
-            Console.WriteLine();
+            //((Board)_board).Debug();
+            //Console.WriteLine();
 
-            // DEBUG: Print how the context changed
-            foreach (int id in _board.Context(cell)) {
-                Cell c = ((Board)_board).getCell(id);
-                Console.Write("possible in {0}: ", c.Id);
-                foreach (int v in c.Values) { Console.Write(v + " "); }
-                Console.WriteLine();
+            // Print how the context changed
+            foreach (int id in _board.Context(cell).Concat(new List<int>() { cell })) {
+                int[] potentialValues = ((Board)_board).GetPotentialCellValues(id);
+                // only print that which hasn't been set
+                if (potentialValues.Length > 1)
+                {
+                    Console.Write("possible in {0}: ", id);
+                    foreach (int v in potentialValues) { Console.Write(v + " "); }
+                    Console.WriteLine();
+                }
             }
         }
 
         /// <summary>Main Method</summary>
         /// <param name="args">Command Line Arguments</param>
         public new static void Main(string[] args) {
-            bool debug = (args.Length > 0);
             TestAdvanced tester = new TestAdvanced();
         }
     }
