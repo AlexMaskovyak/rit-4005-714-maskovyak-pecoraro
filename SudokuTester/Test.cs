@@ -66,7 +66,7 @@ namespace _3_SudokuTester {
             foreach (string line in commands) {
 
                 // DEBUG: Command
-                Console.WriteLine(line);
+                // Console.WriteLine(line);
 
                 // Split the Arguments to determine the action
                 string[] command = line.Split(' ');
@@ -77,32 +77,32 @@ namespace _3_SudokuTester {
         }
 
         /// <summary>Process a Set Command</summary>
-        /// <param name="cell"></param>
-        /// <param name="value"></param>
+        /// <param name="command">Array of commands.</param>
         protected void ProcessSetCommand(string[] command) {
             int cell = int.Parse(command[0]);
             int value = int.Parse(command[1]);
-            Console.WriteLine("set in {0}:{1}", cell, value);
+            Console.WriteLine("set in {0}: {1}", cell, value);
             _board.Set(cell, value);
 
             // DEBUG
-            ((Board)_board).Debug();
-            Console.WriteLine();
+            //((Board)_board).Debug();
+            //Console.WriteLine();
 
-            // DEBUG: Print how the context changed
+            // Print how the context changed
             foreach (int id in _board.Context(cell)) {
-                Cell c = ((Board)_board).getCell(id);
-                Console.Write("possible in {0}: ", c.Id);
-                foreach (int v in c.Values) { Console.Write(v + " "); }
-                Console.WriteLine();
+                int[] potentialValues = ((Board)_board).GetPotentialCellValues(id);
+                // only print that which hasn't been set
+                if (potentialValues.Length > 1) {
+                    Console.Write("possible in {0}: ", id);
+                    foreach (int v in potentialValues) { Console.Write(v + " "); }
+                    Console.WriteLine();
+                }
             }
 
         }
 
         /// <summary>Main Method</summary>
-        /// <param name="args">Command Line Arguments</param>
-        public static void Main(string[] args) {
-            bool debug = (args.Length > 0);
+        public static void Main() {
             Test tester = new Test();
         }
     }
