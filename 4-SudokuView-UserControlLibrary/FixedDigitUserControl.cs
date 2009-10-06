@@ -12,8 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using _3_SudokuModel;
-using _3_SudokuModelAdvanced;
+using _4_SudokuView;
 
 namespace _4_SudokuView_UserControlLibrary
 {
@@ -22,7 +21,7 @@ namespace _4_SudokuView_UserControlLibrary
     /// </summary>
     public class FixedDigitUserControl : SettableDigitUserControl
     {
-        public FixedDigitUserControl(IBoardAdvanced board) : base(board) { }
+        public FixedDigitUserControl(SudokuViewWindow window) : base(window) { }
 
         /// <summary>
         /// Sets the value of the central large digit.

@@ -22,11 +22,13 @@ namespace _4_SudokuView_UserControlLibrary
     public partial class SettableDigitUserControl : UserControl
     {
         protected Label[] _digitLabels;
-        protected ObservableBoard _board;
+        protected SudokuViewWindow _window;
+        //protected ObservableBoard _board;
 
-        public SettableDigitUserControl(ObservableBoard board)
+        public SettableDigitUserControl(SudokuViewWindow window)
         {
             InitializeComponent();
+            _window = window;
             _digitLabels = new Label[] { 
                 this.BigDigitLabel, 
                 this.LittleDigit1Label, 
@@ -37,7 +39,7 @@ namespace _4_SudokuView_UserControlLibrary
                 this.LittleDigit7Label, 
                 this.LittleDigit8Label, 
                 this.LittleDigit9Label };
-            _board = board;
+            //_board = board;
         }
 
         /// <summary>
