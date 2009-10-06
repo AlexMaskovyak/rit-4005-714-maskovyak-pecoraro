@@ -72,7 +72,7 @@ namespace _3_SudokuTesterAdvanced {
 
         /// <summary>Main Method</summary>
         /// <param name="args">Command Line Arguments</param>
-        public new static void Main(string[] args) {
+        public static void Main(string[] args) {
             TestAdvanced tester = new TestAdvanced();
         }
     }
