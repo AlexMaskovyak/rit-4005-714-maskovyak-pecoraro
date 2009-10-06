@@ -19,9 +19,9 @@ namespace _4_SudokuView_UserControlLibrary
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public class FixedDigitUserControl : SettableDigitUserControl
+    public class ReadOnlySudokuCellUserControl : SudokuCellUserControl
     {
-        public FixedDigitUserControl(SudokuViewWindow window) : base(window) { }
+        public ReadOnlySudokuCellUserControl(SudokuViewWindow window) : base(window) { }
 
         /// <summary>
         /// Sets the value of the central large digit.

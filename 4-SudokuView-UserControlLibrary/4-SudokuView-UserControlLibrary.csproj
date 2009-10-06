@@ -73,7 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="SettableDigitUserControl.xaml">
+    <Page Include="SudokuCellUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -81,13 +81,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="SettableDigitUserControl.xaml.cs">
-      <DependentUpon>SettableDigitUserControl.xaml</DependentUpon>
+    <Compile Include="SudokuCellUserControl.xaml.cs">
+      <DependentUpon>SudokuCellUserControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FixedDigitUserControl.cs" />
+    <Compile Include="ReadOnlySudokuCellUserControl.cs" />
+    <Compile Include="ISudokuViewCell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
