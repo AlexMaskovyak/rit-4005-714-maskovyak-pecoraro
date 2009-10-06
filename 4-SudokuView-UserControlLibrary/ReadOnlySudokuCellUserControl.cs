@@ -21,38 +21,16 @@ namespace _4_SudokuView_UserControlLibrary
     /// </summary>
     public class ReadOnlySudokuCellUserControl : SudokuCellUserControl
     {
-        public ReadOnlySudokuCellUserControl(SudokuViewWindow window) : base(window) { }
+        public ReadOnlySudokuCellUserControl(SudokuViewWindow window, SolidColorBrush brush) : base(window, brush) { }
 
-        /// <summary>
-        /// Sets the value of the central large digit.
-        /// </summary>
-        /// <param name="digit">Value assigned to this cell.</param>
-        protected override void SetBigDigit(int digit)
+        /// <summary>Read-only cells should not respond to a click event with any sort of play commnd.</summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public override void Click(System.Object sender, EventArgs e)
         {
-            this.BigDigitLabel.Content = digit;
-            this.BigDigitLabel.Visibility = System.Windows.Visibility.Visible;
-            foreach (Label label in _digitLabels)
-            {
-                label.Visibility = System.Windows.Visibility.Hidden;
-            }
         }
 
-        /// <summary>
-        /// Sets the visibility of the surrounding potential digits for this control.
-        /// </summary>
-        /// <param name="potentialDigits">Digits to make visible.</param>
-        protected override void SetLittleDigits(params int[] potentialDigits)
-        {
-            this.BigDigitLabel.Visibility = System.Windows.Visibility.Hidden;
-            foreach (int digit in potentialDigits)
-            {
-                _digitLabels[digit].Visibility = System.Windows.Visibility.Visible;
-            }
-        }
-
-        protected virtual void LittleDigitMouseUp(System.Object sender, EventArgs e)
-        {
-            // this should communicate with the board to set the cell to the value
-        }
+        /// <summary>Readonly cells cannot update anything.</summary>
+        public override void Update() { }
     }
 }
