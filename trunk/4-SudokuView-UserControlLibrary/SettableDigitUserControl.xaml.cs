@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using _4_SudokuView;
+
 namespace _4_SudokuView_UserControlLibrary
 {
     /// <summary>
@@ -20,8 +22,9 @@ namespace _4_SudokuView_UserControlLibrary
     public partial class SettableDigitUserControl : UserControl
     {
         protected Label[] _digitLabels;
+        protected ObservableBoard _board;
 
-        public SettableDigitUserControl()
+        public SettableDigitUserControl(ObservableBoard board)
         {
             InitializeComponent();
             _digitLabels = new Label[] { 
@@ -34,6 +37,7 @@ namespace _4_SudokuView_UserControlLibrary
                 this.LittleDigit7Label, 
                 this.LittleDigit8Label, 
                 this.LittleDigit9Label };
+            _board = board;
         }
 
         /// <summary>
@@ -63,9 +67,11 @@ namespace _4_SudokuView_UserControlLibrary
             }
         }
 
-        protected virtual void LittleDigitMouseUp(System.Object sender, EventArgs e)
+        protected virtual void DigitMouseUp(System.Object sender, EventArgs e)
         {
             // this should communicate with the board to set the cell to the value
+            //_board.((Label)sender).Content
+            
         }
     }
 }

@@ -27,6 +27,9 @@ namespace _4_SudokuView
         /// <summary>Reference to the Model.</summary>
         protected ObservableBoard _board;
 
+        protected Stack<SudokuCommand> _undoStack;
+        protected Stack<SudokuCommand> _redoStack;
+
         /// <summary>Access/mutate model.</summary>
         public ObservableBoard Board
         {
@@ -44,6 +47,9 @@ namespace _4_SudokuView
         public SudokuViewWindow(ObservableBoard board) {
             InitializeComponent();
             Board = board;
+
+            _undoStack = new Stack<SudokuCommand>();
+            _redoStack = new Stack<SudokuCommand>();
         }
 
         /// <summary>Updates the view of the model.</summary>
@@ -60,7 +66,7 @@ namespace _4_SudokuView
         }
 
         /// <summary>Presents a file dialogue and creates a new view for the model loaded.</summary>
-        /// <param name="sender">Object which initaited this method call.</param>
+        /// <param name="sender">Object which initiated this method call.</param>
         /// <param name="e">Event which caused this call.</param>
         protected virtual void New_Clicked(System.Object sender, EventArgs e) {
             OpenFileDialog ofg = new OpenFileDialog();
@@ -75,7 +81,23 @@ namespace _4_SudokuView
             }
         }
 
+        /// <summary>Undoes the last Command on the stack.</summary>
+        /// <param name="sender">Object which initiated this method call.</param>
+        /// <param name="e">Event which caused this call.</param>
+        protected virtual void Undo_Clicked(System.Object sender, EventArgs e) {
+            SudokuCommand command = _undoStack.Pop();
+            command.Undo();
+            _redoStack.Push(command);
+        }
 
+        /// <summary>Redoes the last Command that was Undone.</summary>
+        /// <param name="sender">Object which initiated this method call.</param>
+        /// <param name="e">Even which caused this call.</param>
+        protected virtual void Redo_Clicked(System.Object sender, EventArgs e) {
+            SudokuCommand command = _redoStack.Pop();
+            command.Do();
+            _undoStack.Push(command);
+        }
 
         /// <summary>Reads lines from Standard Input until the first blank line</summary>
         /// <param name="fileName">File to read from.</param>
