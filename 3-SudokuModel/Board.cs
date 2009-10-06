@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BitArray = System.Collections.BitArray;
 
 namespace _3_SudokuModel {
     /// <summary>Implementation of the IBoard interface.  Holds the state of a Sudoku board.</summary>
@@ -86,6 +87,16 @@ namespace _3_SudokuModel {
                 }
             }
         }
+
+        /// <summary> template method: digit is set into cell.</summary>
+        /// <param name="cell">The cell index of the cell that is now set.</param>
+        /// <param name="digit">The new value of the cell.</param>
+        public virtual void NowSet(int cell, int digit) {}
+
+        /// <summary> template method: candidate set is set into cell.</summary>
+        /// <param name="cell">The cell index of the cell that changed.</param>
+        /// <param name="digit">The possible values.</param>
+        public virtual void NowPossible(int cell, BitArray digit) {}
 
         /// <summary>Factory Method for Creating cells</summary>
         /// <param name="id">The Cell's id</param>
@@ -231,7 +242,7 @@ namespace _3_SudokuModel {
         /// <param name="cellIndex">Index of the cell whose values are to be retrieved.</param>
         /// <returns>Array of potential values this cell can be assigned.</returns>
         public int[] GetPotentialCellValues(int cellIndex) {
-            return _cells[cellIndex].Values;
+            return _cells[cellIndex].Values.ToArray<int>();
         }
 
         

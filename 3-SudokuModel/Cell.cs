@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BitArray = System.Collections.BitArray;
 
 namespace _3_SudokuModel {
 
     /// <summary>Individual elements of a Sudoku table.</summary>
     public class Cell {
-
-        /// <summary>Constant containing all the values allowed for a Cell</summary>
-        protected readonly static int[] AllValues = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
         /// <summary>Sudoku Board this Cell belongs too</summary>
         protected Board _board;
@@ -18,7 +16,7 @@ namespace _3_SudokuModel {
         protected int _id;
 
         /// <summary>List of possible values for this cell.</summary>
-        protected int[] _values;
+        protected List<int> _values;
 
 // Constructors
 
@@ -30,14 +28,17 @@ namespace _3_SudokuModel {
         public Cell(Board board, int id, params int[] values) {
             _id = id;
             _board = board;
-            Values = (values == null ? AllValues : values);
+            if (values == null)
+                Values = new List<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            else
+                Values = new List<int>(values);
         }
 
 // Properties
 
         /// <summary>Accessor for the Cell's Singular Value.  null if more then one possible value.</summary>
-        public virtual int Digit {
-            get { return (Values.Length == 1 ? _values[0] : 0); }
+        public virtual int? Digit {
+            get { return (Values.Count == 1 ? _values[0] : (int?)null); }
         }
 
         /// <summary>Accessor for a Cell's id.</summary>
@@ -56,9 +57,9 @@ namespace _3_SudokuModel {
         }
 
         /// <summary>Accessor/mutator for a Cell's Potential Values.</summary>
-        public virtual int[] Values {
+        public virtual List<int> Values {
             get { return _values; }
-            set { _values = value; Array.Sort(_values);  }
+            set { _values = value; _values.Sort(); }
         }
 
 // Public Methods
@@ -80,7 +81,9 @@ namespace _3_SudokuModel {
         /// <remarks>Update all other Cells in this Cell's context.</remarks>
         /// <param name="value">The New Value to set</param>
         public virtual void Set(int value) {
-            _values = new int[] { value };
+            _values = new List<int>(1);
+            _values.Add(value);
+            _board.NowSet(Id, value);
             foreach (Cell c in ContextCells) {
                 c.RespondToSet(value);
             }
@@ -89,9 +92,22 @@ namespace _3_SudokuModel {
         /// <summary>Respond to a Cell in this Cell's Context that was set to the given value</summary>
         /// <param name="value">The value that was set on another cell.</param>
         public virtual void RespondToSet(int value) {
-            List<int> newValues = new List<int>(Values);
-            newValues.Remove(value);
-            Values = newValues.ToArray<int>();
+            if (_values.Remove(value)) {
+                _board.NowPossible(Id, ValuesToBitArray(_values));
+            }
+        }
+
+        /// <summary>Convert Values into a BitArray</summary>
+        /// <param name="values">Potential Int Values</param>
+        /// <returns></returns>
+        protected virtual BitArray ValuesToBitArray(List<int> values) {
+            BitArray bits = new BitArray(10); // sudoku size
+            foreach (int i in values) {
+                if (i < bits.Length) { // potential error if greater.
+                    bits[i] = true;
+                }
+            }
+            return bits;
         }
     }
 }

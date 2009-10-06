@@ -9,7 +9,7 @@ namespace _3_SudokuModel {
     public class ReadonlyCell : Cell {
 
         /// <summary>Accessor to the value stored in this Cell.</summary>
-        public override int[] Values {
+        public override List<int> Values {
             get { return base.Values; }
             set { throw new InvalidOperationException("ReadonlyCell is a read-only Sudoku element whose value cannot be assigned after creation."); }
         }
@@ -20,7 +20,7 @@ namespace _3_SudokuModel {
         /// <summary>Constructor.</summary>
         /// <remarks>Constructs a new read-only cell from the cell specified.</remarks>
         /// <param name="cell">Cell from which to create a new read-only version.</param>
-        public ReadonlyCell(Cell cell) : this(cell.Board, cell.Id, cell.Values) { }
+        public ReadonlyCell(Cell cell) : this(cell.Board, cell.Id, cell.Values.ToArray<int>()) { }
 
         /// <summary>Constructor.</summary>
         /// <remarks>Creates a non-assignable Cell with the specified permanent value.</remarks>
