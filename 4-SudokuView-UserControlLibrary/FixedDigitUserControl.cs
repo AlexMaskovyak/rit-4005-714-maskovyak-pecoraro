@@ -12,24 +12,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using _3_SudokuModel;
+using _3_SudokuModelAdvanced;
+
 namespace _4_SudokuView_UserControlLibrary
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class FixedDigitUserControl : SettableDigitUserControl
+    public class FixedDigitUserControl : SettableDigitUserControl
     {
-        public FixedDigitUserControl()
-        {
-            InitializeComponent();
-            
-        }
+        public FixedDigitUserControl(IBoardAdvanced board) : base(board) { }
 
         /// <summary>
         /// Sets the value of the central large digit.
         /// </summary>
         /// <param name="digit">Value assigned to this cell.</param>
-        protected virtual void SetBigDigit(int digit)
+        protected override void SetBigDigit(int digit)
         {
             this.BigDigitLabel.Content = digit;
             this.BigDigitLabel.Visibility = System.Windows.Visibility.Visible;
@@ -43,7 +42,7 @@ namespace _4_SudokuView_UserControlLibrary
         /// Sets the visibility of the surrounding potential digits for this control.
         /// </summary>
         /// <param name="potentialDigits">Digits to make visible.</param>
-        protected virtual void SetLittleDigits(params int[] potentialDigits)
+        protected override void SetLittleDigits(params int[] potentialDigits)
         {
             this.BigDigitLabel.Visibility = System.Windows.Visibility.Hidden;
             foreach (int digit in potentialDigits)

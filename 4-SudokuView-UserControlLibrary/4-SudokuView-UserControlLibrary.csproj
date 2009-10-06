@@ -33,6 +33,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="3-SudokuModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\4-SudokuView\bin\Debug\3-SudokuModel.dll</HintPath>
+    </Reference>
+    <Reference Include="3-SudokuModelAdvanced, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\4-SudokuView\bin\Debug\3-SudokuModelAdvanced.dll</HintPath>
+    </Reference>
+    <Reference Include="4-SudokuView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\4-SudokuView\bin\Debug\4-SudokuView.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -61,10 +73,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="FixedDigitUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="SettableDigitUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -79,9 +87,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FixedDigitUserControl.xaml.cs">
-      <DependentUpon>FixedDigitUserControl.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="FixedDigitUserControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
