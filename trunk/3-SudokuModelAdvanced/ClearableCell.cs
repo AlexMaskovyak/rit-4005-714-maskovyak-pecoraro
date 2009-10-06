@@ -25,52 +25,51 @@ namespace _3_SudokuModelAdvanced {
         public virtual void Clear() {
 
             // Do nothing if not set
-            int oldDigit = Digit;
-            if (oldDigit == 0) {
+            int? oldDigit = Digit;
+            if (!oldDigit.HasValue) {
                 return;
             }
 
             // Set the blank value, its inferred later
-            Values = new int[] {};
+            _values.Clear();
 
             // Have Context Respond to the Clear
             foreach (Cell cell in ContextCells) {
                 ClearableCell c = cell as ClearableCell; // TODO: lookup "as" syntax
-                c.RespondToClear(oldDigit);
+                c.RespondToClear(oldDigit.Value);
             }
 
             // Infer the Value from the Context
             InferValueFromContext();
 
         }
-
+        
         /// <summary>Respond to a digit in this context changing from a value.</summary>
         /// <remarks>Check context to make sure you can re-enable that value as a potential value.</remarks>
         /// <param name="digit">The value it no longer is.</param>
         protected virtual void RespondToClear(int digit) {
-            if (Digit != 0)
-                return;
-
             foreach (Cell cell in ContextCells) {
                 if (cell.Digit == digit) {
                     return;
                 }
             }
 
-            List<int> newValues = new List<int>(Values);
-            newValues.Add(digit);
-            Values = newValues.ToArray<int>();
+            if (!_values.Contains(digit)) {
+                _values.Add(digit);
+                _board.NowPossible(Id, ValuesToBitArray(_values));
+            }
         }
 
         /// <summary>Infer all the potential Values for this Cell from its Context Cells</summary>
         public virtual void InferValueFromContext() {
-            List<int> newValues = new List<int>(Cell.AllValues);
+            List<int> newValues = new List<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             foreach (Cell cell in ContextCells) {
-                if (cell.Digit != 0) {
-                    newValues.Remove(cell.Digit);
+                if (cell.Digit.HasValue) {
+                    newValues.Remove(cell.Digit.Value);
                 }
             }
-            Values = newValues.ToArray<int>();
+            Values = newValues;
+            _board.NowPossible(Id, ValuesToBitArray(_values));
         }
 
     }

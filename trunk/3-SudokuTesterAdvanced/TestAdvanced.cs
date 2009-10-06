@@ -9,6 +9,25 @@ using _3_SudokuTester;
 
 namespace _3_SudokuTesterAdvanced {
 
+    public class MyBoard : BoardAdvanced {
+        public MyBoard(string[] args) : base(args) { }
+
+        public override void NowSet(int cell, int digit) {
+            // Testing New Version.
+            //Console.WriteLine("{0} now set with {1}", cell, digit);
+        }
+        public override void NowPossible(int cell, System.Collections.BitArray digit) {
+            StringBuilder str = new StringBuilder();
+            for (int i = 0; i < digit.Length; ++i) {
+                if (digit[i]) {
+                    str.Append(i + " ");
+                }
+            }
+            // Testing New Version.
+            //Console.WriteLine("{0} now possible with: {1}", cell, str.ToString());
+        }
+    }
+
     /// <summary>Test Class for a BoardAdvanced Model</summary>
     public class TestAdvanced : Test {
 
@@ -19,7 +38,7 @@ namespace _3_SudokuTesterAdvanced {
         /// <param name="boardLines">Strings describing a board</param>
         /// <returns>A new Board</returns>
         protected override IBoard CreateBoard(string[] boardLines) {
-            return new BoardAdvanced(boardLines);
+            return new MyBoard(boardLines);
         }
 
         /// <summary>Process commands.</summary>
