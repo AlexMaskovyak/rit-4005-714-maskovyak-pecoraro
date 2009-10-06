@@ -19,13 +19,13 @@ namespace _4_SudokuView_UserControlLibrary
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class SettableDigitUserControl : UserControl
+    public partial class SudokuCellUserControl : UserControl, ISudokuViewCell
     {
         protected Label[] _digitLabels;
         protected SudokuViewWindow _window;
         //protected ObservableBoard _board;
 
-        public SettableDigitUserControl(SudokuViewWindow window)
+        public SudokuCellUserControl(SudokuViewWindow window)
         {
             InitializeComponent();
             _window = window;
@@ -69,11 +69,17 @@ namespace _4_SudokuView_UserControlLibrary
             }
         }
 
-        protected virtual void DigitMouseUp(System.Object sender, EventArgs e)
+
+        public void Click(System.Object sender, EventArgs e)
         {
             // this should communicate with the board to set the cell to the value
             //_board.((Label)sender).Content
             
+        }
+
+        public void Update()
+        {
+
         }
     }
 }
