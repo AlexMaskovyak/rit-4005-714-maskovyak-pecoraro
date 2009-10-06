@@ -52,6 +52,10 @@ namespace _4_SudokuView
             _redoStack = new Stack<SudokuCommand>();
         }
 
+        /// <summary>Constructs a new window view based upon the model of the specified window.</summary>
+        /// <param name="window">Window off of which to pattern a new window.</param>
+        public SudokuViewWindow(SudokuViewWindow window) : this(window.Board) { }
+
         /// <summary>Updates the view of the model.</summary>
         /// <param name="board">Reference to board which was updated.</param>
         public void UpdateView(System.Object board) {
@@ -62,7 +66,7 @@ namespace _4_SudokuView
         /// <param name="sender">Object which initiated this method call.</param>
         /// <param name="e">Event which caused this call.</param>
         protected virtual void Dup_Clicked(System.Object sender, EventArgs e) {
-            new SudokuViewWindow(Board);
+            new SudokuViewWindow(this);
         }
 
         /// <summary>Presents a file dialogue and creates a new view for the model loaded.</summary>
