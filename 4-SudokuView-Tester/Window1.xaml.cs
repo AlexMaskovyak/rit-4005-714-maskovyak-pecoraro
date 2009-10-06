@@ -31,6 +31,10 @@ namespace _4_SudokuView_Tester
 
             this.Show();
 
+            control.Update( new System.Collections.BitArray(new bool[] { false, true, true, false, true, false, false, true, false }));
+            //control.Update(5);
+
+
         }
     }
 }
