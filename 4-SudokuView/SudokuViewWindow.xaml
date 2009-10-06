@@ -1,8 +1,11 @@
 ﻿<Window x:Class="_4_SudokuView.SudokuViewWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Window1" Height="300" Width="300">
-    <Grid>
-        
+    Title="Window1" Height="600" Width="550">
+    <Grid Name="grid">
+        <Button Height="23" HorizontalAlignment="Left" Margin="10,0,0,8" Name="NewBtn" VerticalAlignment="Bottom" Width="40" Click="New_Clicked">new</Button>
+        <Button Height="23" HorizontalAlignment="Left" Margin="55,0,0,8" Name="DupBtn" VerticalAlignment="Bottom" Width="40" Click="Dup_Clicked">dup</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,10,8" Name="RedoBtn" VerticalAlignment="Bottom" Width="40" Click="Redo_Clicked">redo</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,55,8" Name="UndoBtn" VerticalAlignment="Bottom" Width="40" Click="Undo_Clicked">undo</Button>
     </Grid>
 </Window>
