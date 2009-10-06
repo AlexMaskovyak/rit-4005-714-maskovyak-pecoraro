@@ -27,8 +27,11 @@ namespace _4_SudokuView
         /// <summary>Reference to the Model.</summary>
         protected ObservableBoard _board;
 
-        protected Stack<SudokuCommand> _undoStack;
-        protected Stack<SudokuCommand> _redoStack;
+        /// <summary>Commands that have been run.</summary>
+        protected Stack<ISudokuCommand> _undoStack;
+
+        /// <summary>Commands that have been reverted.</summary>
+        protected Stack<ISudokuCommand> _redoStack;
 
         /// <summary>Access/mutate model.</summary>
         public ObservableBoard Board
@@ -48,8 +51,8 @@ namespace _4_SudokuView
             InitializeComponent();
             Board = board;
 
-            _undoStack = new Stack<SudokuCommand>();
-            _redoStack = new Stack<SudokuCommand>();
+            _undoStack = new Stack<ISudokuCommand>();
+            _redoStack = new Stack<ISudokuCommand>();
         }
 
         /// <summary>Constructs a new window view based upon the model of the specified window.</summary>
@@ -89,8 +92,8 @@ namespace _4_SudokuView
         /// <param name="sender">Object which initiated this method call.</param>
         /// <param name="e">Event which caused this call.</param>
         protected virtual void Undo_Clicked(System.Object sender, EventArgs e) {
-            SudokuCommand command = _undoStack.Pop();
-            command.Undo();
+            ISudokuCommand command = _undoStack.Pop();
+            command.Undo(Board);
             _redoStack.Push(command);
         }
 
@@ -98,8 +101,8 @@ namespace _4_SudokuView
         /// <param name="sender">Object which initiated this method call.</param>
         /// <param name="e">Even which caused this call.</param>
         protected virtual void Redo_Clicked(System.Object sender, EventArgs e) {
-            SudokuCommand command = _redoStack.Pop();
-            command.Do();
+            ISudokuCommand command = _redoStack.Pop();
+            command.Do(Board);
             _undoStack.Push(command);
         }
 

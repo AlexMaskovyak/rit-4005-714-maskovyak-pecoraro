@@ -34,18 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="3-SudokuModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\4-SudokuView\bin\Debug\3-SudokuModel.dll</HintPath>
-    </Reference>
-    <Reference Include="3-SudokuModelAdvanced, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\4-SudokuView\bin\Debug\3-SudokuModelAdvanced.dll</HintPath>
-    </Reference>
-    <Reference Include="4-SudokuView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\4-SudokuView\bin\Debug\4-SudokuView.exe</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -120,6 +108,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\4-SudokuView\4-SudokuView.csproj">
+      <Project>{F95D2F2C-D723-40D5-B1D1-223E2DD4A75E}</Project>
+      <Name>4-SudokuView</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
