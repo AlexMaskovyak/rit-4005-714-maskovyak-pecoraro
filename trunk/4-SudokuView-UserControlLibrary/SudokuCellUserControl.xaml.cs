@@ -19,6 +19,8 @@ namespace _4_SudokuView_UserControlLibrary
     /// <summary>Interaction logic for a SudokuCell</summary>
     public partial class SudokuCellUserControl : UserControl, ISudokuViewCell {
 
+// Events
+
         /// <summary>Handler for a Set Event</summary>
         /// <param name="sender">This is the sender.</param>
         /// <param name="digit">The digit it is now.</param>
@@ -35,6 +37,8 @@ namespace _4_SudokuView_UserControlLibrary
         /// <summary>Fired when value is cleared.</summary>
         public event OnViewCellClearHandler OnClear;
 
+// Fields 
+
         /// <summary>The mini text blocks.</summary>
         protected List<TextBlock> _blocks;
 
@@ -46,6 +50,8 @@ namespace _4_SudokuView_UserControlLibrary
 
         /// <summary>Reference to the Grid for Background Color</summary>
         protected Grid _grid;
+
+// Properties
 
         /// <summary>Get/Set ReadOnly Property</summary>
         public bool ReadOnly {
@@ -66,6 +72,8 @@ namespace _4_SudokuView_UserControlLibrary
             set { _grid.Background = value; }
         }
 
+// Constructors
+
         /// <summary>Default Constructor uses White Background</summary>
         public SudokuCellUserControl() : this(Brushes.White) {}
 
@@ -78,9 +86,11 @@ namespace _4_SudokuView_UserControlLibrary
             _grid = CreateGrid(3, 3);
             _grid.Background = backgroundColor;
             this.MouseUp += new MouseButtonEventHandler(Click);
-            this.Content = _grid;
             this.Background = Brushes.White;
+            this.Content = _grid;
         }
+
+// UI Builders
 
         /// <summary>Helper for initializing a TextBlock</summary>
         /// <param name="initialText">The text to display in the TextBlock.</param>
@@ -142,6 +152,8 @@ namespace _4_SudokuView_UserControlLibrary
             return myGrid;
         }
 
+// ISudokuViewCell Interface
+
         /// <summary>Handler for when the User Clicks on the Control</summary>
         /// <param name="sender">Default sender.</param>
         /// <param name="e">Default event arguments.</param>
@@ -187,13 +199,6 @@ namespace _4_SudokuView_UserControlLibrary
             }
         }
 
-        /// <summary>Helper for hiding the small labels</summary>
-        protected void HideAllButBigBlock() {
-            foreach (TextBlock t in _blocks) {
-                t.Visibility = Visibility.Hidden;
-            }
-        }
-
         /// <summary>Reset</summary>
         public virtual void Reset() {
             _bigBlock.Visibility = Visibility.Hidden;
@@ -218,6 +223,15 @@ namespace _4_SudokuView_UserControlLibrary
                 newCell._blocks[i].Visibility = this._blocks[i].Visibility;
             }
             return newCell;
+        }
+
+// Helpers
+
+        /// <summary>Helper for hiding the small labels</summary>
+        protected void HideAllButBigBlock() {
+            foreach (TextBlock t in _blocks) {
+                t.Visibility = Visibility.Hidden;
+            }
         }
 
     }

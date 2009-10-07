@@ -9,8 +9,8 @@ using BitArray = System.Collections.BitArray;
 namespace _4_SudokuView_UserControlLibrary
 {
     /// <summary>Interface for a UI Cell.</summary>
-    public interface ISudokuViewCell
-    {
+    public interface ISudokuViewCell {
+
         /// <summary>The UI Responds to a Click</summary>
         /// <param name="sender">object being clicked</param>
         /// <param name="e">click event arguments</param>
@@ -36,5 +36,6 @@ namespace _4_SudokuView_UserControlLibrary
 
         /// <summary>Set the Background Color for the Cell</summary>
         Brush BackgroundColor { get; set; }
+
     }
 }
