@@ -20,11 +20,13 @@ namespace _4_SudokuView_UserControlLibrary
     public partial class SudokuCellUserControl : UserControl, ISudokuViewCell {
 
         /// <summary>Handler for a Set Event</summary>
+        /// <param name="sender">This is the sender.</param>
         /// <param name="digit">The digit it is now.</param>
         public delegate void OnViewCellSetHandler(SudokuCellUserControl sender, int digit);
 
         /// <summary>Handler for a Clear Event</summary>
-        /// <param name="bits">The digits it was set to.</param>
+        /// <param name="sender">This is the sender.</param>
+        /// <param name="digit">The digits it was set to.</param>
         public delegate void OnViewCellClearHandler(SudokuCellUserControl sender, int digit);
 
         /// <summary>Fired when the value is set</summary>
@@ -42,6 +44,7 @@ namespace _4_SudokuView_UserControlLibrary
         /// <summary>ReadOnly state</summary>
         protected Boolean _readonly;
 
+        /// <summary>Reference to the Grid for Background Color</summary>
         protected Grid _grid;
 
         /// <summary>Get/Set ReadOnly Property</summary>
@@ -190,5 +193,16 @@ namespace _4_SudokuView_UserControlLibrary
                 t.Visibility = Visibility.Hidden;
             }
         }
+
+        /// <summary>Reset</summary>
+        public virtual void Reset() {
+            _bigBlock.Visibility = Visibility.Hidden;
+            foreach (TextBlock t in _blocks) {
+                t.Visibility = Visibility.Visible;
+            }
+            _readonly = false;
+            Foreground = Brushes.Black;
+        }
+
     }
 }
