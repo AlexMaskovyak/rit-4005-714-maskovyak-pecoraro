@@ -36,6 +36,8 @@ namespace _4_SudokuView
             Brushes.Coral
         };
 
+// Fields
+
         /// <summary>Reference to the Model.</summary>
         protected ObservableBoard _board;
 
@@ -53,6 +55,15 @@ namespace _4_SudokuView
 
         /// <summary>The Sudoku View Cells</summary>
         protected List<ISudokuViewCell> _sudokuCells;
+
+        /// <summary>Dimensions of the Sudoku board.</summary>
+        protected int _dimension = 9;
+
+// Properties
+
+        public int Dimension {
+            get { return _dimension; }
+        }
 
         /// <summary>Access/mutate model.</summary>
         public ObservableBoard Board
@@ -76,8 +87,8 @@ namespace _4_SudokuView
             // Populate
             SudokuCellSetHandler onsetHandler = new SudokuCellSetHandler(Cell_OnSet);
             SudokuCellClearHandler onclearHandler = new SudokuCellClearHandler(Cell_OnClear);
-            for (var row = 0; row < 9; ++row) {
-                for (var col = 0; col < 9; ++col) {
+            for (var row = 0; row < Dimension; ++row) {
+                for (var col = 0; col < Dimension; ++col) {
                     SudokuCellUserControl cell = new SudokuCellUserControl();
                     cell.OnSet += onsetHandler;
                     cell.OnClear += onclearHandler;
@@ -102,8 +113,8 @@ namespace _4_SudokuView
             int index = 0;
             SudokuCellSetHandler onsetHandler = new SudokuCellSetHandler(Cell_OnSet);
             SudokuCellClearHandler onclearHandler = new SudokuCellClearHandler(Cell_OnClear);
-            for (var row = 0; row < 9; ++row) {
-                for (var col = 0; col < 9; ++col) {
+            for (var row = 0; row < Dimension; ++row) {
+                for (var col = 0; col < Dimension; ++col) {
                     SudokuCellUserControl cell = (SudokuCellUserControl)window._sudokuCells[index].Duplicate();
                     cell.OnSet += onsetHandler;
                     cell.OnClear += onclearHandler;

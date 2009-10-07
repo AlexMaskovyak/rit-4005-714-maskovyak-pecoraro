@@ -273,7 +273,30 @@ _4_SudokuView_UserControlLibrary {
 
 
 
-=================================
+============================
  == 6.  Design Decisions ==
-=================================
+============================
+We decided to re-use last week's solution with modifications to complete this
+assignment.  Both AdvancedBoard and Cell had to be altered.  
 
+AdvancedBoard was given a method to return all of the shapes objects 
+(CellRegions) for the board to allow for easy coloring of UI elements 
+representing cells in a particular shape.  NowSet and NowPossible were added 
+as public hook messages for Board extensions.  ObserverableBoard makes use of 
+them to trigger events during set and clear operations for viewer 
+notification. 
+
+Cell had to be reworked with a kludgey boolean to represent whether it had 
+been set or whether it just possessed a single potential digit.  This was done
+so that our original model could still be re-used for this assignment without
+significant alterations.  Our original model provided for modifiable cells,
+read-only cells, and clearable-cells, but did not identify cells that had
+been user-set.
+
+
+The current project works for all tested cases.  It, however, is not without
+its shortcomings.
+
+ReadOnlySudokuViewCell was not used since we could not identify how to 
+replace cells in a Grid.  As such, much of its functionality had to be moved 
+into SudokuViewCell.
