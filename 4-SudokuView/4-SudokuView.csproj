@@ -113,7 +113,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SudokuModelAdvanced\3-SudokuModelAdvanced.csproj">
+    <ProjectReference Include="..\3-SudokuModelAdvanced\3-SudokuModelAdvanced.csproj">
       <Project>{8E51356B-8821-4B52-BD62-02556DADDE22}</Project>
       <Name>3-SudokuModelAdvanced</Name>
     </ProjectReference>

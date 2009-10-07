@@ -74,8 +74,8 @@ namespace _4_SudokuView
             _sudokuGrid = Init();
 
             // Populate
-            SudokuCellUserControl.OnViewCellSetHandler onsetHandler = new SudokuCellUserControl.OnViewCellSetHandler(Cell_OnSet);
-            SudokuCellUserControl.OnViewCellClearHandler onclearHandler = new SudokuCellUserControl.OnViewCellClearHandler(Cell_OnClear);
+            SudokuCellSetHandler onsetHandler = new SudokuCellSetHandler(Cell_OnSet);
+            SudokuCellClearHandler onclearHandler = new SudokuCellClearHandler(Cell_OnClear);
             for (var row = 0; row < 9; ++row) {
                 for (var col = 0; col < 9; ++col) {
                     SudokuCellUserControl cell = new SudokuCellUserControl();
@@ -100,8 +100,8 @@ namespace _4_SudokuView
 
             // Populate
             int index = 0;
-            SudokuCellUserControl.OnViewCellSetHandler onsetHandler = new SudokuCellUserControl.OnViewCellSetHandler(Cell_OnSet);
-            SudokuCellUserControl.OnViewCellClearHandler onclearHandler = new SudokuCellUserControl.OnViewCellClearHandler(Cell_OnClear);
+            SudokuCellSetHandler onsetHandler = new SudokuCellSetHandler(Cell_OnSet);
+            SudokuCellClearHandler onclearHandler = new SudokuCellClearHandler(Cell_OnClear);
             for (var row = 0; row < 9; ++row) {
                 for (var col = 0; col < 9; ++col) {
                     SudokuCellUserControl cell = (SudokuCellUserControl)window._sudokuCells[index].Duplicate();
@@ -307,6 +307,8 @@ namespace _4_SudokuView
         protected void Board_OnSet(int cell, int digit) {
             _sudokuCells[cell].Update(digit);
             _sudokuCells[cell].ReadOnly = _loading;
+            _redoStack.Clear();
+            UpdateUndoRedoState();
         }
 
         /// <summary>Board Possible Listener</summary>
@@ -321,7 +323,7 @@ namespace _4_SudokuView
         /// <summary>A Cell was Set, relay to the Model</summary>
         /// <param name="sender">The cell that was clicked.</param>
         /// <param name="digit">The value it was set to.</param>
-        protected void Cell_OnSet(SudokuCellUserControl sender, int digit) {
+        protected void Cell_OnSet(ISudokuViewCell sender, int digit) {
             int cell = _sudokuCells.IndexOf(sender);
             _board.Set(cell, digit);
             _undoStack.Push(new SetSudokuCommand(cell, digit));
@@ -332,7 +334,7 @@ namespace _4_SudokuView
         /// <summary>A Cell was Cleared, relay to the Model</summary>
         /// <param name="sender">The cell that was clicked.</param>
         /// <param name="digit">The value it had.</param>
-        protected void Cell_OnClear(SudokuCellUserControl sender, int digit) {
+        protected void Cell_OnClear(ISudokuViewCell sender, int digit) {
             int cell = _sudokuCells.IndexOf(sender);
             _board.Clear(cell);
             _undoStack.Push(new ClearSudokuCommand(cell, digit));
