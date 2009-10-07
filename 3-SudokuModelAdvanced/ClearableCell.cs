@@ -29,6 +29,8 @@ namespace _3_SudokuModelAdvanced {
                 return;
             }
 
+            _setSingleValue = false;
+
             // Set the blank value, its inferred later
             _values.Clear();
 
@@ -70,7 +72,6 @@ namespace _3_SudokuModelAdvanced {
             List<int> newValues = new List<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             foreach (Cell cell in ContextCells) {
                 if (cell.Digit.HasValue) {
-                    System.Console.WriteLine("remove {0}", cell.Digit.Value);
                     newValues.Remove(cell.Digit.Value);
                 }
             }

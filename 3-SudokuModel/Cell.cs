@@ -106,7 +106,6 @@ namespace _3_SudokuModel {
         /// <param name="value">The value that was set on another cell.</param>
         public virtual void RespondToSet(int value) {
             if (_values.Remove(value)) {
-                _setSingleValue = false;
                 _board.NowPossible(Id, ValuesToBitArray(_values));
             }
         }
