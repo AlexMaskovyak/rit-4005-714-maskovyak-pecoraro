@@ -48,6 +48,12 @@ namespace _3_SudokuModelAdvanced {
         /// <remarks>Check context to make sure you can re-enable that value as a potential value.</remarks>
         /// <param name="digit">The value it no longer is.</param>
         protected virtual void RespondToClear(int digit) {
+
+            // Do nothing if set
+            if (Digit.HasValue) {
+                return;
+            }
+
             foreach (Cell cell in ContextCells) {
                 if (cell.Digit == digit) {
                     return;

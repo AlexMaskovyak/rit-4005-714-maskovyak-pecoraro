@@ -101,10 +101,10 @@ namespace _3_SudokuModel {
         /// <param name="values">Potential Int Values</param>
         /// <returns></returns>
         protected virtual BitArray ValuesToBitArray(List<int> values) {
-            BitArray bits = new BitArray(10); // sudoku size
+            BitArray bits = new BitArray(9); // sudoku size
             foreach (int i in values) {
                 if (i < bits.Length) { // potential error if greater.
-                    bits[i] = true;
+                    bits[i-1] = true;
                 }
             }
             return bits;

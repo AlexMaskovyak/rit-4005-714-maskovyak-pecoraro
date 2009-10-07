@@ -47,6 +47,11 @@ namespace _4_SudokuView
         /// <param name="rows">Rows describing how to construct the Sudoku board.</param>
         public ObservableBoard(string[] rows) : base(rows) { }
 
+        public override void Set(int cell, int digit) {
+            Console.WriteLine("Before Set");
+            base.Set(cell, digit);
+            Console.WriteLine("After Set");
+        }
 
         /// <summary>Model indicates a Cell is set. Trigger a Set Event.</summary>
         /// <param name="cell">The cell being set.</param>

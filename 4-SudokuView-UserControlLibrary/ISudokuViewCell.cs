@@ -22,5 +22,8 @@ namespace _4_SudokuView_UserControlLibrary
         /// <summary>The control is told to update to a set digit</summary>
         /// <param name="bits">The Cell is set with a single digit</param>
         void Update(BitArray bits);
+
+        /// <summary>Is the Cell ReadOnly or Not</summary>
+        bool ReadOnly { get; set; }
     }
 }
