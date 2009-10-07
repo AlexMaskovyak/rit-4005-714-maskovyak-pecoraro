@@ -7,6 +7,8 @@ using _3_SudokuModel;
 using _3_SudokuModelAdvanced;
 
 namespace _4_SudokuView {
+
+    /// <summary>Describes a sudoku command that sets a cell to a value.</summary>
     public class SetSudokuCommand : ISudokuCommand {
 
         /// <summary>The cell being modified.</summary>
