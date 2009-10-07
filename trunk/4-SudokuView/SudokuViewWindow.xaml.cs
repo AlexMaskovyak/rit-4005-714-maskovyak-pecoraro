@@ -89,14 +89,14 @@ namespace _4_SudokuView
 
 
         protected void LoadFromFile(string filename) {
-            _loading = true;
 
             // Initialize the Board
             TextReader reader = new StreamReader(filename);
             string[] rows = ReadUntilBlankOrEnd(reader).ToArray<string>();
             Board = new ObservableBoard(rows);
 
-            // Set Readonly Cells
+            // Set Loading Cells
+            _loading = true;
             List<string> lines = ReadUntilBlankOrEnd(reader);
             foreach (string line in lines) {
                 string[] args = line.Split(' ');
@@ -106,10 +106,11 @@ namespace _4_SudokuView
                     ClearLine(args);
                 }
             }
-
             _loading = false;
         }
 
+        /// <summary>Parse a Set Command</summary>
+        /// <param name="args">Arguments [cell, value]</param>
         protected void SetLine(string[] args) {
             int cell = int.Parse(args[0]);
             int value = int.Parse(args[1]);
@@ -117,6 +118,8 @@ namespace _4_SudokuView
             _board.Set(cell, value);
         }
 
+        /// <summary>Parse a Clear Command</summary>
+        /// <param name="args">Arguments [cell]</param>
         protected void ClearLine(string[] args) {
             int cell = int.Parse(args[0]);
             Console.WriteLine("clear {0}", cell);
@@ -146,8 +149,8 @@ namespace _4_SudokuView
         protected virtual void InitializeView() {
 
             // Set the Buttons (make a method?)
-            UndoBtn.IsEnabled = (_undoStack.Count == 0);
-            RedoBtn.IsEnabled = (_undoStack.Count == 0);
+            UpdateUndoRedoState();
+            
 
             // Build the Grid
             Grid myGrid = new Grid();
@@ -160,16 +163,20 @@ namespace _4_SudokuView
             for (var col = 0; col < 9; ++col) { myGrid.ColumnDefinitions.Add(new ColumnDefinition()); }
             for (var row = 0; row < 9; ++row) { myGrid.RowDefinitions.Add(new RowDefinition()); }
 
+            // Handlers
+            SudokuCellUserControl.OnViewCellSetHandler onsetHandler = new SudokuCellUserControl.OnViewCellSetHandler(Cell_OnSet);
+            SudokuCellUserControl.OnViewCellClearHandler onclearHandler = new SudokuCellUserControl.OnViewCellClearHandler(Cell_OnClear);
+
+
             // Populate
             for (var row = 0; row < 9; ++row) {
                 for (var col = 0; col < 9; ++col) {
-                    
                     SudokuCellUserControl cell = new SudokuCellUserControl(Brushes.Yellow);
+                    cell.OnSet += onsetHandler;
+                    cell.OnClear += onclearHandler;
                     Grid.SetRow(cell, row);
                     Grid.SetColumn(cell, col);
                     myGrid.Children.Add(cell);
-                    int index = (row * 9) + col;
-                    Console.WriteLine(index);
                     _sudokuCells.Add(cell);
                 }
             }
@@ -179,23 +186,6 @@ namespace _4_SudokuView
             _sudokuGrid.VerticalAlignment = VerticalAlignment.Top;
             _sudokuGrid.Margin = new Thickness(0, 10, 0, 0);
             grid.Children.Add(_sudokuGrid);
-        }
-
-
-
-        protected void CreateCell(int digit, int row, int col) {
-            SudokuCellUserControl cell;
-            if (_loading) {
-                cell = new ReadOnlySudokuCellUserControl(digit);
-            } else {
-                cell = new SudokuCellUserControl(Brushes.Yellow);
-            }
-
-            int index = (row * 9) + col;
-            Grid.SetRow(cell, row);
-            Grid.SetColumn(cell, col);
-            _sudokuGrid.Children.Insert(index, cell);
-            // _sudokuCells[index] = cell;
         }
 
 
@@ -229,6 +219,7 @@ namespace _4_SudokuView
             ISudokuCommand command = _undoStack.Pop();
             command.Undo(Board);
             _redoStack.Push(command);
+            UpdateUndoRedoState();
         }
 
         /// <summary>Redoes the last Command that was Undone.</summary>
@@ -238,6 +229,13 @@ namespace _4_SudokuView
             ISudokuCommand command = _redoStack.Pop();
             command.Do(Board);
             _undoStack.Push(command);
+            UpdateUndoRedoState();
+        }
+
+        /// <summary>Update the Buttons Based on Stack History</summary>
+        protected virtual void UpdateUndoRedoState() {
+            UndoBtn.IsEnabled = (_undoStack.Count != 0);
+            RedoBtn.IsEnabled = (_undoStack.Count != 0);
         }
 
         /// <summary>Reads lines from Standard Input until the first blank line</summary>
@@ -257,25 +255,44 @@ namespace _4_SudokuView
             return rows;
         }
 
-
         /// <summary>Board Set Listener</summary>
         /// <param name="cell">The cell being set.</param>
         /// <param name="digit">The digit it was set to.</param>
         protected void Board_OnSet(int cell, int digit) {
-            Console.WriteLine("inside ONSET: {0} : {1}", cell, digit);
-            int row = cell / 9;
-            int col = cell % 9;
-            // CreateCell(digit, row, col);
+            _sudokuCells[cell].Update(digit);
+            _sudokuCells[cell].ReadOnly = _loading;
         }
 
         /// <summary>Board Possible Listener</summary>
         /// <param name="cell">The cell being updated.</param>
         /// <param name="bits">The digits it is allowed to have.</param>
         protected void Board_OnPossible(int cell, System.Collections.BitArray bits) {
-            Console.WriteLine("inside ON POSSIBLE {0}", cell);
-            
+            _sudokuCells[cell].Update(bits);
         }
 
+        /// <summary>A Cell was Set, relay to the Model</summary>
+        /// <param name="sender">The cell that was clicked.</param>
+        /// <param name="digit">The value it was set to.</param>
+        protected void Cell_OnSet(SudokuCellUserControl sender, int digit) {
+            int cell = _sudokuCells.IndexOf(sender);
+            _board.Set(cell, digit);
+            _undoStack.Push(new SetSudokuCommand(cell, digit));
+            UndoBtn.IsEnabled = true;
+        }
+
+
+        /// <summary>A Cell was Cleared, relay to the Model</summary>
+        /// <param name="sender">The cell that was clicked.</param>
+        /// <param name="digit">The value it had.</param>
+        protected void Cell_OnClear(SudokuCellUserControl sender, int digit) {
+            int cell = _sudokuCells.IndexOf(sender);
+            _board.Clear(cell);
+            _undoStack.Push(new ClearSudokuCommand(cell, digit));
+            UndoBtn.IsEnabled = true;
+        }
+
+
+  
 
     }
 }

@@ -19,12 +19,48 @@ namespace _4_SudokuView_UserControlLibrary
     /// <summary>Interaction logic for a SudokuCell</summary>
     public partial class SudokuCellUserControl : UserControl, ISudokuViewCell {
 
+        /// <summary>Handler for a Set Event</summary>
+        /// <param name="digit">The digit it is now.</param>
+        public delegate void OnViewCellSetHandler(SudokuCellUserControl sender, int digit);
+
+        /// <summary>Handler for a Clear Event</summary>
+        /// <param name="bits">The digits it was set to.</param>
+        public delegate void OnViewCellClearHandler(SudokuCellUserControl sender, int digit);
+
+        /// <summary>Fired when the value is set</summary>
+        public event OnViewCellSetHandler OnSet;
+
+        /// <summary>Fired when value is cleared.</summary>
+        public event OnViewCellClearHandler OnClear;
+
         /// <summary>The mini text blocks.</summary>
         protected List<TextBlock> _blocks;
 
         /// <summary>The large text block.</summary>
         protected TextBlock _bigBlock;
-        
+
+        /// <summary>ReadOnly state</summary>
+        protected Boolean _readonly;
+
+        /// <summary>Get/Set ReadOnly Property</summary>
+        public bool ReadOnly {
+            get { return _readonly; }
+            set {
+                _readonly = value;
+                if (value) {
+                    this.Foreground = Brushes.Blue;
+                } else {
+                    this.Background = Brushes.Black;
+                }
+            }
+        }
+
+        /// <summary>Set the Background Color</summary>
+        public Brush BackgroundColor {
+            get { return this.Background; }
+            set { this.Background = value; }
+        }
+
         /// <summary>Default Constructor uses White Background</summary>
         public SudokuCellUserControl() : this(Brushes.White) {}
 
@@ -33,11 +69,9 @@ namespace _4_SudokuView_UserControlLibrary
         public SudokuCellUserControl(Brush backgroundColor) {
             InitializeComponent();
             _blocks = new List<TextBlock>();
+            _readonly = false;
             this.MouseUp += new MouseButtonEventHandler(Click);
             this.Content = CreateGrid(3, 3, backgroundColor);
-
-            // TODO: REMOVE TESTINGs
-            _bigBlock.Visibility = Visibility.Hidden;
         }
 
         /// <summary>Helper for initializing a TextBlock</summary>
@@ -90,6 +124,7 @@ namespace _4_SudokuView_UserControlLibrary
             // Populate the large TextBlock
             TextBlock bigDigitBlock = CreateTextBlock("0");
             bigDigitBlock.FontSize = 36;
+            bigDigitBlock.Visibility = Visibility.Hidden;
             Grid.SetRow(bigDigitBlock, 0);
             Grid.SetColumn(bigDigitBlock, 0);
             Grid.SetRowSpan(bigDigitBlock, rowDimension);
@@ -105,11 +140,13 @@ namespace _4_SudokuView_UserControlLibrary
         /// <param name="sender">Default sender.</param>
         /// <param name="e">Default event arguments.</param>
         public virtual void Click(object sender, MouseButtonEventArgs e) {
+            if (_readonly) return;
             object clickedObject = e.OriginalSource;
             
             // Clicked Big Block
             if (clickedObject == _bigBlock) {
                 Console.WriteLine("Clicked Big Number");
+                if (OnClear != null) OnClear(this, int.Parse(_bigBlock.Text));
                 return;
             }
 
@@ -117,6 +154,7 @@ namespace _4_SudokuView_UserControlLibrary
             foreach (TextBlock t in _blocks) {
                 if (clickedObject == t) {
                     Console.WriteLine("Clicked: " + t.Text);
+                    if (OnSet != null) OnSet(this, int.Parse(t.Text));
                     return;
                 }
             }
@@ -125,6 +163,7 @@ namespace _4_SudokuView_UserControlLibrary
         /// <summary>Update the UI to display a single digit.</summary>
         /// <param name="digit">The digit to display.</param>
         public virtual void Update(int digit) {
+            if (_readonly) return;
             HideAllButBigBlock();
             _bigBlock.Text = digit.ToString();
             _bigBlock.Visibility = Visibility.Visible;
@@ -133,6 +172,7 @@ namespace _4_SudokuView_UserControlLibrary
         /// <summary>Update the UI to display multiple values.</summary>
         /// <param name="bits">Indicators of the digits to display.</param>
         public virtual void Update(BitArray bits) {
+            if (_readonly) return;
             _bigBlock.Visibility = Visibility.Hidden;
             for (int i = 0; i < bits.Length; ++i) {
                 _blocks[i].Visibility = (bits[i] ? Visibility.Visible : Visibility.Hidden);
@@ -146,6 +186,5 @@ namespace _4_SudokuView_UserControlLibrary
                 t.Visibility = Visibility.Hidden;
             }
         }
-
     }
 }
