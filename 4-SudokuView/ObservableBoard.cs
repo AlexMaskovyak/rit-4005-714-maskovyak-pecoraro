@@ -51,5 +51,4 @@ namespace _4_SudokuView
         }
 
     }
-
 }
