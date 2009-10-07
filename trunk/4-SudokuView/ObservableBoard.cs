@@ -28,18 +28,6 @@ namespace _4_SudokuView
         /// <summary>Fired when the model indicates a change in a Possible Set.</summary>
         public event OnPossibleHandler OnPossible;
 
-
-        /*
-        /// <summary>Observers for this Board.</summary>
-        protected event BoardUpdated _observers;
-
-        /// <summary>Obtains the observers for this Board, allows for addition and removal.</summary>
-        public virtual BoardUpdated Observers {
-            get { return _observers; }
-            set { _observers = value; }
-        }
-         * */
-
         /// <summary>Default constructor.</summary>
         /// <param name="rows">Rows describing how to construct the Sudoku board.</param>
         public ObservableBoard(string[] rows) : base(rows) { }
