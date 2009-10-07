@@ -27,7 +27,7 @@ namespace _4_SudokuView_UserControlLibrary
         /// <summary>Fired when value is cleared.</summary>
         public event SudokuCellClearHandler OnClear;
 
-// Fields 
+// Fields
 
         /// <summary>The mini text blocks.</summary>
         protected List<TextBlock> _blocks;
@@ -150,7 +150,7 @@ namespace _4_SudokuView_UserControlLibrary
         public virtual void Click(object sender, MouseButtonEventArgs e) {
             if (_readonly) return;
             object clickedObject = e.OriginalSource;
-            
+           
             // Clicked Big Block
             if (clickedObject == _bigBlock) {
                 if (OnClear != null) {
@@ -198,6 +198,7 @@ namespace _4_SudokuView_UserControlLibrary
             _readonly = false;
             Foreground = Brushes.Black;
         }
+
 
         /// <summary>Duplicate this Cell</summary>
         /// <remarks>There will be no listesners.</remarks>
