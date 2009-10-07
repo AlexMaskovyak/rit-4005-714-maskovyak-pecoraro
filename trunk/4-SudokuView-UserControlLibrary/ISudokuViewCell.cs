@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using System.Windows.Media;
 using BitArray = System.Collections.BitArray;
 
 namespace _4_SudokuView_UserControlLibrary
@@ -25,5 +26,8 @@ namespace _4_SudokuView_UserControlLibrary
 
         /// <summary>Is the Cell ReadOnly or Not</summary>
         bool ReadOnly { get; set; }
+
+        /// <summary>Set the Background Color for the Cell</summary>
+        Brush BackgroundColor { get; set; }
     }
 }

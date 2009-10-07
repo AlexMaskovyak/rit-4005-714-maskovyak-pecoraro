@@ -71,7 +71,8 @@ namespace _4_SudokuView_UserControlLibrary
             _blocks = new List<TextBlock>();
             _readonly = false;
             this.MouseUp += new MouseButtonEventHandler(Click);
-            this.Content = CreateGrid(3, 3, backgroundColor);
+            this.Content = CreateGrid(3, 3);
+            this.Background = backgroundColor;
         }
 
         /// <summary>Helper for initializing a TextBlock</summary>
@@ -89,9 +90,8 @@ namespace _4_SudokuView_UserControlLibrary
         /// <summary>Initializer for the Grid</summary>
         /// <param name="colDimension">The number of columns.</param>
         /// <param name="rowDimension">The number of rows.</param>
-        /// <param name="backgroundColor">The background color of the grid.</param>
         /// <returns>An initialized Grid.</returns>
-        protected virtual Grid CreateGrid(int colDimension, int rowDimension, Brush backgroundColor) {
+        protected virtual Grid CreateGrid(int colDimension, int rowDimension) {
 
             // Grid
             Grid myGrid = new Grid();
@@ -99,7 +99,6 @@ namespace _4_SudokuView_UserControlLibrary
             myGrid.Width = 50;
             myGrid.HorizontalAlignment = HorizontalAlignment.Center;
             myGrid.VerticalAlignment = VerticalAlignment.Center;
-            myGrid.Background = backgroundColor;
 
             // Rows and Columns
             for (var col = 0; col < colDimension; ++col) {
@@ -178,7 +177,6 @@ namespace _4_SudokuView_UserControlLibrary
                 _blocks[i].Visibility = (bits[i] ? Visibility.Visible : Visibility.Hidden);
             }
         }
-
 
         /// <summary>Helper for hiding the small labels</summary>
         protected void HideAllButBigBlock() {
