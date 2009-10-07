@@ -21,21 +21,11 @@ namespace _4_SudokuView_UserControlLibrary
 
 // Events
 
-        /// <summary>Handler for a Set Event</summary>
-        /// <param name="sender">This is the sender.</param>
-        /// <param name="digit">The digit it is now.</param>
-        public delegate void OnViewCellSetHandler(SudokuCellUserControl sender, int digit);
-
-        /// <summary>Handler for a Clear Event</summary>
-        /// <param name="sender">This is the sender.</param>
-        /// <param name="digit">The digits it was set to.</param>
-        public delegate void OnViewCellClearHandler(SudokuCellUserControl sender, int digit);
-
         /// <summary>Fired when the value is set</summary>
-        public event OnViewCellSetHandler OnSet;
+        public event SudokuCellSetHandler OnSet;
 
         /// <summary>Fired when value is cleared.</summary>
-        public event OnViewCellClearHandler OnClear;
+        public event SudokuCellClearHandler OnClear;
 
 // Fields 
 
