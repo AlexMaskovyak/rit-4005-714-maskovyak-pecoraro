@@ -50,7 +50,7 @@
     <Compile Include="TestAdvanced.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\3-SudokuModelAdvanced\3-SudokuModelAdvanced.csproj">
+    <ProjectReference Include="..\SudokuModelAdvanced\3-SudokuModelAdvanced.csproj">
       <Project>{8E51356B-8821-4B52-BD62-02556DADDE22}</Project>
       <Name>3-SudokuModelAdvanced</Name>
     </ProjectReference>
@@ -58,7 +58,7 @@
       <Project>{92F5B71B-DD33-4EE3-B214-DF95A3EFB5DA}</Project>
       <Name>3-SudokuModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\3-SudokuTester\3-SudokuTester.csproj">
+    <ProjectReference Include="..\SudokuTester\3-SudokuTester.csproj">
       <Project>{6066E417-B298-4585-8F15-26D6376FFFE5}</Project>
       <Name>3-SudokuTester</Name>
     </ProjectReference>
