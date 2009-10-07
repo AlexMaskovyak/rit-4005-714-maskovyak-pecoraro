@@ -4,8 +4,8 @@
     Title="Window1" Height="600" Width="550">
     <Grid Name="grid">
         <Button Height="23" HorizontalAlignment="Left" Margin="10,0,0,8" Name="NewBtn" VerticalAlignment="Bottom" Width="40" Click="New_Clicked">new</Button>
-        <Button Height="23" HorizontalAlignment="Left" Margin="55,0,0,8" Name="DupBtn" VerticalAlignment="Bottom" Width="40" Click="Dup_Clicked">dup</Button>
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,10,8" Name="RedoBtn" VerticalAlignment="Bottom" Width="40" Click="Redo_Clicked">redo</Button>
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,55,8" Name="UndoBtn" VerticalAlignment="Bottom" Width="40" Click="Undo_Clicked">undo</Button>
+        <Button Height="23" HorizontalAlignment="Left" Margin="55,0,0,8" Name="DupBtn" VerticalAlignment="Bottom" Width="40" Click="Dup_Clicked" IsEnabled="False">dup</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,10,8" Name="RedoBtn" VerticalAlignment="Bottom" Width="40" Click="Redo_Clicked" IsEnabled="False">redo</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,55,8" Name="UndoBtn" VerticalAlignment="Bottom" Width="40" Click="Undo_Clicked" IsEnabled="False">undo</Button>
     </Grid>
 </Window>

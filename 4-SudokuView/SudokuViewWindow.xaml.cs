@@ -76,14 +76,13 @@ namespace _4_SudokuView
 
         /// <summary>Constructs a new window view based upon the model of the specified window.</summary>
         /// <param name="window">Window off of which to pattern a new window.</param>
-        public SudokuViewWindow(SudokuViewWindow window) : this(window.Board) { }
+        public SudokuViewWindow(SudokuViewWindow window) : this(window.Board) {}
 
         /// <summary>Constructor with Model.</summary>
         /// <param name="board">Reference to model.</param>
         public SudokuViewWindow(ObservableBoard board) {
             Init();
             Board = board;
-            // TODO
         }
 
 // Initializers
@@ -96,6 +95,16 @@ namespace _4_SudokuView
             _sudokuCells = new List<ISudokuViewCell>();
             _loading = false;
             InitializeView();
+        }
+
+        /// <summary>Reset the Cells</summary>
+        protected virtual void Reset() {
+            _undoStack.Clear();
+            _redoStack.Clear();
+            UpdateUndoRedoState();
+            foreach (ISudokuViewCell cell in _sudokuCells) {
+                cell.Reset();
+            }
         }
 
         /// <summary>Helper Method to Draw UI Components.</summary>
@@ -132,11 +141,19 @@ namespace _4_SudokuView
                 }
             }
 
-            // Add the Grid
+            // Add the Grid (Hidden at first)
             _sudokuGrid = myGrid;
             _sudokuGrid.VerticalAlignment = VerticalAlignment.Top;
             _sudokuGrid.Margin = new Thickness(0, 10, 0, 0);
+            _sudokuGrid.Visibility = Visibility.Hidden;
             grid.Children.Add(_sudokuGrid);
+
+        }
+
+        /// <summary>Show the Grid</summary>
+        protected void BoardLoaded() {
+            _sudokuGrid.Visibility = Visibility.Visible;
+            DupBtn.IsEnabled = true;
         }
 
 // File Parsers
@@ -144,6 +161,8 @@ namespace _4_SudokuView
         /// <summary>Load a Game from a File.</summary>
         /// <param name="filename">The filename.</param>
         protected void LoadFromFile(string filename) {
+
+            Reset();
 
             // Initialize the Board
             TextReader reader = new StreamReader(filename);
@@ -176,6 +195,9 @@ namespace _4_SudokuView
                     _sudokuCells[cellId].BackgroundColor = color;
                 }
             }
+
+            // Show the Grid
+            BoardLoaded();
 
         }
 
