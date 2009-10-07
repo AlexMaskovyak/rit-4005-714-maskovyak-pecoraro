@@ -12,6 +12,6 @@ namespace _4_SudokuView
     /// </summary>
     public partial class App : Application
     {
-        //public static void Main(){}
+
     }
 }
