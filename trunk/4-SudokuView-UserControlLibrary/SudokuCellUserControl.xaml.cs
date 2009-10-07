@@ -42,6 +42,8 @@ namespace _4_SudokuView_UserControlLibrary
         /// <summary>ReadOnly state</summary>
         protected Boolean _readonly;
 
+        protected Grid _grid;
+
         /// <summary>Get/Set ReadOnly Property</summary>
         public bool ReadOnly {
             get { return _readonly; }
@@ -57,8 +59,8 @@ namespace _4_SudokuView_UserControlLibrary
 
         /// <summary>Set the Background Color</summary>
         public Brush BackgroundColor {
-            get { return this.Background; }
-            set { this.Background = value; }
+            get { return _grid.Background; }
+            set { _grid.Background = value; }
         }
 
         /// <summary>Default Constructor uses White Background</summary>
@@ -70,9 +72,11 @@ namespace _4_SudokuView_UserControlLibrary
             InitializeComponent();
             _blocks = new List<TextBlock>();
             _readonly = false;
+            _grid = CreateGrid(3, 3);
+            _grid.Background = backgroundColor;
             this.MouseUp += new MouseButtonEventHandler(Click);
-            this.Content = CreateGrid(3, 3);
-            this.Background = backgroundColor;
+            this.Content = _grid;
+            this.Background = Brushes.White;
         }
 
         /// <summary>Helper for initializing a TextBlock</summary>
@@ -144,16 +148,18 @@ namespace _4_SudokuView_UserControlLibrary
             
             // Clicked Big Block
             if (clickedObject == _bigBlock) {
-                Console.WriteLine("Clicked Big Number");
-                if (OnClear != null) OnClear(this, int.Parse(_bigBlock.Text));
+                if (OnClear != null) {
+                    OnClear(this, int.Parse(_bigBlock.Text));
+                }
                 return;
             }
 
             // Clicked a Smaller Block
             foreach (TextBlock t in _blocks) {
                 if (clickedObject == t) {
-                    Console.WriteLine("Clicked: " + t.Text);
-                    if (OnSet != null) OnSet(this, int.Parse(t.Text));
+                    if (OnSet != null) {
+                        OnSet(this, int.Parse(t.Text));
+                    }
                     return;
                 }
             }
