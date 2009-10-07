@@ -7,6 +7,7 @@ using _3_SudokuModel;
 using _3_SudokuModelAdvanced;
 
 namespace _4_SudokuView {
+    /// <summary>Describes a clear command in Sudoku.</summary>
     public class ClearSudokuCommand : ISudokuCommand {
 
         /// <summary>The cell being modified.</summary>

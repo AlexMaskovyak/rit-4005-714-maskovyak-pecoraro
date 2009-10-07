@@ -60,7 +60,7 @@ namespace _4_SudokuView
         protected int _dimension = 9;
 
 // Properties
-
+        /// <summary>Accessor for Board dimension.</summary>
         public int Dimension {
             get { return _dimension; }
         }
@@ -229,7 +229,7 @@ namespace _4_SudokuView
         }
 
         /// <summary>Reads lines from Standard Input until the first blank line</summary>
-        /// <param name="fileName">File to read from.</param>
+        /// <param name="reader">TextReader to use for information retrieval.</param>
         /// <returns>The list of lines.</returns>
         protected virtual List<string> ReadUntilBlankOrEnd(TextReader reader) {
             string input;

@@ -294,9 +294,20 @@ read-only cells, and clearable-cells, but did not identify cells that had
 been user-set.
 
 
-The current project works for all tested cases.  It, however, is not without
-its shortcomings.
+The current project works for all tested cases.  The undo/redo feature is 
+implemented through objects implementing the ISudokuCommand interface.  This
+interface specifies two methods: Do(Board) which performs the command on the
+board and Undo(Board) which performs the inverse of the command on the board.
+The SudokuWindow has ISudokuCommand stacks, one for undoes and one for redoes.
+When an operation on a cell occurs a new command is created and it is pushed
+onto the undo stack, the redo stack is emptied, and the undo button becomes
+active.  When a command is undone through the undo button it is popped off
+of the undo stack and pushed onto the redo stack.
+
+
+The current project has a shortcoming that merits explanation.
+
 
 ReadOnlySudokuViewCell was not used since we could not identify how to 
 replace cells in a Grid.  As such, much of its functionality had to be moved 
-into SudokuViewCell.
+into SudokuViewCell. 
