@@ -18,7 +18,7 @@ using _4_SudokuView;
 namespace _4_SudokuView_UserControlLibrary
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for the read only, already set version of the SudokuCellControl.
     /// </summary>
     public class ReadOnlySudokuCellUserControl : SudokuCellUserControl
     {
