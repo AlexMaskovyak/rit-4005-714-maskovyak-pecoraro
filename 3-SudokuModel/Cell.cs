@@ -18,6 +18,12 @@ namespace _3_SudokuModel {
         /// <summary>List of possible values for this cell.</summary>
         protected List<int> _values;
 
+        /// <summary>
+        /// Distinguish whether this cell was set to a single value or just has a single value.  
+        /// This is a kludge that had to be implemented to reuse Cell with Board for assignment 4.
+        /// </summary>
+        protected bool _setSingleValue;
+
 // Constructors
 
         /// <summary>Default constructor.</summary>
@@ -28,17 +34,23 @@ namespace _3_SudokuModel {
         public Cell(Board board, int id, params int[] values) {
             _id = id;
             _board = board;
-            if (values == null)
+            if (values == null) {
                 Values = new List<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
-            else
+                _setSingleValue = false;
+            }
+            else {
                 Values = new List<int>(values);
+                if( Values.Count == 1 ) {
+                    _setSingleValue = true;
+                }
+            }
         }
 
 // Properties
 
         /// <summary>Accessor for the Cell's Singular Value.  null if more then one possible value.</summary>
         public virtual int? Digit {
-            get { return (Values.Count == 1 ? _values[0] : (int?)null); }
+            get { return (Values.Count == 1 && _setSingleValue ? _values[0] : (int?)null); }
         }
 
         /// <summary>Accessor for a Cell's id.</summary>
@@ -83,6 +95,7 @@ namespace _3_SudokuModel {
         public virtual void Set(int value) {
             _values = new List<int>(1);
             _values.Add(value);
+            _setSingleValue = true;
             _board.NowSet(Id, value);
             foreach (Cell c in ContextCells) {
                 c.RespondToSet(value);
@@ -93,6 +106,7 @@ namespace _3_SudokuModel {
         /// <param name="value">The value that was set on another cell.</param>
         public virtual void RespondToSet(int value) {
             if (_values.Remove(value)) {
+                _setSingleValue = false;
                 _board.NowPossible(Id, ValuesToBitArray(_values));
             }
         }
