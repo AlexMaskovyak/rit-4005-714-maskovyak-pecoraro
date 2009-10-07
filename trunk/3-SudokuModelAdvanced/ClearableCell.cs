@@ -23,7 +23,6 @@ namespace _3_SudokuModelAdvanced {
         /// <summary>Clear this Cell's value</summary>
         /// <remarks>The Value of the Cell is automatically inferred from the set of possible values from its Context.</remarks>
         public virtual void Clear() {
-
             // Do nothing if not set
             int? oldDigit = Digit;
             if (!oldDigit.HasValue) {
@@ -71,6 +70,7 @@ namespace _3_SudokuModelAdvanced {
             List<int> newValues = new List<int>(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
             foreach (Cell cell in ContextCells) {
                 if (cell.Digit.HasValue) {
+                    System.Console.WriteLine("remove {0}", cell.Digit.Value);
                     newValues.Remove(cell.Digit.Value);
                 }
             }
