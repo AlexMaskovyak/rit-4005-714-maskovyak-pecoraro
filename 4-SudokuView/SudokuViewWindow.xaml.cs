@@ -71,64 +71,11 @@ namespace _4_SudokuView
 
         /// <summary>Deafult Constructor</summary>
         public SudokuViewWindow() {
-            Init();
-        }
-
-        /// <summary>Constructs a new window view based upon the model of the specified window.</summary>
-        /// <param name="window">Window off of which to pattern a new window.</param>
-        public SudokuViewWindow(SudokuViewWindow window) : this(window.Board) {}
-
-        /// <summary>Constructor with Model.</summary>
-        /// <param name="board">Reference to model.</param>
-        public SudokuViewWindow(ObservableBoard board) {
-            Init();
-            Board = board;
-        }
-
-// Initializers
-
-        /// <summary>Easy Initializer</summary>
-        protected virtual void Init() {
-            InitializeComponent();
-            _undoStack = new Stack<ISudokuCommand>();
-            _redoStack = new Stack<ISudokuCommand>();
-            _sudokuCells = new List<ISudokuViewCell>();
-            _loading = false;
-            InitializeView();
-        }
-
-        /// <summary>Reset the Cells</summary>
-        protected virtual void Reset() {
-            _undoStack.Clear();
-            _redoStack.Clear();
-            UpdateUndoRedoState();
-            foreach (ISudokuViewCell cell in _sudokuCells) {
-                cell.Reset();
-            }
-        }
-
-        /// <summary>Helper Method to Draw UI Components.</summary>
-        protected virtual void InitializeView() {
-
-            // Set the Buttons
-            UpdateUndoRedoState();
-
-            // Build the Grid
-            Grid myGrid = new Grid();
-            myGrid.Height = 500;
-            myGrid.Width = 500;
-            myGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            myGrid.VerticalAlignment = VerticalAlignment.Center;
-
-            // Rows and Columns
-            for (var col = 0; col < 9; ++col) { myGrid.ColumnDefinitions.Add(new ColumnDefinition()); }
-            for (var row = 0; row < 9; ++row) { myGrid.RowDefinitions.Add(new RowDefinition()); }
-
-            // Handlers
-            SudokuCellUserControl.OnViewCellSetHandler onsetHandler = new SudokuCellUserControl.OnViewCellSetHandler(Cell_OnSet);
-            SudokuCellUserControl.OnViewCellClearHandler onclearHandler = new SudokuCellUserControl.OnViewCellClearHandler(Cell_OnClear);
+            Grid myGrid = Init();
 
             // Populate
+            SudokuCellUserControl.OnViewCellSetHandler onsetHandler = new SudokuCellUserControl.OnViewCellSetHandler(Cell_OnSet);
+            SudokuCellUserControl.OnViewCellClearHandler onclearHandler = new SudokuCellUserControl.OnViewCellClearHandler(Cell_OnClear);
             for (var row = 0; row < 9; ++row) {
                 for (var col = 0; col < 9; ++col) {
                     SudokuCellUserControl cell = new SudokuCellUserControl();
@@ -147,6 +94,79 @@ namespace _4_SudokuView
             _sudokuGrid.Margin = new Thickness(0, 10, 0, 0);
             _sudokuGrid.Visibility = Visibility.Hidden;
             grid.Children.Add(_sudokuGrid);
+        }
+
+        /// <summary>Constructs a new window view based upon the model of the specified window.</summary>
+        /// <param name="window">Window off of which to pattern a new window.</param>
+        public SudokuViewWindow(SudokuViewWindow window) {
+            Grid myGrid = Init();
+            Board = window.Board;
+
+            SudokuCellUserControl.OnViewCellSetHandler onsetHandler = new SudokuCellUserControl.OnViewCellSetHandler(Cell_OnSet);
+            SudokuCellUserControl.OnViewCellClearHandler onclearHandler = new SudokuCellUserControl.OnViewCellClearHandler(Cell_OnClear);
+            for (var row = 0; row < 9; ++row) {
+                for (var col = 0; col < 9; ++col) {
+                    int index = (row * 9) + col;
+                    SudokuCellUserControl cell = (SudokuCellUserControl)window._sudokuCells[index].Duplicate();
+                    cell.OnSet += onsetHandler;
+                    cell.OnClear += onclearHandler;
+                    Grid.SetRow(cell, row);
+                    Grid.SetColumn(cell, col);
+                    myGrid.Children.Add(cell);
+                    _sudokuCells.Add(cell);
+                }
+            }
+
+            // Add the Grid (Hidden at first)
+            _sudokuGrid = myGrid;
+            _sudokuGrid.VerticalAlignment = VerticalAlignment.Top;
+            _sudokuGrid.Margin = new Thickness(0, 10, 0, 0);
+            _sudokuGrid.Visibility = Visibility.Hidden;
+            grid.Children.Add(_sudokuGrid);
+
+            // Show Grid
+            BoardLoaded();
+        }
+
+        // Initializers
+
+        /// <summary>Easy Initializer</summary>
+        protected virtual Grid Init() {
+            InitializeComponent();
+            _undoStack = new Stack<ISudokuCommand>();
+            _redoStack = new Stack<ISudokuCommand>();
+            _sudokuCells = new List<ISudokuViewCell>();
+            _loading = false;
+            return InitializeView();
+        }
+
+        /// <summary>Reset the Cells</summary>
+        protected virtual void Reset() {
+            _undoStack.Clear();
+            _redoStack.Clear();
+            UpdateUndoRedoState();
+            foreach (ISudokuViewCell cell in _sudokuCells) {
+                cell.Reset();
+            }
+        }
+
+        /// <summary>Helper Method to Draw UI Components.</summary>
+        protected virtual Grid InitializeView() {
+
+            // Set the Buttons
+            UpdateUndoRedoState();
+
+            // Build the Grid
+            Grid myGrid = new Grid();
+            myGrid.Height = 500;
+            myGrid.Width = 500;
+            myGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            myGrid.VerticalAlignment = VerticalAlignment.Center;
+
+            // Rows and Columns
+            for (var col = 0; col < 9; ++col) { myGrid.ColumnDefinitions.Add(new ColumnDefinition()); }
+            for (var row = 0; row < 9; ++row) { myGrid.RowDefinitions.Add(new RowDefinition()); }
+            return myGrid;
 
         }
 
@@ -239,7 +259,8 @@ namespace _4_SudokuView
         /// <param name="sender">Object which initiated this method call.</param>
         /// <param name="e">Event which caused this call.</param>
         protected virtual void Dup_Clicked(System.Object sender, EventArgs e) {
-            new SudokuViewWindow(this);
+            Window dup = new SudokuViewWindow(this);
+            dup.Show();
         }
 
         /// <summary>Presents a file dialogue and creates a new view for the model loaded.</summary>

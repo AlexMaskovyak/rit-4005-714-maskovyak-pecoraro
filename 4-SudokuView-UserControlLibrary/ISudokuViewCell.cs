@@ -27,6 +27,10 @@ namespace _4_SudokuView_UserControlLibrary
         /// <summary>Reset the Cell Completely</summary>
         void Reset();
 
+        /// <summary>Duplicate the Cell Completely.</summary>
+        /// <returns>A duplicate Cell in the same state.</returns>
+        ISudokuViewCell Duplicate();
+
         /// <summary>Is the Cell ReadOnly or Not</summary>
         bool ReadOnly { get; set; }
 
