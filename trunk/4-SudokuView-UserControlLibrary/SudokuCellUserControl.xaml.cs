@@ -204,5 +204,21 @@ namespace _4_SudokuView_UserControlLibrary
             Foreground = Brushes.Black;
         }
 
+        /// <summary>Duplicate this Cell</summary>
+        /// <remarks>There will be no listesners.</remarks>
+        /// <returns>The Duplicate</returns>
+        public virtual ISudokuViewCell Duplicate() {
+            SudokuCellUserControl newCell = new SudokuCellUserControl(this.BackgroundColor);
+            newCell._bigBlock.Visibility = this._bigBlock.Visibility;
+            newCell._bigBlock.Text = this._bigBlock.Text;
+            newCell._readonly = this._readonly;
+            newCell.Background = this.Background;
+            newCell.Foreground = this.Foreground;
+            for (int i = 0; i < _blocks.Count; ++i) {
+                newCell._blocks[i].Visibility = this._blocks[i].Visibility;
+            }
+            return newCell;
+        }
+
     }
 }
