@@ -6,7 +6,7 @@
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F95D2F2C-D723-40D5-B1D1-223E2DD4A75E}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>_4_SudokuView</RootNamespace>
     <AssemblyName>4-SudokuView</AssemblyName>
@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="4-SudokuView-UserControlLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\4-SudokuView-UserControlLibrary\bin\Debug\4-SudokuView-UserControlLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -121,14 +125,13 @@
       <Project>{92F5B71B-DD33-4EE3-B214-DF95A3EFB5DA}</Project>
       <Name>3-SudokuModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\4-SudokuView-UserControlLibrary\4-SudokuView-UserControlLibrary.csproj">
-      <Project>{613B7EF5-BFE6-4461-914E-A6FF23B599D3}</Project>
-      <Name>4-SudokuView-UserControlLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Boards\board.txt" />
     <Resource Include="Boards\board2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
