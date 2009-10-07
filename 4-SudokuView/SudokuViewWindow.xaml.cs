@@ -25,14 +25,14 @@ namespace _4_SudokuView
 
         /// <summary>Color Map for Shapes</summary>
         public static Brush[] ColorMap = new Brush[] {
-            Brushes.White,
-            Brushes.Wheat,
-            Brushes.Thistle,
-            Brushes.AliceBlue,
-            Brushes.Beige,
-            Brushes.Azure,
-            Brushes.BlueViolet,
-            Brushes.Bisque,
+            Brushes.Aqua,
+            Brushes.BurlyWood,
+            Brushes.Chartreuse,
+            Brushes.Gold,
+            Brushes.Pink,
+            Brushes.Gray,
+            Brushes.PowderBlue,
+            Brushes.PeachPuff,
             Brushes.Coral
         };
 
@@ -155,10 +155,15 @@ namespace _4_SudokuView
             List<string> lines = ReadUntilBlankOrEnd(reader);
             foreach (string line in lines) {
                 string[] args = line.Split(' ');
-                if (args.Length == 2) {
-                    SetLine(args);
-                } else if (args.Length == 1) {
-                    ClearLine(args);
+                switch (args.Length) {
+                    case 2:
+                        SetLine(args);
+                        break;
+                    case 1:
+                        ClearLine(args);
+                        break;
+                    default:
+                        throw new InvalidOperationException("Bad Command in File");
                 }
             }
             _loading = false;
@@ -168,7 +173,6 @@ namespace _4_SudokuView
             for (int shapeIndex = 0; shapeIndex < shapes.Count; ++shapeIndex) {
                 Brush color = ColorMap[shapeIndex];
                 foreach (int cellId in shapes[shapeIndex]) {
-                    Console.WriteLine(cellId);
                     _sudokuCells[cellId].BackgroundColor = color;
                 }
             }
@@ -253,7 +257,7 @@ namespace _4_SudokuView
         /// <summary>Update the Buttons Based on Stack History</summary>
         protected virtual void UpdateUndoRedoState() {
             UndoBtn.IsEnabled = (_undoStack.Count != 0);
-            RedoBtn.IsEnabled = (_undoStack.Count != 0);
+            RedoBtn.IsEnabled = (_redoStack.Count != 0);
         }
 
 // Board Handlers
