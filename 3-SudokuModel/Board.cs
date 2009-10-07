@@ -235,6 +235,21 @@ namespace _3_SudokuModel {
             return -1;
         }
 
+        /// <summary>Get the Information about Shapes</summary>
+        /// <returns>Lists of Lists containing Shape Cells</returns>
+        public virtual List<List<int>> GetShapes() {
+            List<List<int>> shapes = new List<List<int>>();
+            foreach (CellRegion region in _shapeRegions) {
+                List<int> cellids = new List<int>();
+                foreach (Cell c in region.Cells) {
+                    cellids.Add(c.Id);
+                }
+                shapes.Add(cellids);
+            }
+
+            return shapes;
+        }
+
 
 
         /// <summary>Convenience method to obtain the potential assignable values for a cell at the specified cell index.</summary>

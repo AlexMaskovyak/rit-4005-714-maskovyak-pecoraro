@@ -71,86 +71,38 @@ namespace _4_SudokuView
 
         /// <summary>Deafult Constructor</summary>
         public SudokuViewWindow() {
-            InitializeComponent();
-            _undoStack = new Stack<ISudokuCommand>();
-            _redoStack = new Stack<ISudokuCommand>();
-            _sudokuCells = new List<ISudokuViewCell>();
-            InitializeView();
-        }
-
-
-
-        public SudokuViewWindow(string filename) {
-            InitializeComponent();
-            _undoStack = new Stack<ISudokuCommand>();
-            _redoStack = new Stack<ISudokuCommand>();
-            LoadFromFile(filename);
-        }
-
-
-        protected void LoadFromFile(string filename) {
-
-            // Initialize the Board
-            TextReader reader = new StreamReader(filename);
-            string[] rows = ReadUntilBlankOrEnd(reader).ToArray<string>();
-            Board = new ObservableBoard(rows);
-
-            // Set Loading Cells
-            _loading = true;
-            List<string> lines = ReadUntilBlankOrEnd(reader);
-            foreach (string line in lines) {
-                string[] args = line.Split(' ');
-                if (args.Length == 2) {
-                    SetLine(args);
-                } else if (args.Length == 1) {
-                    ClearLine(args);
-                }
-            }
-            _loading = false;
-        }
-
-        /// <summary>Parse a Set Command</summary>
-        /// <param name="args">Arguments [cell, value]</param>
-        protected void SetLine(string[] args) {
-            int cell = int.Parse(args[0]);
-            int value = int.Parse(args[1]);
-            Console.WriteLine("set in {0}: {1}", cell, value);
-            _board.Set(cell, value);
-        }
-
-        /// <summary>Parse a Clear Command</summary>
-        /// <param name="args">Arguments [cell]</param>
-        protected void ClearLine(string[] args) {
-            int cell = int.Parse(args[0]);
-            Console.WriteLine("clear {0}", cell);
-            _board.Clear(cell);
-        }
-
-        /// <summary>Constructor with Model.</summary>
-        /// <param name="board">Reference to model.</param>
-        public SudokuViewWindow(ObservableBoard board) {
-            // TODO: Test this.
-            InitializeComponent();
-            Board = board;
-
-            _undoStack = new Stack<ISudokuCommand>();
-            _redoStack = new Stack<ISudokuCommand>();
-
+            Init();
         }
 
         /// <summary>Constructs a new window view based upon the model of the specified window.</summary>
         /// <param name="window">Window off of which to pattern a new window.</param>
-        public SudokuViewWindow(SudokuViewWindow window) : this(window.Board) {
-            // TODO: Implement and Test
+        public SudokuViewWindow(SudokuViewWindow window) : this(window.Board) { }
+
+        /// <summary>Constructor with Model.</summary>
+        /// <param name="board">Reference to model.</param>
+        public SudokuViewWindow(ObservableBoard board) {
+            Init();
+            Board = board;
+            // TODO
         }
 
+// Initializers
+
+        /// <summary>Easy Initializer</summary>
+        protected virtual void Init() {
+            InitializeComponent();
+            _undoStack = new Stack<ISudokuCommand>();
+            _redoStack = new Stack<ISudokuCommand>();
+            _sudokuCells = new List<ISudokuViewCell>();
+            _loading = false;
+            InitializeView();
+        }
 
         /// <summary>Helper Method to Draw UI Components.</summary>
         protected virtual void InitializeView() {
 
-            // Set the Buttons (make a method?)
+            // Set the Buttons
             UpdateUndoRedoState();
-            
 
             // Build the Grid
             Grid myGrid = new Grid();
@@ -167,11 +119,10 @@ namespace _4_SudokuView
             SudokuCellUserControl.OnViewCellSetHandler onsetHandler = new SudokuCellUserControl.OnViewCellSetHandler(Cell_OnSet);
             SudokuCellUserControl.OnViewCellClearHandler onclearHandler = new SudokuCellUserControl.OnViewCellClearHandler(Cell_OnClear);
 
-
             // Populate
             for (var row = 0; row < 9; ++row) {
                 for (var col = 0; col < 9; ++col) {
-                    SudokuCellUserControl cell = new SudokuCellUserControl(Brushes.Yellow);
+                    SudokuCellUserControl cell = new SudokuCellUserControl();
                     cell.OnSet += onsetHandler;
                     cell.OnClear += onclearHandler;
                     Grid.SetRow(cell, row);
@@ -188,8 +139,75 @@ namespace _4_SudokuView
             grid.Children.Add(_sudokuGrid);
         }
 
+// File Parsers
 
+        /// <summary>Load a Game from a File.</summary>
+        /// <param name="filename">The filename.</param>
+        protected void LoadFromFile(string filename) {
 
+            // Initialize the Board
+            TextReader reader = new StreamReader(filename);
+            string[] rows = ReadUntilBlankOrEnd(reader).ToArray<string>();
+            Board = new ObservableBoard(rows);
+
+            // Set Loading Cells (ReadOnly mode)
+            _loading = true;
+            List<string> lines = ReadUntilBlankOrEnd(reader);
+            foreach (string line in lines) {
+                string[] args = line.Split(' ');
+                if (args.Length == 2) {
+                    SetLine(args);
+                } else if (args.Length == 1) {
+                    ClearLine(args);
+                }
+            }
+            _loading = false;
+
+            // Color the Shapes
+            List<List<int>> shapes = _board.GetShapes();
+            for (int shapeIndex = 0; shapeIndex < shapes.Count; ++shapeIndex) {
+                Brush color = ColorMap[shapeIndex];
+                foreach (int cellId in shapes[shapeIndex]) {
+                    Console.WriteLine(cellId);
+                    _sudokuCells[cellId].BackgroundColor = color;
+                }
+            }
+
+        }
+
+        /// <summary>Reads lines from Standard Input until the first blank line</summary>
+        /// <param name="fileName">File to read from.</param>
+        /// <returns>The list of lines.</returns>
+        protected virtual List<string> ReadUntilBlankOrEnd(TextReader reader) {
+            string input;
+            List<string> rows = new List<string>();
+            while ((input = reader.ReadLine()) != null) {
+                input = input.Trim();
+                if (input.Equals("")) {
+                    break;
+                } else {
+                    rows.Add(input);
+                }
+            }
+            return rows;
+        }
+
+        /// <summary>Parse a Set Command</summary>
+        /// <param name="args">Arguments [cell, value]</param>
+        protected void SetLine(string[] args) {
+            int cell = int.Parse(args[0]);
+            int value = int.Parse(args[1]);
+            _board.Set(cell, value);
+        }
+
+        /// <summary>Parse a Clear Command</summary>
+        /// <param name="args">Arguments [cell]</param>
+        protected void ClearLine(string[] args) {
+            int cell = int.Parse(args[0]);
+            _board.Clear(cell);
+        }
+
+// Window View Handlers
 
         /// <summary>Creates a duplicate view of the model.</summary>
         /// <param name="sender">Object which initiated this method call.</param>
@@ -238,22 +256,7 @@ namespace _4_SudokuView
             RedoBtn.IsEnabled = (_undoStack.Count != 0);
         }
 
-        /// <summary>Reads lines from Standard Input until the first blank line</summary>
-        /// <param name="fileName">File to read from.</param>
-        /// <returns>The list of lines.</returns>
-        protected virtual List<string> ReadUntilBlankOrEnd(TextReader reader) {
-            string input;
-            List<string> rows = new List<string>();
-            while ((input = reader.ReadLine()) != null) {
-                input = input.Trim();
-                if (input.Equals("")) {
-                    break; 
-                } else {
-                    rows.Add(input);
-                }
-            }
-            return rows;
-        }
+// Board Handlers
 
         /// <summary>Board Set Listener</summary>
         /// <param name="cell">The cell being set.</param>
@@ -269,6 +272,8 @@ namespace _4_SudokuView
         protected void Board_OnPossible(int cell, System.Collections.BitArray bits) {
             _sudokuCells[cell].Update(bits);
         }
+
+// Sudoku Cell View Handlers
 
         /// <summary>A Cell was Set, relay to the Model</summary>
         /// <param name="sender">The cell that was clicked.</param>
@@ -290,9 +295,6 @@ namespace _4_SudokuView
             _undoStack.Push(new ClearSudokuCommand(cell, digit));
             UndoBtn.IsEnabled = true;
         }
-
-
-  
 
     }
 }
