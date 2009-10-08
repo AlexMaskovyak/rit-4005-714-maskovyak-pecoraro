@@ -17,7 +17,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <summary> deck of cards.</summary>
         protected Deck _deck;
 
-        protected Cell
+        //protected Cell
 
 // constructors
 
@@ -37,8 +37,13 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
+            SuitPrecedencePlayingCard card = new SuitPrecedencePlayingCard('A', 'S');
+
+
+            Console.WriteLine((int)card.Suit);
+
             // terminate early
-            if (args == null || args.Count != 3) {
+            /*if (args == null || args.Count() != 3) {
                 System.Console.Error.WriteLine("use: [number of players] [number of cards] [url for card images]");
                 Environment.Exit(1);
             }
@@ -52,7 +57,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
             // create n views
 
-
+            */
         }
     }
 }

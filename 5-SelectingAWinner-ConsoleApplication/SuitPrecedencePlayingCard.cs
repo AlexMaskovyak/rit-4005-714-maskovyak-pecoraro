@@ -13,6 +13,30 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <summary>New ordering of Suit values for SuitPrecedencePlayingCard.</summary>
         public new enum Suits { Club = 1, Spade, Heart, Diamond };
 
+        protected new Suits _suit;
+        protected new Ranks _rank;
+
+        /// <summary>
+        /// Obtains the suit of this card.
+        /// </summary>
+        public new Suits Suit {
+            get { return _suit; }
+        }
+
+        /// <summary>
+        /// Obtains the face value of this card.
+        /// </summary>
+        /// <returns>The card's value.</returns>
+        public new Ranks Rank {
+            get { return _rank; }
+        }
+
+        //public SuitPrecedencePlayingCard(Ranks rank, Suits suit) : base(rank, suit) {}
+
+        public SuitPrecedencePlayingCard(string rankSuitPair) : base(rankSuitPair) { }
+
+        public SuitPrecedencePlayingCard(char rank, char suit) : base(rank, suit) { }
+
         /// <summary>
         /// Support IComparable, allow for the comparison of this PlayingCard with the specified PlayingCard.
         /// </summary>
@@ -24,7 +48,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
         ///     First comparison by suit: (high to low) clubs, spades, hearts, and diamonds
         ///     Second comparison by value: (high to low) king, quen, jack, ten...two.
         /// </returns>
-        public override int CompareTo(PlayingCard card) {
+        public virtual int CompareTo(SuitPrecedencePlayingCard card) {
             if (Suit < card.Suit)
                 return -1;
             if (Suit > card.Suit)
