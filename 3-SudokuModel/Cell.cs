@@ -30,6 +30,8 @@ namespace _3_SudokuModel {
         public Cell(Board board, int id): this(board, id, null) { }
 
         /// <summary>Constructor.</summary>
+        /// <param name="board">Reference to board possessing this cell.</param>
+        /// <param name="id">Identifier for this cell.</param>
         /// <param name="values">Values for this cell to hold.</param>
         public Cell(Board board, int id, params int[] values) {
             _id = id;

@@ -27,6 +27,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3-SudokuModelAdvanced", "3-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3-SudokuTester", "3-SudokuTester\3-SudokuTester.csproj", "{6066E417-B298-4585-8F15-26D6376FFFE5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3-Sudoku-DocProject", "3-SudokuDocProject\3-Sudoku-DocProject.csproj", "{FECC7030-DA44-44D0-A89E-B7F6BF0854A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4-SudokuView-DocProject", "4-SudokuView-DocProject\4-SudokuView-DocProject.csproj", "{85DDA478-7BE0-44BD-896F-74178251C386}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5-SelectingAWinner-ConsoleApplication", "5-SelectingAWinner-ConsoleApplication\5-SelectingAWinner-ConsoleApplication.csproj", "{DB5A9D6A-329A-4F0F-A1F4-B836713AF97D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5-SelectingAWinner-WPFApplication", "5-SelectingAWinner-WPFApplication\5-SelectingAWinner-WPFApplication.csproj", "{7FAC0FE3-55A1-4D77-BF22-AE40AE901935}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -89,6 +97,22 @@ Global
 		{6066E417-B298-4585-8F15-26D6376FFFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6066E417-B298-4585-8F15-26D6376FFFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6066E417-B298-4585-8F15-26D6376FFFE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FECC7030-DA44-44D0-A89E-B7F6BF0854A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FECC7030-DA44-44D0-A89E-B7F6BF0854A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FECC7030-DA44-44D0-A89E-B7F6BF0854A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FECC7030-DA44-44D0-A89E-B7F6BF0854A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85DDA478-7BE0-44BD-896F-74178251C386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85DDA478-7BE0-44BD-896F-74178251C386}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85DDA478-7BE0-44BD-896F-74178251C386}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85DDA478-7BE0-44BD-896F-74178251C386}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB5A9D6A-329A-4F0F-A1F4-B836713AF97D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB5A9D6A-329A-4F0F-A1F4-B836713AF97D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB5A9D6A-329A-4F0F-A1F4-B836713AF97D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB5A9D6A-329A-4F0F-A1F4-B836713AF97D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FAC0FE3-55A1-4D77-BF22-AE40AE901935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FAC0FE3-55A1-4D77-BF22-AE40AE901935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FAC0FE3-55A1-4D77-BF22-AE40AE901935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FAC0FE3-55A1-4D77-BF22-AE40AE901935}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
