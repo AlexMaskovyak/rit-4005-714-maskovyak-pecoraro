@@ -24,6 +24,8 @@ namespace _3_SudokuModel {
 
         /// <summary>Constructor.</summary>
         /// <remarks>Creates a non-assignable Cell with the specified permanent value.</remarks>
+        /// <param name="board">Reference to the board possessing this cell.</param>
+        /// <param name="id">Identifier for this cell.</param>
         /// <param name="values">Value for this Cell to hold.</param>
         public ReadonlyCell(Board board, int id, int[] values) : base(board, id, values) { }
     }
