@@ -9,10 +9,17 @@ namespace _5_SelectingAWinner_ConsoleApplication
     public class Player : IView
     {
 
-// constructors
-        /// <summary>Default constructor.</summary>
-        public Player() {
+// fields
+        protected int _mCards;
 
+// constructors
+        /// <summary>Convenience constructor.</summary>
+        public Player() : this(5) { }
+
+        /// <summary>Default constructor.</summary>
+        /// <param name="mCards">Cards from which to select.</param>
+        public Player(int mCards) {
+            _mCards = mCards;
         }
 
 // IView implementation
