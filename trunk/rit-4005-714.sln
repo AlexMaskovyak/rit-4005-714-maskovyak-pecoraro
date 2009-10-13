@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4-SudokuView-DocProject", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5-SelectingAWinner-ConsoleApplication", "5-SelectingAWinner-ConsoleApplication\5-SelectingAWinner-ConsoleApplication.csproj", "{DB5A9D6A-329A-4F0F-A1F4-B836713AF97D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5-SelectingAWinner-UserControlLibrary", "5-SelectingAWinner-UserControlLibrary\5-SelectingAWinner-UserControlLibrary.csproj", "{67081C3C-130A-45E0-9B30-C50FF2F90F40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5-SelectingAWinner-WPFApplication", "5-SelectingAWinner-WPFApplication\5-SelectingAWinner-WPFApplication.csproj", "{FABEA89E-231A-47AB-A21D-AD3CE7F8025F}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -107,6 +111,14 @@ Global
 		{DB5A9D6A-329A-4F0F-A1F4-B836713AF97D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB5A9D6A-329A-4F0F-A1F4-B836713AF97D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB5A9D6A-329A-4F0F-A1F4-B836713AF97D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67081C3C-130A-45E0-9B30-C50FF2F90F40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67081C3C-130A-45E0-9B30-C50FF2F90F40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67081C3C-130A-45E0-9B30-C50FF2F90F40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67081C3C-130A-45E0-9B30-C50FF2F90F40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FABEA89E-231A-47AB-A21D-AD3CE7F8025F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FABEA89E-231A-47AB-A21D-AD3CE7F8025F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FABEA89E-231A-47AB-A21D-AD3CE7F8025F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FABEA89E-231A-47AB-A21D-AD3CE7F8025F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using _1_Poker;
+using _2_PokerPuzzle;
+
 namespace _5_SelectingAWinner_ConsoleApplication
 {
     /// <summary> implements IReferee for use with IView and random card selection game. </summary>
@@ -23,17 +26,41 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <param name="maxPlayers"> maximum number of players to allow for a game. </param>
         public Referee(int cards, int maxPlayers) : base(cards, maxPlayers, (int)DateTime.Now.Ticks) { }
 
-// functionality
+// methods
 
         /// <summary> provides main logic for holding a game. </summary>
         protected override void GameLoop() {
+            // shuffle the cards and select the first m cards
+            List<PlayingCard> cards = 
+                _deck.Shuffle().Take(_cards).ToList<PlayingCard>();
+
+            // ensure that all players are ready
             foreach(IView player in Players()) {
                 player.Ready();
             }
 
-            foreach (IView player in Players()) {
-                player.Choose();
+            // obtain every player's chosen card index
+            // tell all players which card was selected
+            foreach(IView player in Players()) {
+                int index = player.Choose();
+                // ensure it is in range
+                if( index < 0 || index > cards.Count ) {
+                    throw new IndexOutOfRangeException(
+                        String.Format(
+                            "A card was selected outside of the range of accepted values: 0 through {1}", cards.Count ) );
+                }
+                // ensure that it hasn't been selected
+
+
+                // tell everyone the result
+                //player.Tell(index
             }
+
+            foreach(IView player in Players())
+            {
+                //player.Winner();
+            }
+            
             throw new NotImplementedException();
         }
 

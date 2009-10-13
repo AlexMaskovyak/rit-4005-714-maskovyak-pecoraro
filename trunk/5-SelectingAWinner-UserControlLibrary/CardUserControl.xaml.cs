@@ -14,32 +14,57 @@ using System.Windows.Shapes;
 
 namespace _5_SelectingAWinner_UserControlLibrary
 {
-    /// <summary>Controls for user interaction with a flippable card.</summary>
+    /// <summary> controls for user interaction with a flippable card.</summary>
     public partial class CardUserControl : UserControl
     {
+// events
 
-        protected Image _back;
-        protected Image _front;
+        
+// fields
 
         /// <summary> image to display on the front of the card. </summary>
-        public Image Front {
+        protected Image _front;
+        /// <summary> image to display on the back of the card. </summary>
+        protected Image _back;
+
+        /// <summary> specifies whether the card has been flipped to reveal its value. </summary>
+        protected bool _revealed;
+
+// properties
+
+        /// <summary> image to display on the front of the card. </summary>
+        public virtual Image Front {
             get { return _front;  }
-            set { _front = value;  }
+            set { _front = _back;  }
         }
 
         /// <summary> image to display on the back of the card. </summary>
-        public Image Back {
+        public virtual Image Back {
             get { return _back; }
-            set { _back = value; }
+            set { _back = _front; }
         }
 
+        /// <summary> specifies whether the card has been flipped to reveal its face. </summary>
+        public virtual bool Revealed {
+            get { return _revealed;  }
+            set { _revealed = value;  }
+        }
 
-        public CardUserControl()
-        {
+// constructors
+
+        /// <summary> default constructor. </summary>
+        /// <param name="frontImageUri"> uri for the front of the card. </param>
+        /// <param name="backImageUri"> uri for the back of the card. </param>
+        public CardUserControl(Uri frontImageUri, Uri backImageUri) {
+            _back = new Image();
+            _back.Source = new BitmapImage(backImageUri);
+            _back.Effect = null;
+            _front = new Image();
+            _front.Source = new BitmapImage(frontImageUri);
+            _front.Effect = null;
             InitializeComponent();
         }
 
-// Properties
 
     }
 }
