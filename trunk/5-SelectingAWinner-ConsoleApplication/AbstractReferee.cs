@@ -9,11 +9,10 @@ using _2_PokerPuzzle;
 namespace _5_SelectingAWinner_ConsoleApplication
 {
     /// <summary>Runs one or more rounds of the Random selection game.</summary>
-    public abstract class AbstractReferee : IReferee<IView>
+    public abstract class AbstractReferee<T> : IReferee<T>
     {
 
 // fields
-
         /// <summary> cell holding player's ready state. </summary>
         protected Cell<bool> _readyCell;
 
@@ -30,7 +29,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
         protected int _maxPlayers;
 
         /// <summary> players for this referee. </summary>
-        protected List<IView> _players;
+        protected List<T> _players;
 
 // constructors
 
@@ -41,16 +40,19 @@ namespace _5_SelectingAWinner_ConsoleApplication
         public AbstractReferee(int cards, int maxPlayers, int seed) {
             _cards = cards;
             _maxPlayers = maxPlayers;
+            _players = new List<T>(_maxPlayers);
 
             _deck = new Deck();
             _deck.Shuffle(seed);
+
+
         }
 
 // IReferee interface
 
         /// <summary> joins a player to this game. </summary>
         /// <param name="player"> player to add. </param>
-        public virtual void Join(IView player) {
+        public virtual void Join(T player) {
             if (_players.Count == _maxPlayers) {
                 throw new InvalidOperationException("This referee has reached the maximum number of players.");
             }
@@ -59,14 +61,14 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
         /// <summary> remove a player from this game. </summary>
         /// <param name="player"> player to remove. </param>
-        public virtual void Leave(IView player) {
+        public virtual void Leave(T player) {
             _players.Remove(player);
         }
 
         /// <summary> obtain the players for which this Referee is gamekeeping. </summary>
         /// <returns> players in this game. </returns>
-        public virtual IEnumerable<IView> Players() {
-            return (IEnumerable<IView>)_players;
+        public virtual IEnumerable<T> Players() {
+            return (IEnumerable<T>)_players;
         }
 
         /// <summary> begins game-playing. </summary>
@@ -76,8 +78,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
 // overrideable game logic
 
+        /// <summary> implements main game playing logic, must be overridden. </summary>
         protected abstract void GameLoop();
-
-
     }
 }
