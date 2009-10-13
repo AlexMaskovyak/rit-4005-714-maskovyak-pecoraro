@@ -47,8 +47,17 @@ namespace _2_PokerPuzzle
         /// </summary>
         /// <returns>Enerator for the newly shuffled deck.</returns>
         public IEnumerable<PlayingCard> Shuffle() {
-            Random rng = new Random(); // default constructor automatically uses system time as a seed
-            for(int i = Deck.DECK_SIZE - 1; i > 0; --i ) {
+            return Shuffle((int)DateTime.Now.Ticks);
+        }
+
+        /// <summary> shuffles the PlayingCard s in this deck using Knuth's algorithm.</summary>
+        /// <param name="seed"> seed to use for predictable testing of shuffle. </param>
+        /// <returns> enumerator for the newly shuffled deck.</returns>
+        public IEnumerable<PlayingCard> Shuffle(int seed)
+        {
+            Random rng = new Random(seed); // default constructor automatically uses system time as a seed
+            for (int i = Deck.DECK_SIZE - 1; i > 0; --i)
+            {
                 int randomNumber = rng.Next(i);
                 PlayingCard temp = _playingCards[i];
                 _playingCards[i] = _playingCards[randomNumber];
