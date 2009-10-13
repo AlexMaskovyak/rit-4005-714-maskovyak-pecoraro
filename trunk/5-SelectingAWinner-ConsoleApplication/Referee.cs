@@ -111,7 +111,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
             // create players
             foreach( var selection in playerIndexSelections ) {
-                referee.Join(new Player());
+                referee.Join(new SimplePlayer());
             }
         }
     }
