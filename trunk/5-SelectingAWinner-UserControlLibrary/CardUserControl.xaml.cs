@@ -23,15 +23,14 @@ namespace _5_SelectingAWinner_UserControlLibrary
     {
 
 // events
-        /// <summary> fired when a card has been selected and flipped. </summary>
+
+        /// <summary> fired when a card has been selected and flipped to show its face. </summary>
         public event CardFlippedEventHandler OnFlip;
+
+        /// <summary> fired when a card has been selected and flipped to show its back. </summary>
+        public event CardFlippedEventHandler OnHide;
         
 // fields
-
-        /// <summary> image to display on the front of the card. </summary>
-        protected Image _front;
-        /// <summary> image to display on the back of the card. </summary>
-        protected Image _back;
 
         /// <summary> specifies whether the card has been flipped to reveal its value. </summary>
         protected bool _revealed;
@@ -39,21 +38,26 @@ namespace _5_SelectingAWinner_UserControlLibrary
 // properties
 
         /// <summary> image to display on the front of the card. </summary>
-        public virtual Image Front {
-            get { return _front;  }
-            set { _front = value; }
+        public virtual Uri Front {
+            set { imgFront.Source = new BitmapImage(value); }
         }
 
         /// <summary> image to display on the back of the card. </summary>
-        public virtual Image Back {
-            get { return _back; }
-            set { _back = value; }
+        public virtual Uri Back {
+            set { imgBack.Source = new BitmapImage(value); }
         }
 
         /// <summary> specifies whether the card has been flipped to reveal its face. </summary>
+        /// <remarks> setting will flip the card accordingly. </remarks>
         public virtual bool Revealed {
             get { return _revealed;  }
-            set { _revealed = value;  }
+            set {
+                if (_revealed != value) {
+                    _revealed = value;
+                    imgBack.Visibility = (imgBack.Visibility == Visibility.Hidden ? Visibility.Visible : Visibility.Hidden);
+                    imgFront.Visibility = (imgFront.Visibility == Visibility.Hidden ? Visibility.Visible : Visibility.Hidden);
+                }
+            }
         }
 
 // constructors
@@ -61,16 +65,9 @@ namespace _5_SelectingAWinner_UserControlLibrary
         /// <summary> default constructor. </summary>
         /// <param name="frontImageUri"> uri for the front of the card. </param>
         /// <param name="backImageUri"> uri for the back of the card. </param>
-        public CardUserControl(Uri frontImageUri, Uri backImageUri) {
+        public CardUserControl(Uri backImageUri) {
             InitializeComponent();
-
-            _back = new Image();
-            _back.Source = new BitmapImage(backImageUri);
-            _back.Effect = null;
-            _front = new Image();
-            _front.Source = new BitmapImage(frontImageUri);
-            _front.Effect = null;
-
+            imgBack.Source = new BitmapImage(backImageUri);
             this.MouseUp += new MouseButtonEventHandler(OnClick);
         }
 
@@ -81,11 +78,10 @@ namespace _5_SelectingAWinner_UserControlLibrary
         /// <param name="sender"> default sender. </param>
         /// <param name="e"> default event arguments. </param>
         public virtual void OnClick(System.Object sender, MouseButtonEventArgs e) {
-            if(!Revealed) {
-                Image temp = Front;
-                Front = Back;
-                Back = temp;
-                OnFlip(this);
+            if (!Revealed) {
+                if (OnFlip != null) OnFlip(this);
+            } else {
+                if (OnHide != null) OnHide(this);
             }
         }
 

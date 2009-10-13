@@ -14,12 +14,12 @@ using System.Windows.Shapes;
 using _5_SelectingAWinner_UserControlLibrary;
 using _5_SelectingAWinner_ConsoleApplication;
 
-namespace _5_SelectingAWinner_WPFApplication {
-
+namespace _5_SelectingAWinner_GUIApplication {
+    
     /// <summary> Interaction logic for CardGameViewWindow.xaml </summary>
     public partial class CardGameViewWindow : Window, IView {
 
-        // fields
+// fields
 
         /// <summary> cell holding player's ready state. </summary>
         protected Cell<bool> _readyCell;
@@ -39,7 +39,7 @@ namespace _5_SelectingAWinner_WPFApplication {
         /// <summary> wether or not its this players turn to choose a card </summary>
         protected bool _isMyTurn = false;
 
-        // constructors
+// constructors
 
         /// <summary> convenience constructor </summary>
         public CardGameViewWindow() : this(5, "http://www.cs.rit.edu/~ats/cs-2009-1/2/Release/images/") { }
@@ -59,7 +59,7 @@ namespace _5_SelectingAWinner_WPFApplication {
             InitializeUI();
         }
 
-        // UI Builders
+// UI Builders
 
         /// <summary> build the UI </summary>
         protected virtual void InitializeUI() {
@@ -108,8 +108,8 @@ namespace _5_SelectingAWinner_WPFApplication {
             lblStatus.Visibility = Visibility.Hidden;
         }
 
-        // IView implementation
-        // NOTE: Referee Thread enters each of these
+// IView implementation
+// NOTE: Referee Thread enters each of these
 
         /// <summary> return <c>0..m-1</c>, index of chosen (and unexposed) card. </summary>
         public virtual int Choose() {
@@ -145,7 +145,7 @@ namespace _5_SelectingAWinner_WPFApplication {
             //throw new NotImplementedException();
         }
 
-        // handlers
+// handlers
 
         /// <summary> handles new button clicks signifying the start of a new game. </summary>
         /// <param name="sender"> object which initiated this method call. </param>
@@ -163,6 +163,6 @@ namespace _5_SelectingAWinner_WPFApplication {
                 _chooseCell.Value = (int)sender.Tag;
             }
         }
-
+        
     }
 }

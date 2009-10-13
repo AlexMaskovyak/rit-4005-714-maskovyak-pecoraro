@@ -13,7 +13,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
         private T content;
 
         /// <summary> state of <c>content</c>. </summary>
-        private bool full;
+        private bool full = false;
 
         /// <summary> thread-safe access to <c>content</c>. </summary>
         public T Value {
