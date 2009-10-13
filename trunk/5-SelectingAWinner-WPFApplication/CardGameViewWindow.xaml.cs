@@ -32,6 +32,9 @@ namespace _5_SelectingAWinner_WPFApplication
 // constructors
 
         public CardGameViewWindow() {
+            _readyCell = new Cell<bool>();
+            _chooseCell = new Cell<int>();
+
             InitializeComponent();
         }
 
@@ -59,6 +62,24 @@ namespace _5_SelectingAWinner_WPFApplication
         public void Ready()
         {
             throw new NotImplementedException();
+        }
+
+// handlers
+
+        // Window View Handlers
+
+        /// <summary> handles new button clicks signifying the start of a new game. </summary>
+        /// <param name="sender"> object which initiated this method call. </param>
+        /// <param name="e"> event which caused this call. </param>
+        protected virtual void New_Clicked(System.Object sender, EventArgs e) {
+            _readyCell.Value = true;
+        }
+
+        /// <summary> handles a card being selected. </summary>
+        /// <param name="sender"> object which initiated this method call. </param>
+        /// <param name="e"> event which caused this call. </param>
+        protected virtual void Card_Clicked(System.Object sender, EventArgs e) {
+            _chooseCell.Value = (int)((UserControl)sender).Tag;
         }
     }
 }

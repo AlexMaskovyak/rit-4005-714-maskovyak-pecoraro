@@ -9,8 +9,7 @@ using _2_PokerPuzzle;
 namespace _5_SelectingAWinner_ConsoleApplication
 {
     /// <summary> implements IReferee for use with IView and random card selection game. </summary>
-    public class Referee : AbstractReferee<IView>
-    {
+    public class Referee : AbstractReferee<IView> {
 
 // constructors 
 
@@ -39,6 +38,9 @@ namespace _5_SelectingAWinner_ConsoleApplication
                 player.Ready();
             }
 
+            PlayingCard bestCard = null;    // hold the current best card
+            IView bestPlayer = null;        // the player with the best card selected so far
+
             // obtain every player's chosen card index
             // tell all players which card was selected
             foreach(IView player in Players()) {
@@ -50,15 +52,16 @@ namespace _5_SelectingAWinner_ConsoleApplication
                             "A card was selected outside of the range of accepted values: 0 through {1}", cards.Count ) );
                 }
                 // ensure that it hasn't been selected
-
+                // throw new ArgumentException("Invalid index selected.  Only non-selected cards my be chosen.");
+                // mark the selection
 
                 // tell everyone the result
                 //player.Tell(index
             }
 
-            foreach(IView player in Players())
-            {
-                //player.Winner();
+            // inform everyone of the result
+            foreach(IView player in Players()) {
+                player.Winner( player == bestPlayer );
             }
             
             throw new NotImplementedException();
