@@ -10,14 +10,13 @@ namespace _5_SelectingAWinner_ConsoleApplication
     {
 
 // fields
-        /// <summary>
-        /// 
-        /// </summary>
-        protected int _indexToSelect;
+
+        /// <summary>Unchanging index to select.</summary>
+        protected readonly int _indexToSelect;
 
 // constructors
         /// <summary>Convenience constructor.</summary>
-        public SimplePlayer() : this(5) { }
+        public SimplePlayer() : this(0) { }
 
         /// <summary>Default constructor.</summary>
         /// <param name="indexToSelect">Cards from which to select.</param>
@@ -34,12 +33,12 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
         /// <summary> find out about a chosen card. </summary>
         public void Tell(int index, int suit, int value) {
-            throw new NotImplementedException();
+            Console.WriteLine("I was told: {0} {1} {2}", index, suit, value);
         }
 
         /// <summary> find out about a round's outcome. </summary>
         public void Winner(bool yes) {
-            throw new NotImplementedException();
+            Console.WriteLine((yes) ? "Winner" : "Loser");
         }
 
         /// <summary> return once view is ready for a new round. </summary>

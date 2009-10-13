@@ -62,7 +62,7 @@ namespace _5_SelectingAWinner_UserControlLibrary
         /// <param name="frontImageUri"> uri for the front of the card. </param>
         /// <param name="backImageUri"> uri for the back of the card. </param>
         public CardUserControl(Uri frontImageUri, Uri backImageUri) {
-            InitializeComponent(); 
+            InitializeComponent();
 
             _back = new Image();
             _back.Source = new BitmapImage(backImageUri);
@@ -85,8 +85,9 @@ namespace _5_SelectingAWinner_UserControlLibrary
                 Image temp = Front;
                 Front = Back;
                 Back = temp;
-                OnFlip();
+                OnFlip(this);
             }
         }
+
     }
 }

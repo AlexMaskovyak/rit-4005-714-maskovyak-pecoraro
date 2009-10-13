@@ -56,8 +56,16 @@ namespace _5_SelectingAWinner_ConsoleApplication
             _maxPlayers = maxPlayers;
             _players = new List<T>(_maxPlayers);
 
-            _deck = new SuitPrecedenceDeck();
+            _deck = CreateDeck();
             _deck.Shuffle(seed);
+        }
+
+// Factory Methods
+
+        /// <summary> factory method to create a Deck </summary>
+        /// <returns> a new Deck </returns>
+        protected Deck CreateDeck() {
+            return new SuitPrecedenceDeck();
         }
 
 // IReferee interface
@@ -79,8 +87,8 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
         /// <summary> obtain the players for which this Referee is gamekeeping. </summary>
         /// <returns> players in this game. </returns>
-        public virtual IEnumerable<T> Players() {
-            return (IEnumerable<T>)_players;
+        public virtual IEnumerable<T> Players {
+            get { return (IEnumerable<T>)_players; }
         }
 
         /// <summary> begins game-playing. </summary>

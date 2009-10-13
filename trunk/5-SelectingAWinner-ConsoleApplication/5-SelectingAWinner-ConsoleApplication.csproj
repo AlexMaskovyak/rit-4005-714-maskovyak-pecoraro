@@ -16,6 +16,7 @@
     <SccLocalPath>Svn</SccLocalPath>
     <SccAuxPath>Svn</SccAuxPath>
     <SccProvider>SubversionScc</SccProvider>
+    <StartupObject>_5_SelectingAWinner_ConsoleApplication.Referee</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,14 +37,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="1-Poker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\1-Poker\bin\Debug\1-Poker.exe</HintPath>
-    </Reference>
-    <Reference Include="2-PokerPuzzle, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\2-PokerPuzzle\bin\Debug\2-PokerPuzzle.exe</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -68,6 +61,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Referee.cs" />
     <Compile Include="SuitPrecedencePlayingCard.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\1-Poker\1-Poker.csproj">
+      <Project>{76B57DAB-58CC-4EA7-90FC-2E828F95AFC7}</Project>
+      <Name>1-Poker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\2-PokerPuzzle\2-PokerPuzzle.csproj">
+      <Project>{B2E62CDC-B3A6-4F15-BBBF-AA2575026A4D}</Project>
+      <Name>2-PokerPuzzle</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
