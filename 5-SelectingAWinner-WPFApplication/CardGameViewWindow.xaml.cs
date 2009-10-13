@@ -103,19 +103,14 @@ namespace _5_SelectingAWinner_WPFApplication {
             Width = leftMargin + 40.0;
             ResetUI();
 
-            
-
         }
 
         /// <summary> reset the UI </summary>
         protected virtual void ResetUI() {
-
-            // Cards show their Back
             foreach (CardUserControl card in _cards) {
                 card.Revealed = false;
+                card.Highlighted = false;
             }
-
-            // Disable / Hide / Show Appropriately
             ShowStatus(WaitingStatus);
             btnNew.IsEnabled = false;
 
@@ -141,15 +136,17 @@ namespace _5_SelectingAWinner_WPFApplication {
 
             // Enable Selection
             _isMyTurn = true;
-            lblStatus.Dispatcher.Invoke(new Action(delegate {
-                ShowStatus(ChooseStatus);
-            }));
+            lblStatus.Dispatcher.Invoke(new Action(delegate { ShowStatus(ChooseStatus); }));
 
             // Referee Thread Wait on Value
             int selection = _chooseCell.Value;
 
             // Disable Selection and return
             _isMyTurn = false;
+            lblStatus.Dispatcher.Invoke(new Action(delegate {
+                ShowStatus(WaitingStatus);
+                _cards[selection].Highlighted = true;
+            }));
             return selection;
 
         }

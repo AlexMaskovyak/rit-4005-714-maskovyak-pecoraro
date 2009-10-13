@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Media.Effects;
 
 namespace _5_SelectingAWinner_UserControlLibrary
 {
@@ -19,8 +20,7 @@ namespace _5_SelectingAWinner_UserControlLibrary
     public delegate void CardFlippedEventHandler( CardUserControl c );
 
     /// <summary> controls for user interaction with a flippable card.</summary>
-    public partial class CardUserControl : UserControl
-    {
+    public partial class CardUserControl : UserControl {
 
 // events
 
@@ -33,7 +33,10 @@ namespace _5_SelectingAWinner_UserControlLibrary
 // fields
 
         /// <summary> specifies whether the card has been flipped to reveal its value. </summary>
-        protected bool _revealed;
+        protected bool _revealed = false;
+
+        /// <summary> highlighted or not </summary>
+        protected bool _highlighted = false;
 
 // properties
 
@@ -57,6 +60,34 @@ namespace _5_SelectingAWinner_UserControlLibrary
                     imgBack.Visibility = (imgBack.Visibility == Visibility.Hidden ? Visibility.Visible : Visibility.Hidden);
                     imgFront.Visibility = (imgFront.Visibility == Visibility.Hidden ? Visibility.Visible : Visibility.Hidden);
                 }
+            }
+        }
+
+        /// <summary> add a simple highlight effect to the control </summary>
+        public virtual bool Highlighted {
+            get { return _highlighted; }
+            set {
+                _highlighted = value;
+                if (!value) {
+                    this.Effect = null;
+                    return;
+                }
+
+                // Red Color
+                Color color = new Color();
+                color.ScA = 1;
+                color.ScB = 0;
+                color.ScG = 0;
+                color.ScR = 2;
+
+                // Drop Shadow
+                DropShadowEffect drop = new DropShadowEffect();
+                drop.Color = color;
+                drop.Opacity = 0.5;
+                drop.ShadowDepth = 10;
+                drop.Direction = 320;
+
+                this.Effect = drop;
             }
         }
 

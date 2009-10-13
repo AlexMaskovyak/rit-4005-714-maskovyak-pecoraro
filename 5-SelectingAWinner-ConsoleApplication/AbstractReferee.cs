@@ -8,33 +8,11 @@ using _2_PokerPuzzle;
 
 namespace _5_SelectingAWinner_ConsoleApplication
 {
-    /// <summary> deck of SuitPrecedencePlayingCards. </summary>
-    public class SuitPrecedenceDeck : Deck {
-        /// <summary> default constructor. </summary>
-        public SuitPrecedenceDeck() : base() { }
-
-        /// <summary> overrides creation of PlayingCard objects to created SuitPrecedencePlayingCard objects. </summary>
-        protected override void CreatePlayingCards() {
-            int index = 0;
-            foreach (SuitPrecedencePlayingCard.Suits suit in Enum.GetValues(typeof(SuitPrecedencePlayingCard.Suits))) {
-                foreach (SuitPrecedencePlayingCard.Ranks rank in Enum.GetValues(typeof(SuitPrecedencePlayingCard.Ranks))) {
-                    if (rank == SuitPrecedencePlayingCard.Ranks.NAR) { continue; }
-                    _playingCards[index++] = new SuitPrecedencePlayingCard(rank, suit);
-                }
-            }
-        }
-    }
 
     /// <summary> runs one or more rounds of the random card selection game. </summary>
-    public abstract class AbstractReferee<T> : IReferee<T>
-    {
+    public abstract class AbstractReferee<T> : IReferee<T> {
 
 // fields
-        /// <summary> deck of cards. </summary>
-        protected Deck _deck;
-
-        /// <summary> number of cards. </summary>
-        protected int _cards;
 
         /// <summary> maximum number of players. </summary>
         protected int _maxPlayers;
@@ -52,20 +30,8 @@ namespace _5_SelectingAWinner_ConsoleApplication
             if( cards < maxPlayers ) {
                 throw new ArgumentException("The maximum number of players must be less than or equal to the number of cards in the game.");
             }
-            _cards = cards;
             _maxPlayers = maxPlayers;
             _players = new List<T>(_maxPlayers);
-
-            _deck = CreateDeck();
-            _deck.Shuffle(seed);
-        }
-
-// Factory Methods
-
-        /// <summary> factory method to create a Deck </summary>
-        /// <returns> a new Deck </returns>
-        protected Deck CreateDeck() {
-            return new SuitPrecedenceDeck();
         }
 
 // IReferee interface
