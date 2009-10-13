@@ -82,7 +82,6 @@ namespace _5_SelectingAWinner_WPFApplication {
                 }));
                 t.SetApartmentState(System.Threading.ApartmentState.STA);
                 t.Start();
-                //Thread.Sleep(50);
             }
             
         }
