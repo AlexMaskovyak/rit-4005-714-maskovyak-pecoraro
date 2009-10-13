@@ -19,6 +19,13 @@ namespace _5_SelectingAWinner_WPFApplication {
     /// <summary> Interaction logic for CardGameViewWindow.xaml </summary>
     public partial class CardGameViewWindow : Window, IView {
 
+// constants
+
+        protected const string ChooseStatus = "Choose a Card";
+        protected const string WaitingStatus = "Waiting For Other Players...";
+        protected const string WinStatus = "You Won!";
+        protected const string LoseStatus = "Sorry, You Lost.";
+
 // fields
 
         /// <summary> cell holding player's ready state. </summary>
@@ -109,7 +116,7 @@ namespace _5_SelectingAWinner_WPFApplication {
             }
 
             // Disable / Hide / Show Appropriately
-            ShowStatus("Waiting for other Players.");
+            ShowStatus(WaitingStatus);
             btnNew.IsEnabled = false;
 
         }
@@ -135,7 +142,7 @@ namespace _5_SelectingAWinner_WPFApplication {
             // Enable Selection
             _isMyTurn = true;
             lblStatus.Dispatcher.Invoke(new Action(delegate {
-                ShowStatus("Choose a Card");
+                ShowStatus(ChooseStatus);
             }));
 
             // Referee Thread Wait on Value
@@ -159,7 +166,7 @@ namespace _5_SelectingAWinner_WPFApplication {
         /// <summary> find out about a round's outcome. </summary>
         public virtual void Winner(bool yes) {
             lblStatus.Dispatcher.Invoke(new Action(delegate {
-                ShowStatus( (yes ? "You Won!" : "Sorry, You Lost.") );
+                ShowStatus( (yes ? WinStatus : LoseStatus) );
                 btnNew.IsEnabled = true;
             }));
         }
@@ -177,7 +184,7 @@ namespace _5_SelectingAWinner_WPFApplication {
         /// <summary> handles new button clicks signifying the start of a new game. </summary>
         /// <param name="sender"> object which initiated this method call. </param>
         /// <param name="e"> event which caused this call. </param>
-        private void New_Clicked(object sender, RoutedEventArgs e) {
+        protected void New_Clicked(object sender, RoutedEventArgs e) {
             _readyCell.Value = true;
             ResetUI();
         }

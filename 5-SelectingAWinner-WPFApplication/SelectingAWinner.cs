@@ -102,24 +102,22 @@ namespace _5_SelectingAWinner_WPFApplication {
         [System.STAThreadAttribute()]
         public static void Main(string[] args) {
 
-            // TODO: Remove this, it is helper debug code
-            // ----------
-            if (args.Length == 0) {
+            // Debug Mode: 1 command line argument "debug"
+            if (args.Length == 1 && args[0] == "debug") {
                 args = new string[] { "5", "2", "http://www.cs.rit.edu/~ats/cs-2009-1/2/Release/images/", "1" };
             }
-            // ----------
 
             // Usage
             if (args == null || args.Length < 2) {
-                Console.WriteLine("usage: SelectingAWinner <numCards> <numPlayers> <imageURI> [ <seed> ]");
+                Console.WriteLine("usage: SelectingAWinner <numCards> <numPlayers> [ <imageURI> <seed> ]");
                 Environment.Exit(1);
             }
 
             // Arguments
             int numCards = int.Parse(args[0]);
             int numPlayers = int.Parse(args[1]);
-            string imageURI = args[2];
-            int seed = (args.Length == 4) ? int.Parse(args[3]) : (int)DateTime.Now.Ticks;
+            string imageURI = (args.Length > 2) ? args[2] : "http://www.cs.rit.edu/~ats/cs-2009-1/2/Release/images/";
+            int seed = (args.Length > 3) ? int.Parse(args[3]) : (int)DateTime.Now.Ticks;
 
             // Launch the Driver
             SelectingAWinner driver = new SelectingAWinner(numCards, numPlayers, imageURI, seed);
