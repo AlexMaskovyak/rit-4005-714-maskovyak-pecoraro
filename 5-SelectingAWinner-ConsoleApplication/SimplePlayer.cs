@@ -5,28 +5,31 @@ using System.Text;
 
 namespace _5_SelectingAWinner_ConsoleApplication
 {
-    /// <summary>Players play some manner of game.</summary>
-    public class Player : IView
+    /// <summary> simple player has a pre-determined index to select in a single round game with Referee. </summary>
+    public class SimplePlayer : IView
     {
 
 // fields
-        protected int _mCards;
+        /// <summary>
+        /// 
+        /// </summary>
+        protected int _indexToSelect;
 
 // constructors
         /// <summary>Convenience constructor.</summary>
-        public Player() : this(5) { }
+        public SimplePlayer() : this(5) { }
 
         /// <summary>Default constructor.</summary>
-        /// <param name="mCards">Cards from which to select.</param>
-        public Player(int mCards) {
-            _mCards = mCards;
+        /// <param name="indexToSelect">Cards from which to select.</param>
+        public SimplePlayer(int indexToSelect) {
+            _indexToSelect = indexToSelect;
         }
 
 // IView implementation
 
         /// <summary> return <c>0..m-1</c>, index of chosen (and unexposed) card. </summary>
         public int Choose() {
-            throw new NotImplementedException();
+            return _indexToSelect;
         }
 
         /// <summary> find out about a chosen card. </summary>
@@ -41,7 +44,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
         /// <summary> return once view is ready for a new round. </summary>
         public void Ready() {
-            throw new NotImplementedException();
+            return;
         }
     }
 }
