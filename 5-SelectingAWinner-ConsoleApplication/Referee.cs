@@ -46,54 +46,53 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
         /// <summary> provides main logic for holding a game. </summary>
         protected override void GameLoop() {
+            while (true) {
 
-            // shuffle the cards and select the first m cards
-            _gameCards.Clear();
-            _gameCards.AddRange(_deck.Shuffle().Take(_cards));
-            _selectedIndices.Clear();
+                // shuffle the cards and select the first m cards
+                _gameCards.Clear();
+                _gameCards.AddRange(_deck.Shuffle().Take(_cards));
+                _selectedIndices.Clear();
 
-            PlayingCard bestCard = null;  // hold the current best card
-            IView winningPlayer = null;   // the player with the best card selected so far
+                PlayingCard bestCard = null;  // hold the current best card
+                IView winningPlayer = null;   // the player with the best card selected so far
 
-            // ensure that all players are ready
-            foreach(IView player in Players) {
-                player.Ready();
-                Console.WriteLine("ready");
-            }
-
-            Console.WriteLine("all ready");
-
-            // obtain every player's chosen card index
-            // tell all players which card was selected
-            foreach(IView player in Players) {
-                int index = player.Choose();
-                // ensure it is in range
-                if( index < 0 || index > (_gameCards.Count - 1) ) {
-                    throw new IndexOutOfRangeException(
-                        String.Format("A card was selected outside of the range of accepted values: 0 through {1}", _gameCards.Count));
+                // ensure that all players are ready
+                foreach (IView player in Players) {
+                    player.Ready();
                 }
 
-                // ensure that it hasn't been selected, and add it to the selected list
-                if (!_selectedIndices.Add(index)){
-                    throw new ArgumentException("Invalid index selected.  Only non-selected cards my be chosen.");
+                // obtain every player's chosen card index
+                // tell all players which card was selected
+                foreach (IView player in Players) {
+                    int index = player.Choose();
+                    // ensure it is in range
+                    if (index < 0 || index > (_gameCards.Count - 1)) {
+                        throw new IndexOutOfRangeException(
+                            String.Format("A card was selected outside of the range of accepted values: 0 through {1}", _gameCards.Count));
+                    }
+
+                    // ensure that it hasn't been selected, and add it to the selected list
+                    if (!_selectedIndices.Add(index)) {
+                        throw new ArgumentException("Invalid index selected.  Only non-selected cards my be chosen.");
+                    }
+
+                    // compute new best card and player
+                    PlayingCard selectedCard = _gameCards.ElementAt(index);
+                    if (bestCard == null || bestCard.CompareTo(selectedCard) > 0) {
+                        bestCard = selectedCard;
+                        winningPlayer = player;
+                    }
+
+                    // tell everyone the result
+                    foreach (IView toInform in Players) {
+                        toInform.Tell(index, (int)selectedCard.Suit, (int)selectedCard.Rank);
+                    }
                 }
 
-                // compute new best card and player
-                PlayingCard selectedCard = _gameCards.ElementAt(index);
-                if (bestCard == null || bestCard.CompareTo(selectedCard) > 0) {
-                    bestCard = selectedCard;
-                    winningPlayer = player;
+                // inform everyone of the result
+                foreach (IView player in Players) {
+                    player.Winner(player == winningPlayer);
                 }
-
-                // tell everyone the result
-                foreach(IView toInform in Players) {
-                    toInform.Tell(index, (int)selectedCard.Suit, (int)selectedCard.Rank);
-                }
-            }
-
-            // inform everyone of the result
-            foreach(IView player in Players) {
-                player.Winner( player == winningPlayer );
             }
         }
 

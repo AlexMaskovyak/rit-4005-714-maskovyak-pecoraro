@@ -67,6 +67,7 @@
     <Compile Include="CardGameViewWindow.xaml.cs">
       <DependentUpon>CardGameViewWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PlayingCardCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -98,6 +99,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\1-Poker\1-Poker.csproj">
+      <Project>{76B57DAB-58CC-4EA7-90FC-2E828F95AFC7}</Project>
+      <Name>1-Poker</Name>
+    </ProjectReference>
     <ProjectReference Include="..\5-SelectingAWinner-ConsoleApplication\5-SelectingAWinner-ConsoleApplication.csproj">
       <Project>{DB5A9D6A-329A-4F0F-A1F4-B836713AF97D}</Project>
       <Name>5-SelectingAWinner-ConsoleApplication</Name>

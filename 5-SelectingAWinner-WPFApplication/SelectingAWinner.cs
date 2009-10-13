@@ -19,7 +19,7 @@ using _5_SelectingAWinner_ConsoleApplication;
 namespace _5_SelectingAWinner_WPFApplication {
 
     /// <summary> driver program </summary>
-    class SelectingAWinner {
+    public class SelectingAWinner {
 
         /// <summary> number of cards in the game </summary>
         protected int _numCards;
@@ -87,11 +87,13 @@ namespace _5_SelectingAWinner_WPFApplication {
         }
 
         /// <summary> Only start once all the Views have Joined the Referee</summary>
-        protected void TriggerStart() {
+        protected virtual void TriggerStart() {
             lock (monitor) {
                 _created++;
                 if (_created == _numPlayers) {
-                    new Thread(new ThreadStart(delegate { _referee.Start(); })).Start();
+                    Thread t = new Thread(new ThreadStart(delegate { _referee.Start(); }));
+                    t.IsBackground = true; // Referee has no GUI, allow the application to close if all GUIs are closed
+                    t.Start();
                 }
             }
         }

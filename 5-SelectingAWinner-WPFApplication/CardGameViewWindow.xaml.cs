@@ -19,7 +19,7 @@ namespace _5_SelectingAWinner_WPFApplication {
     /// <summary> Interaction logic for CardGameViewWindow.xaml </summary>
     public partial class CardGameViewWindow : Window, IView {
 
-        // fields
+// fields
 
         /// <summary> cell holding player's ready state. </summary>
         protected Cell<bool> _readyCell;
@@ -39,7 +39,10 @@ namespace _5_SelectingAWinner_WPFApplication {
         /// <summary> wether or not its this players turn to choose a card </summary>
         protected bool _isMyTurn = false;
 
-        // constructors
+        /// <summary> cache for the cards </summary>
+        protected PlayingCardCache _cache;
+
+// constructors
 
         /// <summary> convenience constructor </summary>
         public CardGameViewWindow() : this(5, "http://www.cs.rit.edu/~ats/cs-2009-1/2/Release/images/") { }
@@ -54,20 +57,22 @@ namespace _5_SelectingAWinner_WPFApplication {
             _imagePrefixURI = imagePrefixURI;
             _numCards = numCards;
             _isMyTurn = false;
+            _cache = new PlayingCardCache(imagePrefixURI, ".png");
 
             InitializeComponent();
             InitializeUI();
+            _readyCell.Value = true;
         }
 
-        // UI Builders
+// UI Builders
 
         /// <summary> build the UI </summary>
         protected virtual void InitializeUI() {
 
             // Background Images
-            Uri[] backgroundImages = new Uri[] {
-                new Uri(_imagePrefixURI + "red.png"),
-                new Uri(_imagePrefixURI + "blue.png")
+            BitmapImage[] backgroundImages = new BitmapImage[] {
+                _cache.Cache("red.png"),
+                _cache.Cache("blue.png")
             };
 
             // Add Cards and Handlers
@@ -75,7 +80,7 @@ namespace _5_SelectingAWinner_WPFApplication {
             int backgroundCount = backgroundImages.Length;
             CardFlippedEventHandler flipHandler = new CardFlippedEventHandler(Card_Flipped);
             for (int i = 0; i < _numCards; ++i) {
-                Uri back = backgroundImages[i % backgroundCount];
+                BitmapImage back = backgroundImages[i % backgroundCount];
                 CardUserControl card = new CardUserControl(back);
                 card.OnFlip += flipHandler;
                 card.Margin = new Thickness(leftMargin, 0, 0, 0);
@@ -89,6 +94,19 @@ namespace _5_SelectingAWinner_WPFApplication {
 
             // Adjust Window size
             Width = leftMargin + 40.0;
+            ResetUI();
+
+            
+
+        }
+
+        /// <summary> reset the UI </summary>
+        protected virtual void ResetUI() {
+
+            // Cards show their Back
+            foreach (CardUserControl card in _cards) {
+                card.Revealed = false;
+            }
 
             // Disable / Hide / Show Appropriately
             ShowStatus("Waiting for other Players.");
@@ -108,8 +126,8 @@ namespace _5_SelectingAWinner_WPFApplication {
             lblStatus.Visibility = Visibility.Hidden;
         }
 
-        // IView implementation
-        // NOTE: Referee Thread enters each of these
+// IView implementation
+// NOTE: Referee Thread enters each of these
 
         /// <summary> return <c>0..m-1</c>, index of chosen (and unexposed) card. </summary>
         public virtual int Choose() {
@@ -131,34 +149,42 @@ namespace _5_SelectingAWinner_WPFApplication {
 
         /// <summary> find out about a chosen card. </summary>
         public virtual void Tell(int index, int suit, int value) {
-            throw new NotImplementedException();
+            CardUserControl card = _cards[index];
+            card.Dispatcher.Invoke(new Action(delegate {
+                card.Front = _cache.ImageForCard(suit, value);
+                card.Revealed = true;
+            }));
         }
 
         /// <summary> find out about a round's outcome. </summary>
         public virtual void Winner(bool yes) {
-            throw new NotImplementedException();
+            lblStatus.Dispatcher.Invoke(new Action(delegate {
+                ShowStatus( (yes ? "You Won!" : "Sorry, You Lost.") );
+                btnNew.IsEnabled = true;
+            }));
         }
 
         /// <summary> return once view is ready for a new round. </summary>
         public virtual void Ready() {
-            return; // TODO IMPLEMENT
-            //throw new NotImplementedException();
+            btnNew.Dispatcher.Invoke(new Action(delegate { btnNew.IsEnabled = true; }));
+            while (!_readyCell.Value);
+            btnNew.Dispatcher.Invoke(new Action(delegate { btnNew.IsEnabled = false; }));
+            return;
         }
 
-        // handlers
+// handlers
 
         /// <summary> handles new button clicks signifying the start of a new game. </summary>
         /// <param name="sender"> object which initiated this method call. </param>
         /// <param name="e"> event which caused this call. </param>
         private void New_Clicked(object sender, RoutedEventArgs e) {
             _readyCell.Value = true;
+            ResetUI();
         }
 
         /// <summary> handles a card being flipped. </summary>
         /// <param name="sender"> the card that was clicked </param>
         protected virtual void Card_Flipped(CardUserControl sender) {
-            // TODO: Quick Exit if already set inside Value { set; } ?
-            // to prevent blocking this thread on double click, etc.
             if (_isMyTurn) {
                 _chooseCell.Value = (int)sender.Tag;
             }
