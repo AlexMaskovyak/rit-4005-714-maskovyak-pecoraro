@@ -160,21 +160,24 @@ namespace _5_SelectingAWinner_ConsoleApplication
         public static void Main(string[] args) {
 
             // Terminate early
-            if (args == null || args.Count() < 3) {
-                System.Console.Error.WriteLine("use: [cards in game] i[player 1 card index selected]-i[player n card index selected]");
+            if (args == null || args.Count() < 4) {
+                System.Console.Error.WriteLine("usage: Referee <seed> <numCards> i[player 1 card index selected]-i[player n card index selected]");
+                System.Console.Error.WriteLine("example: Referee 1000 5 1 2 3");
                 Environment.Exit(1);
             }
 
-            int numberOfCards = int.Parse(args[0]);
-            var playerIndexSelections = args.Skip(1);
+            int seed = int.Parse(args[0]);
+            int numberOfCards = int.Parse(args[1]);
+            var playerIndexSelections = args.Skip(2);
 
             // Create referee
-            IReferee<IView> referee = new Referee(numberOfCards, playerIndexSelections.Count());
+            IReferee<IView> referee = new Referee(numberOfCards, playerIndexSelections.Count(), seed);
             ((Referee)referee).Rounds = 1;
 
             // Create players
+            int playerNumber = 0;
             foreach( var selection in playerIndexSelections ) {
-                referee.Join(new SimplePlayer(int.Parse(selection)));
+                referee.Join(new SimplePlayer(playerNumber++, int.Parse(selection)));
             }
 
             // Start the game
