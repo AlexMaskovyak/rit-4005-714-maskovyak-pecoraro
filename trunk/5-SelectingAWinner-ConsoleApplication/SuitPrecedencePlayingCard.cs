@@ -32,6 +32,11 @@ namespace _5_SelectingAWinner_ConsoleApplication
             return base.CanConvertFrom(context, sourceType);
         }
 
+        /// <summary> provides conversions from PlayingCard.Suits to SuitPrecedencePlayingCard.Suits. </summary>
+        /// <param name="context"> </param>
+        /// <param name="culture"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
         {
             if (value.GetType() == typeof(PlayingCard.Suits)) {
