@@ -11,6 +11,13 @@ namespace _5_SelectingAWinner_ConsoleApplication
     /// <summary> implements IReferee for use with IView and random card selection game. </summary>
     public class Referee : AbstractReferee<IView> {
 
+// fields
+
+        /// <summary> cards for the current game. </summary>
+        protected List<PlayingCard> _gameCards;
+        /// <summary> indices that have been selected by players. </summary>
+        protected HashSet<int> _selectedIndices;
+
 // constructors 
 
         /// <summary> conevenience constructor. </summary>
@@ -23,48 +30,65 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <summary> allows for a previously created Deck to be used.</summary>
         /// <param name="cards"> number of cards in a game. </param>
         /// <param name="maxPlayers"> maximum number of players to allow for a game. </param>
-        public Referee(int cards, int maxPlayers) : base(cards, maxPlayers, (int)DateTime.Now.Ticks) { }
+        public Referee(int cards, int maxPlayers) : base(cards, maxPlayers, (int)DateTime.Now.Ticks) {
+            _gameCards = new List<PlayingCard>(cards);
+            _selectedIndices = new HashSet<int>();
+        }
 
 // methods
 
         /// <summary> provides main logic for holding a game. </summary>
         protected override void GameLoop() {
             // shuffle the cards and select the first m cards
-            List<PlayingCard> cards = 
-                _deck.Shuffle().Take(_cards).ToList<PlayingCard>();
+            _gameCards.Clear();
+            _gameCards.AddRange(_deck.Shuffle().Take(_cards));
+            _selectedIndices.Clear();
 
+
+            PlayingCard bestCard = null;    // hold the current best card
+            IView winningPlayer = null;        // the player with the best card selected so far
+
+            
             // ensure that all players are ready
             foreach(IView player in Players()) {
                 player.Ready();
             }
 
-            PlayingCard bestCard = null;    // hold the current best card
-            IView bestPlayer = null;        // the player with the best card selected so far
 
             // obtain every player's chosen card index
             // tell all players which card was selected
             foreach(IView player in Players()) {
                 int index = player.Choose();
                 // ensure it is in range
-                if( index < 0 || index > cards.Count ) {
+                if( index < 0 || index > _gameCards.Count ) {
                     throw new IndexOutOfRangeException(
                         String.Format(
-                            "A card was selected outside of the range of accepted values: 0 through {1}", cards.Count ) );
+                            "A card was selected outside of the range of accepted values: 0 through {1}", _gameCards.Count));
                 }
-                // ensure that it hasn't been selected
-                // throw new ArgumentException("Invalid index selected.  Only non-selected cards my be chosen.");
-                // mark the selection
+
+
+                // ensure that it hasn't been selected, and add it to the selected list
+                if (!_selectedIndices.Add(index)){
+                    throw new ArgumentException("Invalid index selected.  Only non-selected cards my be chosen.");
+                }
+
+                // compute new best card and player
+                PlayingCard selectedCard = _gameCards.ElementAt(index);
+                if (bestCard.CompareTo(selectedCard) == 1) {
+                    bestCard = selectedCard;
+                    winningPlayer = player;
+                }
 
                 // tell everyone the result
-                //player.Tell(index
+                foreach(IView toInform in Players()) {
+                    toInform.Tell(index, (int)selectedCard.Suit, (int)selectedCard.Rank);
+                }
             }
 
             // inform everyone of the result
             foreach(IView player in Players()) {
-                player.Winner( player == bestPlayer );
+                player.Winner( player == winningPlayer );
             }
-            
-            throw new NotImplementedException();
         }
 
 // tester
