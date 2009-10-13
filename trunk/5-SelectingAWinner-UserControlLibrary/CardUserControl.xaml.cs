@@ -38,13 +38,13 @@ namespace _5_SelectingAWinner_UserControlLibrary
 // properties
 
         /// <summary> image to display on the front of the card. </summary>
-        public virtual Uri Front {
-            set { imgFront.Source = new BitmapImage(value); }
+        public virtual BitmapImage Front {
+            set { imgFront.Source = value; }
         }
 
         /// <summary> image to display on the back of the card. </summary>
-        public virtual Uri Back {
-            set { imgBack.Source = new BitmapImage(value); }
+        public virtual BitmapImage Back {
+            set { imgBack.Source = value; }
         }
 
         /// <summary> specifies whether the card has been flipped to reveal its face. </summary>
@@ -63,11 +63,10 @@ namespace _5_SelectingAWinner_UserControlLibrary
 // constructors
 
         /// <summary> default constructor. </summary>
-        /// <param name="frontImageUri"> uri for the front of the card. </param>
-        /// <param name="backImageUri"> uri for the back of the card. </param>
-        public CardUserControl(Uri backImageUri) {
+        /// <param name="backImage"> uri for the back of the card. </param>
+        public CardUserControl(BitmapImage backImage) {
             InitializeComponent();
-            imgBack.Source = new BitmapImage(backImageUri);
+            imgBack.Source = backImage;
             this.MouseUp += new MouseButtonEventHandler(OnClick);
         }
 
