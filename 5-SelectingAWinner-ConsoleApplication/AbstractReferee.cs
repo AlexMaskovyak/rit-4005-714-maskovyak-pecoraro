@@ -1,0 +1,83 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using _1_Poker;
+using _2_PokerPuzzle;
+
+namespace _5_SelectingAWinner_ConsoleApplication
+{
+    /// <summary>Runs one or more rounds of the Random selection game.</summary>
+    public abstract class AbstractReferee : IReferee<IView>
+    {
+
+// fields
+
+        /// <summary> cell holding player's ready state. </summary>
+        protected Cell<bool> _readyCell;
+
+        /// <summary> cell holding a player's selection. </summary>
+        protected Cell<int> _chooseCell;
+
+        /// <summary> deck of cards. </summary>
+        protected Deck _deck;
+
+        /// <summary> number of cards. </summary>
+        protected int _cards;
+
+        /// <summary> maximum number of players. </summary>
+        protected int _maxPlayers;
+
+        /// <summary> players for this referee. </summary>
+        protected List<IView> _players;
+
+// constructors
+
+        /// <summary> default constructor. </summary>
+        /// <param name="cards"> number of cards in a game. </param>
+        /// <param name="maxPlayers"> maximum number of players to allow for a game. </param>
+        /// <param name="seed"> seed to use for deck shuffling. </param>
+        public AbstractReferee(int cards, int maxPlayers, int seed) {
+            _cards = cards;
+            _maxPlayers = maxPlayers;
+
+            _deck = new Deck();
+            _deck.Shuffle(seed);
+        }
+
+// IReferee interface
+
+        /// <summary> joins a player to this game. </summary>
+        /// <param name="player"> player to add. </param>
+        public virtual void Join(IView player) {
+            if (_players.Count == _maxPlayers) {
+                throw new InvalidOperationException("This referee has reached the maximum number of players.");
+            }
+            _players.Add(player);
+        }
+
+        /// <summary> remove a player from this game. </summary>
+        /// <param name="player"> player to remove. </param>
+        public virtual void Leave(IView player) {
+            _players.Remove(player);
+        }
+
+        /// <summary> obtain the players for which this Referee is gamekeeping. </summary>
+        /// <returns> players in this game. </returns>
+        public virtual IEnumerable<IView> Players() {
+            return (IEnumerable<IView>)_players;
+        }
+
+        /// <summary> begins game-playing. </summary>
+        public virtual void Start() {
+            GameLoop();
+        }
+
+// overrideable game logic
+
+        protected abstract void GameLoop();
+
+
+    }
+}
