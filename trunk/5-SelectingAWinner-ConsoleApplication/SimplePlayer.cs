@@ -6,8 +6,7 @@ using System.Text;
 namespace _5_SelectingAWinner_ConsoleApplication
 {
     /// <summary> simple player has a pre-determined index to select in a single round game with Referee. </summary>
-    public class SimplePlayer : IView
-    {
+    public class SimplePlayer : IView {
 
 // fields
 
@@ -15,6 +14,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
         protected readonly int _indexToSelect;
 
 // constructors
+
         /// <summary>Convenience constructor.</summary>
         public SimplePlayer() : this(0) { }
 

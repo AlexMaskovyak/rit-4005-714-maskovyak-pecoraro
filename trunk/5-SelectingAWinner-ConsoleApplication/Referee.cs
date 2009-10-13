@@ -8,16 +8,43 @@ using _2_PokerPuzzle;
 
 namespace _5_SelectingAWinner_ConsoleApplication
 {
+
+    /// <summary> deck of SuitPrecedencePlayingCards. </summary>
+    public class SuitPrecedenceDeck : Deck {
+        /// <summary> default constructor. </summary>
+        public SuitPrecedenceDeck() : base() { }
+
+        /// <summary> overrides creation of PlayingCard objects to created SuitPrecedencePlayingCard objects. </summary>
+        protected override void CreatePlayingCards() {
+            int index = 0;
+            foreach (SuitPrecedencePlayingCard.Suits suit in Enum.GetValues(typeof(SuitPrecedencePlayingCard.Suits))) {
+                foreach (SuitPrecedencePlayingCard.Ranks rank in Enum.GetValues(typeof(SuitPrecedencePlayingCard.Ranks))) {
+                    if (rank == SuitPrecedencePlayingCard.Ranks.NAR) { continue; }
+                    _playingCards[index++] = new SuitPrecedencePlayingCard(rank, suit);
+                }
+            }
+        }
+    }
+
     /// <summary> implements IReferee for use with IView and random card selection game. </summary>
     public class Referee : AbstractReferee<IView> {
 
 // fields
+
+        /// <summary> deck of cards. </summary>
+        protected Deck _deck;
+
+        /// <summary> number of cards. </summary>
+        protected int _cards;
 
         /// <summary> cards for the current game. </summary>
         protected List<PlayingCard> _gameCards;
 
         /// <summary> indices that have been selected by players. </summary>
         protected HashSet<int> _selectedIndices;
+
+        /// <summary> number of rounds to play </summary>
+        protected int? _numRounds;
 
 // constructors 
 
@@ -38,8 +65,28 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <param name="maxPlayers"> maximum number of players to allow for a game. </param>
         /// <param name="seed"> seed for the random number generator. </param>
         public Referee(int cards, int maxPlayers, int seed) : base(cards, maxPlayers, seed) {
-            _gameCards = new List<PlayingCard>(cards);
+            _cards = cards;
+            _numRounds = null;
+            _deck = CreateDeck();
+            _deck.Shuffle(seed);
             _selectedIndices = new HashSet<int>();
+            _gameCards = new List<PlayingCard>(cards);
+        }
+
+// properties
+
+        /// <summary> the number of rounds in the game </summary>
+        public int? Rounds {
+            get { return _numRounds; }
+            set { _numRounds = value; }
+        }
+
+// factory methods
+
+        /// <summary> factory method to create a Deck </summary>
+        /// <returns> a new Deck </returns>
+        protected Deck CreateDeck() {
+            return new SuitPrecedenceDeck();
         }
 
 // methods
@@ -47,6 +94,15 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <summary> provides main logic for holding a game. </summary>
         protected override void GameLoop() {
             while (true) {
+
+                // rounds left, no value means infinite
+                if (_numRounds.HasValue) {
+                    if (_numRounds.Value <= 0) {
+                        break;
+                    } else {
+                        _numRounds -= 1;
+                    }
+                }
 
                 // shuffle the cards and select the first m cards
                 _gameCards.Clear();
@@ -78,7 +134,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
                     // compute new best card and player
                     PlayingCard selectedCard = _gameCards.ElementAt(index);
-                    if (bestCard == null || bestCard.CompareTo(selectedCard) > 0) {
+                    if (bestCard == null || bestCard.CompareTo(selectedCard) < 0) {
                         bestCard = selectedCard;
                         winningPlayer = player;
                     }
@@ -93,6 +149,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
                 foreach (IView player in Players) {
                     player.Winner(player == winningPlayer);
                 }
+
             }
         }
 
@@ -113,6 +170,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
             // Create referee
             IReferee<IView> referee = new Referee(numberOfCards, playerIndexSelections.Count());
+            ((Referee)referee).Rounds = 1;
 
             // Create players
             foreach( var selection in playerIndexSelections ) {

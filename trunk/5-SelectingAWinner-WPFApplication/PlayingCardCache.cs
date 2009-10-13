@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using _1_Poker;
 using _5_SelectingAWinner_ConsoleApplication;
 
 namespace _5_SelectingAWinner_WPFApplication {
@@ -26,9 +27,6 @@ namespace _5_SelectingAWinner_WPFApplication {
 
         /// <summary> the images </summary>
         protected Dictionary<string, BitmapImage> _images;
-
-        /// <summary> to handle multithreaded access </summary>
-        private static object monitor = new object();
 
         /// <summary> private constructor to force singleton behavior. </summary>
         /// <param name="prefix"> the image uri prefix. </param>
@@ -54,22 +52,24 @@ namespace _5_SelectingAWinner_WPFApplication {
         }
 
         /// <summary> cache the image for a card given a suit and rank. </summary>
-        /// <param name="suit"> the card's suit. </param>
-        /// <param name="rank"> the card's rank. </param>
+        /// <param name="suit"> the card's suit.</param>
+        /// <param name="rank"> the card's rank.</param>
         /// <returns> the image </returns>
         public virtual BitmapImage ImageForCard(int suit, int rank) {
-            
-            // TODO: Fix this to get the proper number...
-            string cardIdentifier = ((4 * rank) + suit).ToString();
-            lock (this) {
-                if (_images.ContainsKey(cardIdentifier))
-                    return _images[cardIdentifier];
 
-                string uri = _prefix + cardIdentifier + _suffix;
-                BitmapImage img = new BitmapImage(new Uri(uri));
-                _images[cardIdentifier] = img;
-                return img;
+            // Convert to the appropriate identifier
+            int suitIdentifier = 0;
+            switch (suit) {
+                case (int)PlayingCard.Suits.Club: suitIdentifier = 1; break;
+                case (int)PlayingCard.Suits.Spade: suitIdentifier = 2; break;
+                case (int)PlayingCard.Suits.Heart: suitIdentifier = 3; break;
+                case (int)PlayingCard.Suits.Diamond: suitIdentifier = 4; break;
             }
+            int rankIdentifier = 14 - rank; // 14 = Ace
+            string cardIdentifier = ((4 * rankIdentifier) + suitIdentifier).ToString();
+
+            // Cache the Image
+            return Cache(cardIdentifier + _suffix);
         }
 
     }
