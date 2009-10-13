@@ -8,7 +8,7 @@ using _2_PokerPuzzle;
 
 namespace _5_SelectingAWinner_ConsoleApplication
 {
-    /// <summary>Runs one or more rounds of the Random selection game.</summary>
+    /// <summary> runs one or more rounds of the random card selection game. </summary>
     public abstract class AbstractReferee<T> : IReferee<T>
     {
 
@@ -38,14 +38,15 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <param name="maxPlayers"> maximum number of players to allow for a game. </param>
         /// <param name="seed"> seed to use for deck shuffling. </param>
         public AbstractReferee(int cards, int maxPlayers, int seed) {
+            if( cards < maxPlayers ) {
+                throw new ArgumentException("The maximum number of players must be less than or equal to the number of cards in the game.");
+            }
             _cards = cards;
             _maxPlayers = maxPlayers;
             _players = new List<T>(_maxPlayers);
 
             _deck = new Deck();
             _deck.Shuffle(seed);
-
-
         }
 
 // IReferee interface

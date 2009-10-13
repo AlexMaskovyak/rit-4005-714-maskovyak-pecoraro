@@ -5,7 +5,7 @@ using System.Text;
 
 namespace _5_SelectingAWinner_ConsoleApplication
 {
-
+    /// <summary> implements IReferee for use with IView and random card selection game. </summary>
     public class Referee : AbstractReferee<IView>
     {
 
@@ -27,6 +27,13 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
         /// <summary> provides main logic for holding a game. </summary>
         protected override void GameLoop() {
+            foreach(IView player in Players()) {
+                player.Ready();
+            }
+
+            foreach (IView player in Players()) {
+                player.Choose();
+            }
             throw new NotImplementedException();
         }
 
