@@ -25,13 +25,13 @@ namespace _1_Poker
             /// </summary>
             NAR=-1, Two=2, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace }
 
-        private readonly PlayingCard.Suits _suit;
-        private readonly PlayingCard.Ranks _rank;
+        protected readonly Suits _suit;
+        protected readonly Ranks _rank;
 
         /// <summary>
         /// Obtains the suit of this card.
         /// </summary>
-        public PlayingCard.Suits Suit {
+        public virtual Suits Suit {
             get { return _suit; }
         }
 
@@ -39,7 +39,7 @@ namespace _1_Poker
         /// Obtains the face value of this card.
         /// </summary>
         /// <returns>The card's value.</returns>
-        public PlayingCard.Ranks Rank {
+        public virtual Ranks Rank {
             get { return _rank; }
         }
 
@@ -48,7 +48,7 @@ namespace _1_Poker
         /// </summary>
         /// <param name="rank">Playing card's value.</param>
         /// <param name="suit">Playing card's suit.</param>
-        public PlayingCard( PlayingCard.Ranks rank, PlayingCard.Suits suit ) {
+        public PlayingCard( Ranks rank, Suits suit ) {
             _rank = rank;
             _suit = suit;
         }
@@ -76,21 +76,21 @@ namespace _1_Poker
         /// </summary>
         /// <param name="rankChar">Character representing a playing card rank.</param>
         /// <returns>PlayingCard.Value that the character corresponds to.</returns>
-        public static PlayingCard.Ranks getPlayingCardRankForChar(char rankChar) {
+        public static Ranks getPlayingCardRankForChar(char rankChar) {
             switch( rankChar ) {
-                case '2' : return PlayingCard.Ranks.Two;
-                case '3' : return PlayingCard.Ranks.Three;
-                case '4' : return PlayingCard.Ranks.Four;
-                case '5' : return PlayingCard.Ranks.Five;
-                case '6' : return PlayingCard.Ranks.Six;
-                case '7' : return PlayingCard.Ranks.Seven;
-                case '8' : return PlayingCard.Ranks.Eight;
-                case '9' : return PlayingCard.Ranks.Nine;
-                case 'T' : return PlayingCard.Ranks.Ten;
-                case 'J' : return PlayingCard.Ranks.Jack;
-                case 'Q' : return PlayingCard.Ranks.Queen;
-                case 'K' : return PlayingCard.Ranks.King;
-                case 'A' : return PlayingCard.Ranks.Ace;
+                case '2' : return Ranks.Two;
+                case '3' : return Ranks.Three;
+                case '4' : return Ranks.Four;
+                case '5' : return Ranks.Five;
+                case '6' : return Ranks.Six;
+                case '7' : return Ranks.Seven;
+                case '8' : return Ranks.Eight;
+                case '9' : return Ranks.Nine;
+                case 'T' : return Ranks.Ten;
+                case 'J' : return Ranks.Jack;
+                case 'Q' : return Ranks.Queen;
+                case 'K' : return Ranks.King;
+                case 'A' : return Ranks.Ace;
                 default : throw new ArgumentException( "Character could not be converted into a PlayingCard face value: " + rankChar );
             }
         }
@@ -100,12 +100,12 @@ namespace _1_Poker
         /// </summary>
         /// <param name="suitChar">Character representing a playing card suit.</param>
         /// <returns>PlayingCard.Suit that the character corresponds to.</returns>
-        public static PlayingCard.Suits getPlayingCardSuitForChar(char suitChar) {
+        public static Suits getPlayingCardSuitForChar(char suitChar) {
             switch (suitChar) {
-                case 'C': return PlayingCard.Suits.Club;
-                case 'D': return PlayingCard.Suits.Diamond;
-                case 'H': return PlayingCard.Suits.Heart;
-                case 'S': return PlayingCard.Suits.Spade;
+                case 'C': return Suits.Club;
+                case 'D': return Suits.Diamond;
+                case 'H': return Suits.Heart;
+                case 'S': return Suits.Spade;
                 default: throw new ArgumentException( "Character could not be converted into a PlayCard suit." );
             }
         }
