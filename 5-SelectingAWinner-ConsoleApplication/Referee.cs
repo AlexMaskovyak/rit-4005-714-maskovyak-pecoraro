@@ -15,6 +15,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
         /// <summary> cards for the current game. </summary>
         protected List<PlayingCard> _gameCards;
+
         /// <summary> indices that have been selected by players. </summary>
         protected HashSet<int> _selectedIndices;
 
@@ -39,33 +40,29 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
         /// <summary> provides main logic for holding a game. </summary>
         protected override void GameLoop() {
+
             // shuffle the cards and select the first m cards
             _gameCards.Clear();
             _gameCards.AddRange(_deck.Shuffle().Take(_cards));
             _selectedIndices.Clear();
 
+            PlayingCard bestCard = null;  // hold the current best card
+            IView winningPlayer = null;   // the player with the best card selected so far
 
-            PlayingCard bestCard = null;    // hold the current best card
-            IView winningPlayer = null;        // the player with the best card selected so far
-
-            
             // ensure that all players are ready
-            foreach(IView player in Players()) {
+            foreach(IView player in Players) {
                 player.Ready();
             }
 
-
             // obtain every player's chosen card index
             // tell all players which card was selected
-            foreach(IView player in Players()) {
+            foreach(IView player in Players) {
                 int index = player.Choose();
                 // ensure it is in range
                 if( index < 0 || index > _gameCards.Count ) {
                     throw new IndexOutOfRangeException(
-                        String.Format(
-                            "A card was selected outside of the range of accepted values: 0 through {1}", _gameCards.Count));
+                        String.Format("A card was selected outside of the range of accepted values: 0 through {1}", _gameCards.Count));
                 }
-
 
                 // ensure that it hasn't been selected, and add it to the selected list
                 if (!_selectedIndices.Add(index)){
@@ -74,19 +71,19 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
                 // compute new best card and player
                 PlayingCard selectedCard = _gameCards.ElementAt(index);
-                if (bestCard.CompareTo(selectedCard) == 1) {
+                if (bestCard == null || bestCard.CompareTo(selectedCard) > 0) {
                     bestCard = selectedCard;
                     winningPlayer = player;
                 }
 
                 // tell everyone the result
-                foreach(IView toInform in Players()) {
+                foreach(IView toInform in Players) {
                     toInform.Tell(index, (int)selectedCard.Suit, (int)selectedCard.Rank);
                 }
             }
 
             // inform everyone of the result
-            foreach(IView player in Players()) {
+            foreach(IView player in Players) {
                 player.Winner( player == winningPlayer );
             }
         }
@@ -95,9 +92,9 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
         /// <summary>Test for Referee</summary>
         /// <param name="args">[mCards dealt] i[1]-i[n] cards selected per player</param>
-        public static void Main(string[] args)
-        {
-            // terminate early
+        public static void Main(string[] args) {
+
+            // Terminate early
             if (args == null || args.Count() < 3) {
                 System.Console.Error.WriteLine("use: [cards in game] i[player 1 card index selected]-i[player n card index selected]");
                 Environment.Exit(1);
@@ -106,13 +103,17 @@ namespace _5_SelectingAWinner_ConsoleApplication
             int numberOfCards = int.Parse(args[0]);
             var playerIndexSelections = args.Skip(1);
 
-            // create referee
+            // Create referee
             IReferee<IView> referee = new Referee(numberOfCards, playerIndexSelections.Count());
 
-            // create players
+            // Create players
             foreach( var selection in playerIndexSelections ) {
-                referee.Join(new SimplePlayer());
+                referee.Join(new SimplePlayer(int.Parse(selection)));
             }
+
+            // Start the game
+            referee.Start();
+
         }
     }
 }

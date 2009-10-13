@@ -18,7 +18,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
         /// <summary> obtain the players for which this Referee is gamekeeping. </summary>
         /// <returns> players in this game. </returns>
-        IEnumerable<T> Players();
+        IEnumerable<T> Players { get; }
 
          /// <summary> begins game-playing. </summary>
         void Start();
