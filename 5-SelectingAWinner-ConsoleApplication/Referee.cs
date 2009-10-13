@@ -28,10 +28,16 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <param name="cards"> number of cards in a game. </param>
         public Referee(int cards) : this( cards, 2 ) { }
 
-        /// <summary> allows for a previously created Deck to be used.</summary>
+        /// <summary> convenience constructor. </summary>
         /// <param name="cards"> number of cards in a game. </param>
         /// <param name="maxPlayers"> maximum number of players to allow for a game. </param>
-        public Referee(int cards, int maxPlayers) : base(cards, maxPlayers, (int)DateTime.Now.Ticks) {
+        public Referee(int cards, int maxPlayers) : this(cards, maxPlayers, (int)DateTime.Now.Ticks) { }
+
+        /// <summary> constructor </summary>
+        /// <param name="cards"> number of cards in a game. </param>
+        /// <param name="maxPlayers"> maximum number of players to allow for a game. </param>
+        /// <param name="seed"> seed for the random number generator. </param>
+        public Referee(int cards, int maxPlayers, int seed) : base(cards, maxPlayers, seed) {
             _gameCards = new List<PlayingCard>(cards);
             _selectedIndices = new HashSet<int>();
         }
@@ -52,14 +58,17 @@ namespace _5_SelectingAWinner_ConsoleApplication
             // ensure that all players are ready
             foreach(IView player in Players) {
                 player.Ready();
+                Console.WriteLine("ready");
             }
+
+            Console.WriteLine("all ready");
 
             // obtain every player's chosen card index
             // tell all players which card was selected
             foreach(IView player in Players) {
                 int index = player.Choose();
                 // ensure it is in range
-                if( index < 0 || index > _gameCards.Count ) {
+                if( index < 0 || index > (_gameCards.Count - 1) ) {
                     throw new IndexOutOfRangeException(
                         String.Format("A card was selected outside of the range of accepted values: 0 through {1}", _gameCards.Count));
                 }
