@@ -24,7 +24,7 @@ namespace _2_PokerPuzzle
         /// <summary>
         /// The cards in the Deck.
         /// </summary>
-        private readonly PlayingCard[] _playingCards;
+        protected readonly PlayingCard[] _playingCards;
 
         /// <summary>
         /// Default constructor.
@@ -32,11 +32,16 @@ namespace _2_PokerPuzzle
         public Deck() {
             _playingCards = new PlayingCard[ Deck.DECK_SIZE ];
 
-            int index = 0;
             // create playingcards
-            foreach( PlayingCard.Suits suit in Enum.GetValues(typeof(PlayingCard.Suits)) ) {
-                foreach( PlayingCard.Ranks rank in Enum.GetValues(typeof(PlayingCard.Ranks)) ) {
-                    if (rank == PlayingCard.Ranks.NAR) { continue;  }
+            CreatePlayingCards();
+        }
+
+        /// <summary> called by constructor to initialize the playing cards. </summary>
+        protected virtual void CreatePlayingCards() {
+            int index = 0;
+            foreach (PlayingCard.Suits suit in Enum.GetValues(typeof(PlayingCard.Suits))) {
+                foreach (PlayingCard.Ranks rank in Enum.GetValues(typeof(PlayingCard.Ranks))) {
+                    if (rank == PlayingCard.Ranks.NAR) { continue; }
                     _playingCards[index++] = new PlayingCard(rank, suit);
                 }
             }
@@ -46,18 +51,16 @@ namespace _2_PokerPuzzle
         /// Shuffles the PlayingCard s in this deck using Knuth's algorithm.
         /// </summary>
         /// <returns>Enerator for the newly shuffled deck.</returns>
-        public IEnumerable<PlayingCard> Shuffle() {
+        public virtual IEnumerable<PlayingCard> Shuffle() {
             return Shuffle((int)DateTime.Now.Ticks);
         }
 
         /// <summary> shuffles the PlayingCard s in this deck using Knuth's algorithm.</summary>
         /// <param name="seed"> seed to use for predictable testing of shuffle. </param>
         /// <returns> enumerator for the newly shuffled deck.</returns>
-        public IEnumerable<PlayingCard> Shuffle(int seed)
-        {
+        public virtual IEnumerable<PlayingCard> Shuffle(int seed) {
             Random rng = new Random(seed); // default constructor automatically uses system time as a seed
-            for (int i = Deck.DECK_SIZE - 1; i > 0; --i)
-            {
+            for (int i = Deck.DECK_SIZE - 1; i > 0; --i) {
                 int randomNumber = rng.Next(i);
                 PlayingCard temp = _playingCards[i];
                 _playingCards[i] = _playingCards[randomNumber];
@@ -70,7 +73,7 @@ namespace _2_PokerPuzzle
         /// Obtain genericized enumerator for the PlayingCards in this Deck.
         /// </summary>
         /// <returns>IEnumerator of PlayingCards.</returns>
-        public IEnumerator<PlayingCard> GetEnumerator() {
+        public virtual IEnumerator<PlayingCard> GetEnumerator() {
             return ((IEnumerable<PlayingCard>)_playingCards).GetEnumerator();
         }
 

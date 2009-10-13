@@ -8,17 +8,28 @@ using _2_PokerPuzzle;
 
 namespace _5_SelectingAWinner_ConsoleApplication
 {
+    /// <summary> deck of SuitPrecedencePlayingCards. </summary>
+    public class SuitPrecedenceDeck : Deck {
+        /// <summary> default constructor. </summary>
+        public SuitPrecedenceDeck() : base() { }
+
+        /// <summary> overrides creation of PlayingCard objects to created SuitPrecedencePlayingCard objects. </summary>
+        protected override void CreatePlayingCards() {
+            int index = 0;
+            foreach (SuitPrecedencePlayingCard.Suits suit in Enum.GetValues(typeof(SuitPrecedencePlayingCard.Suits))) {
+                foreach (SuitPrecedencePlayingCard.Ranks rank in Enum.GetValues(typeof(SuitPrecedencePlayingCard.Ranks))) {
+                    if (rank == SuitPrecedencePlayingCard.Ranks.NAR) { continue; }
+                    _playingCards[index++] = new SuitPrecedencePlayingCard(rank, suit);
+                }
+            }
+        }
+    }
+
     /// <summary> runs one or more rounds of the random card selection game. </summary>
     public abstract class AbstractReferee<T> : IReferee<T>
     {
 
 // fields
-        /// <summary> cell holding player's ready state. </summary>
-        protected Cell<bool> _readyCell;
-
-        /// <summary> cell holding a player's selection. </summary>
-        protected Cell<int> _chooseCell;
-
         /// <summary> deck of cards. </summary>
         protected Deck _deck;
 
@@ -45,7 +56,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
             _maxPlayers = maxPlayers;
             _players = new List<T>(_maxPlayers);
 
-            _deck = new Deck();
+            _deck = new SuitPrecedenceDeck();
             _deck.Shuffle(seed);
         }
 
