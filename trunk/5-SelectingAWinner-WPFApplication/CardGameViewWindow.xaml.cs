@@ -58,7 +58,7 @@ namespace _5_SelectingAWinner_WPFApplication {
         /// <param name="numCards"> number of cards to display </param>
         /// <param name="imagePrefixURI"> URI Prefix for the card images </param>
         public CardGameViewWindow(int numCards, string imagePrefixURI) {
-            _cards = new List<CardUserControl>(_numCards);
+            _cards = new List<CardUserControl>(numCards);
             _readyCell = new Cell<bool>();
             _chooseCell = new Cell<int>();
             _imagePrefixURI = imagePrefixURI;
@@ -111,9 +111,9 @@ namespace _5_SelectingAWinner_WPFApplication {
                 card.Revealed = false;
                 card.Highlighted = false;
             }
+
             ShowStatus(WaitingStatus);
             btnNew.IsEnabled = false;
-
         }
 
         /// <summary> set the text in the status label </summary>
@@ -136,7 +136,7 @@ namespace _5_SelectingAWinner_WPFApplication {
 
             // Enable Selection
             _isMyTurn = true;
-            lblStatus.Dispatcher.Invoke(new Action(delegate { ShowStatus(ChooseStatus); }));
+            lblStatus.Dispatcher.Invoke(new Action( () => ShowStatus(ChooseStatus) ));
 
             // Referee Thread Wait on Value
             int selection = _chooseCell.Value;
@@ -170,9 +170,9 @@ namespace _5_SelectingAWinner_WPFApplication {
 
         /// <summary> return once view is ready for a new round. </summary>
         public virtual void Ready() {
-            btnNew.Dispatcher.Invoke(new Action(delegate { btnNew.IsEnabled = true; }));
+            btnNew.Dispatcher.Invoke(new Action( () => btnNew.IsEnabled = true ));
             while (!_readyCell.Value);
-            btnNew.Dispatcher.Invoke(new Action(delegate { btnNew.IsEnabled = false; }));
+            btnNew.Dispatcher.Invoke(new Action( () => btnNew.IsEnabled = false ));
             return;
         }
 
