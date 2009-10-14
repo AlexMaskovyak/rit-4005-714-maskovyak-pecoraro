@@ -99,7 +99,6 @@ namespace _5_SelectingAWinner_WPFApplication {
         }
 
         /// <summary> run the game </summary>
-        [System.STAThreadAttribute()]
         public static void Main(string[] args) {
 
             // Debug Mode: 1 command line argument "debug"
