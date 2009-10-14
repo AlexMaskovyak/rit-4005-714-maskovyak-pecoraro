@@ -91,7 +91,7 @@ namespace _5_SelectingAWinner_WPFApplication {
             lock (monitor) {
                 _created++;
                 if (_created == _numPlayers) {
-                    Thread t = new Thread(new ThreadStart(delegate { _referee.Start(); }));
+                    Thread t = new Thread(new ThreadStart( () => _referee.Start() ));
                     t.IsBackground = true; // Referee has no GUI, allow the application to close if all GUIs are closed
                     t.Start();
                 }
