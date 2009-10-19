@@ -94,6 +94,9 @@ namespace _5_SelectingAWinner_UserControlLibrary
 // constructors
 
         /// <summary> default constructor. </summary>
+        public CardUserControl() { }
+
+        /// <summary> default constructor. </summary>
         /// <param name="backImage"> uri for the back of the card. </param>
         public CardUserControl(BitmapImage backImage) {
             InitializeComponent();
