@@ -83,13 +83,13 @@ namespace _6_DistributedWinner_Client
         public static new void Main(string[] args) {
 
             // Debug Mode: 1 command line argument "debug" or NO command line arguments
-            // NOTE: Hardcoded seed
-            if (args == null || args.Length == 0 || (args.Length == 1 && args[0] == "debug")) {
+            // NOTE: Hardcoded seed for debugging
+            if (args != null && args.Length == 1 && args[0] == "debug") {
                 args = new string[] { "5", "http://www.cs.rit.edu/~ats/cs-2009-1/2/Release/images/", "999" };
             }
 
             // Usage
-            if (args == null || args.Length < 2) {
+            if (args == null || args.Length < 1) {
                 Console.WriteLine("usage: SelectingAWinner <numCards> [ <imageURI> <seed> ]");
                 Environment.Exit(1);
             }
