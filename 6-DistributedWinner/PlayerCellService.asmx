@@ -1,0 +1,1 @@
+﻿<%@ WebService Language="C#" CodeBehind="PlayerCellService.asmx.cs" Class="_6_DistributedWinner.PlayerCellService" %>

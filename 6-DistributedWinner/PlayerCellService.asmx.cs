@@ -20,7 +20,7 @@ namespace _6_DistributedWinner
     [ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class Service1 : System.Web.Services.WebService
+    public class PlayerCellService : System.Web.Services.WebService
     {
         /// <summary> current id to hand-off to a player. </summary>
         protected int _playerId;
@@ -38,7 +38,7 @@ namespace _6_DistributedWinner
         }
 
         /// <summary> default constructor. </summary>
-        public Service1 () {
+        public PlayerCellService () {
             _playerId = 0;
             _cells = new Dictionary<int, Cell<int>>();
         }
