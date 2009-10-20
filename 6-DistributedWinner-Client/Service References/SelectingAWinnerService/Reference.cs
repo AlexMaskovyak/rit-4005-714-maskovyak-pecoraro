@@ -15,10 +15,6 @@ namespace _6_DistributedWinner_Client.SelectingAWinnerService {
     [System.ServiceModel.ServiceContractAttribute(Namespace="http://www.cs.rit.edu/axel/conversions/", ConfigurationName="SelectingAWinnerService.PlayerCellServiceSoap")]
     public interface PlayerCellServiceSoap {
         
-        // CODEGEN: Generating message contract since element name HelloWorldResult from namespace http://www.cs.rit.edu/axel/conversions/ is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://www.cs.rit.edu/axel/conversions/HelloWorld", ReplyAction="*")]
-        _6_DistributedWinner_Client.SelectingAWinnerService.HelloWorldResponse HelloWorld(_6_DistributedWinner_Client.SelectingAWinnerService.HelloWorldRequest request);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://www.cs.rit.edu/axel/conversions/Login", ReplyAction="*")]
         int Login();
         
@@ -27,63 +23,9 @@ namespace _6_DistributedWinner_Client.SelectingAWinnerService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.cs.rit.edu/axel/conversions/Set", ReplyAction="*")]
         void Set(int playerId, int selection);
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class HelloWorldRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="HelloWorld", Namespace="http://www.cs.rit.edu/axel/conversions/", Order=0)]
-        public _6_DistributedWinner_Client.SelectingAWinnerService.HelloWorldRequestBody Body;
-        
-        public HelloWorldRequest() {
-        }
-        
-        public HelloWorldRequest(_6_DistributedWinner_Client.SelectingAWinnerService.HelloWorldRequestBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute()]
-    public partial class HelloWorldRequestBody {
-        
-        public HelloWorldRequestBody() {
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class HelloWorldResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="HelloWorldResponse", Namespace="http://www.cs.rit.edu/axel/conversions/", Order=0)]
-        public _6_DistributedWinner_Client.SelectingAWinnerService.HelloWorldResponseBody Body;
-        
-        public HelloWorldResponse() {
-        }
-        
-        public HelloWorldResponse(_6_DistributedWinner_Client.SelectingAWinnerService.HelloWorldResponseBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://www.cs.rit.edu/axel/conversions/")]
-    public partial class HelloWorldResponseBody {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string HelloWorldResult;
-        
-        public HelloWorldResponseBody() {
-        }
-        
-        public HelloWorldResponseBody(string HelloWorldResult) {
-            this.HelloWorldResult = HelloWorldResult;
-        }
+        [System.ServiceModel.OperationContractAttribute(Action="http://www.cs.rit.edu/axel/conversions/IsFirst", ReplyAction="*")]
+        bool IsFirst(int playerId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -113,18 +55,6 @@ namespace _6_DistributedWinner_Client.SelectingAWinnerService {
                 base(binding, remoteAddress) {
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        _6_DistributedWinner_Client.SelectingAWinnerService.HelloWorldResponse _6_DistributedWinner_Client.SelectingAWinnerService.PlayerCellServiceSoap.HelloWorld(_6_DistributedWinner_Client.SelectingAWinnerService.HelloWorldRequest request) {
-            return base.Channel.HelloWorld(request);
-        }
-        
-        public string HelloWorld() {
-            _6_DistributedWinner_Client.SelectingAWinnerService.HelloWorldRequest inValue = new _6_DistributedWinner_Client.SelectingAWinnerService.HelloWorldRequest();
-            inValue.Body = new _6_DistributedWinner_Client.SelectingAWinnerService.HelloWorldRequestBody();
-            _6_DistributedWinner_Client.SelectingAWinnerService.HelloWorldResponse retVal = ((_6_DistributedWinner_Client.SelectingAWinnerService.PlayerCellServiceSoap)(this)).HelloWorld(inValue);
-            return retVal.Body.HelloWorldResult;
-        }
-        
         public int Login() {
             return base.Channel.Login();
         }
@@ -135,6 +65,10 @@ namespace _6_DistributedWinner_Client.SelectingAWinnerService {
         
         public void Set(int playerId, int selection) {
             base.Channel.Set(playerId, selection);
+        }
+        
+        public bool IsFirst(int playerId) {
+            return base.Channel.IsFirst(playerId);
         }
     }
 }
