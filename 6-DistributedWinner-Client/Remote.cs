@@ -54,17 +54,27 @@ namespace _6_DistributedWinner_Client
 
 // Connection Protocol
 
-        /// <summary> exchange of seed between connected players. </summary>
-        /// <remarks> player one's seed gets used, player two's seed is ignored. </remarks>
-        /// <param name="seed"> the seed to send. </param>
-        /// <returns> the agreed seed. </returns>
-        public virtual int ExchangeSeed(int seed) {
-            if (IsFirst) {
-                _proxy.Set(_id, seed);
-                return seed;
-            } else {
-                return _proxy.Get(_id);
+        /// <summary> exchange of data between connected players. </summary>
+        /// <remarks> player one's data gets used, player two's data is ignored. </remarks>
+        /// <param name="data"> the data to send. </param>
+        /// <returns> the agreed data. </returns>
+        public virtual int[] Exchange(params int[] data) {
+            int length = data.Length;
+            int[] results = new int[length];
+
+            for (int i = 0; i < length; ++i) {
+                int value = data[i];
+                if (IsFirst) {                    // Proxy 1
+                    _proxy.Set(_id, value);       // send value
+                    _proxy.Get(_id);              // receive ACK
+                    results[i] = value;
+                } else {                          // Proxy 2
+                    results[i] = _proxy.Get(_id); // receive value
+                    _proxy.Set(_id, Dummy);       // send ACK
+                }
             }
+
+            return results;
         }
 
 // IView Interface
