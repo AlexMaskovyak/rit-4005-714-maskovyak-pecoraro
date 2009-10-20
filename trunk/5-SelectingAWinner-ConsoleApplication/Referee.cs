@@ -46,6 +46,9 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <summary> number of rounds to play </summary>
         protected int? _numRounds;
 
+        /// <summary> seed to use for random shuffling. </summary>
+        protected int _seed;
+
 // constructors 
 
         /// <summary> conevenience constructor. </summary>
@@ -64,13 +67,13 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <param name="cards"> number of cards in a game. </param>
         /// <param name="maxPlayers"> maximum number of players to allow for a game. </param>
         /// <param name="seed"> seed for the random number generator. </param>
-        public Referee(int cards, int maxPlayers, int seed) : base(cards, maxPlayers, seed) {
+        public Referee(int cards, int maxPlayers, int seed) : base(cards, maxPlayers) {
             _cards = cards;
             _numRounds = null;
             _deck = CreateDeck();
-            _deck.Shuffle(seed);
             _selectedIndices = new HashSet<int>();
             _gameCards = new List<PlayingCard>(cards);
+            _seed = seed;
         }
 
 // properties
@@ -94,6 +97,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <summary> provides main logic for holding a game. </summary>
         protected override void GameLoop() {
             while (true) {
+                _deck.Shuffle(_seed++);
 
                 // rounds left, no value means infinite
                 if (_numRounds.HasValue) {
