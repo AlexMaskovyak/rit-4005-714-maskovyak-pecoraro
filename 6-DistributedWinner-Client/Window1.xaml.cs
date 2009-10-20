@@ -19,14 +19,15 @@ namespace _6_DistributedWinner_Client
     /// </summary>
     public partial class Window1 : Window
     {
-        protected temperatures.Service1SoapClient model = new temperatures.Service1SoapClient(); // proxy
+        protected SelectingAWinnerService.PlayerCellServiceSoapClient proxy;
 
         public Window1()
         {
             InitializeComponent();
+            proxy = new SelectingAWinnerService.PlayerCellServiceSoapClient();
             
             TextBox t = new TextBox();
-            System.Console.WriteLine(model.HelloWorld());
+            //System.Console.WriteLine(model.HelloWorld());
             
         }
     }

@@ -14,8 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>_6_DistributedWinner_Client.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -110,7 +109,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ProxyPlayer.cs" />
-    <Compile Include="Service References\temperatures\Reference.cs">
+    <Compile Include="Service References\SelectingAWinnerService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -131,17 +130,17 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\temperatures\" />
+    <WCFMetadataStorage Include="Service References\SelectingAWinnerService\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\temperatures\Service1.disco" />
-    <None Include="Service References\temperatures\Service1.wsdl" />
+    <None Include="Service References\SelectingAWinnerService\PlayerCellService.disco" />
+    <None Include="Service References\SelectingAWinnerService\PlayerCellService.wsdl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\temperatures\configuration.svcinfo" />
+    <None Include="Service References\SelectingAWinnerService\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\temperatures\Reference.svcmap">
+    <None Include="Service References\SelectingAWinnerService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
