@@ -97,8 +97,6 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <summary> provides main logic for holding a game. </summary>
         protected override void GameLoop() {
             while (true) {
-                _deck.Shuffle(_seed++);
-
                 // rounds left, no value means infinite
                 if (_numRounds.HasValue) {
                     if (_numRounds.Value <= 0) {
@@ -110,7 +108,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
                 // shuffle the cards and select the first m cards
                 _gameCards.Clear();
-                _gameCards.AddRange(_deck.Shuffle().Take(_cards));
+                _gameCards.AddRange(_deck.Shuffle(_seed++).Take(_cards));
                 _selectedIndices.Clear();
 
                 PlayingCard bestCard = null;  // hold the current best card
