@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -72,8 +73,15 @@ namespace _5_SelectingAWinner_WPFApplication {
             // Run the Referee in this thread
             _referee = CreateReferee(_numCards, _numPlayers, _seed);
 
+            for (int i = 0; i < _numPlayers; ++i )
+            {
+                CardGameViewWindow view = (CardGameViewWindow)CreateView(_numCards, _imageURI);
+                view.Show();
+                _referee.Join(view);
+            }
+
             // Create Views in their own threads
-            for (int i=0; i<_numPlayers; ++i) {
+/*            for (int i=0; i<_numPlayers; ++i) {
                 Thread t = new Thread(new ThreadStart(delegate {
                     CardGameViewWindow view = (CardGameViewWindow)CreateView(_numCards, _imageURI);
                     _referee.Join(view);
@@ -83,7 +91,8 @@ namespace _5_SelectingAWinner_WPFApplication {
                 t.SetApartmentState(System.Threading.ApartmentState.STA);
                 t.Start();
             }
-            
+*/
+
         }
 
         /// <summary> Only start once all the Views have Joined the Referee</summary>
@@ -99,6 +108,7 @@ namespace _5_SelectingAWinner_WPFApplication {
         }
 
         /// <summary> run the game </summary>
+        [System.STAThreadAttribute()]
         public static void Main(string[] args) {
 
             // Debug Mode: 1 command line argument "debug"
@@ -121,6 +131,7 @@ namespace _5_SelectingAWinner_WPFApplication {
             // Launch the Driver
             SelectingAWinner driver = new SelectingAWinner(numCards, numPlayers, imageURI, seed);
             driver.Run();
+
 
         }
 
