@@ -27,10 +27,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
             }
             set {
                 lock (this) {
-                    // Ignore new values if already full
-                    if (full)
-                        return;
-
+                    while (full) Monitor.Wait(this);
                     full = true;
                     Monitor.PulseAll(this);
                     content = value;
