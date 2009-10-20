@@ -47,16 +47,18 @@ namespace _6_DistributedWinner_Client
         /// <summary> run the game. </summary>
         public override void Run() {
 
+            // Create Proxy Player and Exchange Information (must be called in this order)
+            Remote proxyPlayer = (Remote)CreateProxyPlayer();
+            int[] agreedData = proxyPlayer.Exchange(_seed, _numCards);
+            int agreedSeed = agreedData[0];
+            int agreedNumCards = agreedData[1];
+
             // Create Real Player View
-            CardGameViewWindow realPlayer = (CardGameViewWindow)CreateView(_numCards, _imageURI);
+            CardGameViewWindow realPlayer = (CardGameViewWindow)CreateView(agreedNumCards, _imageURI);
             realPlayer.Show();
 
-            // Create Proxy Player and Exchange Seeds
-            Remote proxyPlayer = (Remote)CreateProxyPlayer();
-            int agreedSeed = proxyPlayer.ExchangeSeed(_seed);
-
             // Create Referee and have the players join in the proper order
-            _referee = CreateReferee(_numCards, 2, agreedSeed);
+            _referee = CreateReferee(agreedNumCards, 2, agreedSeed);
             if (proxyPlayer.IsFirst) {
                 _referee.Join(realPlayer);
                 _referee.Join(proxyPlayer);
