@@ -97,10 +97,6 @@ namespace _6_DistributedWinner_Client
         ///   The Proxy on the Real Player 1 side only returns when the Real Player 2
         ///   has indicated he is ready.  The Proxy on the Real Player 2 side will
         ///   indicate to the referee on the Real Player 1 side when he is ready.
-        ///   
-        ///   This Ready Agreement is possible because there are only two Players,
-        ///   so only one lock needs to be done. And that lock should prevent the
-        ///   real player 1 from starting before others are ready (which it does).
         /// </remarks>
         public virtual void Ready() {
             if (IsFirst) {
