@@ -21,6 +21,12 @@ namespace _6_DistributedWinner_Client
         /// <summary>Is First Player or not (Assumes two player game)</summary>
         protected bool _isFirst;
 
+        /// <summary>
+        ///   Symmetric Referees means a message is told twice,
+        ///   once by each referee. This is used to indicate if
+        ///   the next Tell() call is a duplicate and should be
+        ///   skipped.
+        /// </summary>
         protected bool _skipTell;
 
 // Constructors
@@ -51,14 +57,10 @@ namespace _6_DistributedWinner_Client
         /// <returns> the agreed seed. </returns>
         public virtual int ExchangeSeed(int seed) {
             if (IsFirst) {
-                Console.WriteLine("Sending seed: {0}", seed);
                 _proxy.Set(_id, seed);
                 return seed;
             } else {
-                Console.WriteLine("Fetching seed");
-                int newSeed = _proxy.Get(_id);
-                Console.WriteLine("Got seed: {0}", seed);
-                return newSeed;
+                return _proxy.Get(_id);
             }
         }
 
@@ -68,11 +70,9 @@ namespace _6_DistributedWinner_Client
         /// <remarks> calls the Web Service (via the Proxy) to get the complementing Player's selection. </remarks>
         /// <returns> the other players selection. </returns>
         public virtual int Choose() {
-            Console.WriteLine("Proxy is Fetching");
-            int i = _proxy.Get(_id);
+            int index = _proxy.Get(_id);
             _skipTell = true;
-            Console.WriteLine("Proxy got {0}", i);
-            return i;
+            return index;
         }
 
         /// <summary> find out about a chosen card. </summary>
@@ -83,24 +83,32 @@ namespace _6_DistributedWinner_Client
                 return;
             }
 
-            Console.WriteLine("Proxy is Sending");
             _proxy.Set(_id, index);
-            Console.WriteLine("Proxy sent {0}", index);
-            //_proxy.Get(_id); // should come right back due to symmetry
         }
 
         /// <summary> find out about a round's outcome. </summary>
         /// <remarks> ignored, the symmetric Referees will let the real players know. </remarks>
         public virtual void Winner(bool yes) {
-            // ignored
+            // ignored (see comments)
         }
 
         /// <summary> return once view is ready for a new round. </summary>
+        /// <remarks>
+        ///   The Proxy on the Real Player 1 side only returns when the Real Player 2
+        ///   has indicated he is ready.  The Proxy on the Real Player 2 side will
+        ///   indicate to the referee on the Real Player 1 side when he is ready.
+        ///   
+        ///   This Ready Agreement is possible because there are only two Players,
+        ///   so only one lock needs to be done. And that lock should prevent the
+        ///   real player 1 from starting before others are ready (which it does).
+        /// </remarks>
         public virtual void Ready() {
-            if (IsFirst)
+            if (IsFirst) {
                 _proxy.Get(_id); // get dummy value that other player is ready
-            else
+            } else {
                 _proxy.Set(_id, 0); // set dummy value that player is ready
+            }
+            
         }
     }
 }

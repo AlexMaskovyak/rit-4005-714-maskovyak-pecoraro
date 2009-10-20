@@ -58,11 +58,9 @@ namespace _6_DistributedWinner_Client
             // Create Referee and have the players join in the proper order
             _referee = CreateReferee(_numCards, 2, agreedSeed);
             if (proxyPlayer.IsFirst) {
-                Console.WriteLine("This side is player 1");
                 _referee.Join(realPlayer);
                 _referee.Join(proxyPlayer);
             } else {
-                Console.WriteLine("This side is player 2");
                 _referee.Join(proxyPlayer);
                 _referee.Join(realPlayer);
             }
