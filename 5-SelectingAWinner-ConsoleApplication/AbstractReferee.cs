@@ -14,6 +14,7 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
 // fields
 
+        /// <summary> allow for thread-safe addition and removal of players. </summary>
         protected Object _lock;
 
         /// <summary> maximum number of players. </summary>
@@ -22,20 +23,20 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <summary> players for this referee. </summary>
         protected List<T> _players;
 
+
 // constructors
 
         /// <summary> default constructor. </summary>
         /// <param name="cards"> number of cards in a game. </param>
         /// <param name="maxPlayers"> maximum number of players to allow for a game. </param>
-        /// <param name="seed"> seed to use for deck shuffling. </param>
-        public AbstractReferee(int cards, int maxPlayers, int seed) {
+        public AbstractReferee(int cards, int maxPlayers) {
             if( cards < maxPlayers ) {
                 throw new ArgumentException("The maximum number of players must be less than or equal to the number of cards in the game.");
             }
             _maxPlayers = maxPlayers;
             _players = new List<T>(_maxPlayers);
 
-            _lock = "lock";
+            _lock = new object();
         }
 
 // IReferee interface
@@ -43,10 +44,8 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <summary> joins a player to this game. </summary>
         /// <param name="player"> player to add. </param>
         public virtual void Join(T player) {
-            lock (_lock)
-            {
-                if (_players.Count == _maxPlayers)
-                {
+            lock (_lock) {
+                if (_players.Count == _maxPlayers) {
                     throw new InvalidOperationException("This referee has reached the maximum number of players.");
                 }
                 _players.Add(player);
@@ -56,7 +55,9 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <summary> remove a player from this game. </summary>
         /// <param name="player"> player to remove. </param>
         public virtual void Leave(T player) {
-            _players.Remove(player);
+            lock (_lock) {
+                _players.Remove(player);
+            }
         }
 
         /// <summary> obtain the players for which this Referee is gamekeeping. </summary>
