@@ -12,33 +12,40 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="Celsius">
+      <s:element name="Login">
+        <s:complexType />
+      </s:element>
+      <s:element name="LoginResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="fahrenheit" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="LoginResult" type="s:int" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="CelsiusResponse">
+      <s:element name="Get">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="CelsiusResult" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="playerId" type="s:int" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="Fahrenheit">
+      <s:element name="GetResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="celsius" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="GetResult" type="s:int" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="FahrenheitResponse">
+      <s:element name="Set">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="FahrenheitResult" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="playerId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="selection" type="s:int" />
           </s:sequence>
         </s:complexType>
+      </s:element>
+      <s:element name="SetResponse">
+        <s:complexType />
       </s:element>
     </s:schema>
   </wsdl:types>
@@ -48,33 +55,43 @@
   <wsdl:message name="HelloWorldSoapOut">
     <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
   </wsdl:message>
-  <wsdl:message name="CelsiusSoapIn">
-    <wsdl:part name="parameters" element="tns:Celsius" />
+  <wsdl:message name="LoginSoapIn">
+    <wsdl:part name="parameters" element="tns:Login" />
   </wsdl:message>
-  <wsdl:message name="CelsiusSoapOut">
-    <wsdl:part name="parameters" element="tns:CelsiusResponse" />
+  <wsdl:message name="LoginSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
   </wsdl:message>
-  <wsdl:message name="FahrenheitSoapIn">
-    <wsdl:part name="parameters" element="tns:Fahrenheit" />
+  <wsdl:message name="GetSoapIn">
+    <wsdl:part name="parameters" element="tns:Get" />
   </wsdl:message>
-  <wsdl:message name="FahrenheitSoapOut">
-    <wsdl:part name="parameters" element="tns:FahrenheitResponse" />
+  <wsdl:message name="GetSoapOut">
+    <wsdl:part name="parameters" element="tns:GetResponse" />
   </wsdl:message>
-  <wsdl:portType name="Service1Soap">
+  <wsdl:message name="SetSoapIn">
+    <wsdl:part name="parameters" element="tns:Set" />
+  </wsdl:message>
+  <wsdl:message name="SetSoapOut">
+    <wsdl:part name="parameters" element="tns:SetResponse" />
+  </wsdl:message>
+  <wsdl:portType name="PlayerCellServiceSoap">
     <wsdl:operation name="HelloWorld">
       <wsdl:input message="tns:HelloWorldSoapIn" />
       <wsdl:output message="tns:HelloWorldSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="Celsius">
-      <wsdl:input message="tns:CelsiusSoapIn" />
-      <wsdl:output message="tns:CelsiusSoapOut" />
+    <wsdl:operation name="Login">
+      <wsdl:input message="tns:LoginSoapIn" />
+      <wsdl:output message="tns:LoginSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="Fahrenheit">
-      <wsdl:input message="tns:FahrenheitSoapIn" />
-      <wsdl:output message="tns:FahrenheitSoapOut" />
+    <wsdl:operation name="Get">
+      <wsdl:input message="tns:GetSoapIn" />
+      <wsdl:output message="tns:GetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Set">
+      <wsdl:input message="tns:SetSoapIn" />
+      <wsdl:output message="tns:SetSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
+  <wsdl:binding name="PlayerCellServiceSoap" type="tns:PlayerCellServiceSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="HelloWorld">
       <soap:operation soapAction="http://www.cs.rit.edu/axel/conversions/HelloWorld" style="document" />
@@ -85,8 +102,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="Celsius">
-      <soap:operation soapAction="http://www.cs.rit.edu/axel/conversions/Celsius" style="document" />
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://www.cs.rit.edu/axel/conversions/Login" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -94,8 +111,17 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="Fahrenheit">
-      <soap:operation soapAction="http://www.cs.rit.edu/axel/conversions/Fahrenheit" style="document" />
+    <wsdl:operation name="Get">
+      <soap:operation soapAction="http://www.cs.rit.edu/axel/conversions/Get" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Set">
+      <soap:operation soapAction="http://www.cs.rit.edu/axel/conversions/Set" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -104,7 +130,7 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:binding name="Service1Soap12" type="tns:Service1Soap">
+  <wsdl:binding name="PlayerCellServiceSoap12" type="tns:PlayerCellServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="HelloWorld">
       <soap12:operation soapAction="http://www.cs.rit.edu/axel/conversions/HelloWorld" style="document" />
@@ -115,8 +141,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="Celsius">
-      <soap12:operation soapAction="http://www.cs.rit.edu/axel/conversions/Celsius" style="document" />
+    <wsdl:operation name="Login">
+      <soap12:operation soapAction="http://www.cs.rit.edu/axel/conversions/Login" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -124,8 +150,17 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="Fahrenheit">
-      <soap12:operation soapAction="http://www.cs.rit.edu/axel/conversions/Fahrenheit" style="document" />
+    <wsdl:operation name="Get">
+      <soap12:operation soapAction="http://www.cs.rit.edu/axel/conversions/Get" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Set">
+      <soap12:operation soapAction="http://www.cs.rit.edu/axel/conversions/Set" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -134,12 +169,12 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="Service1">
-    <wsdl:port name="Service1Soap" binding="tns:Service1Soap">
-      <soap:address location="http://localhost:50369/Service1.asmx" />
+  <wsdl:service name="PlayerCellService">
+    <wsdl:port name="PlayerCellServiceSoap" binding="tns:PlayerCellServiceSoap">
+      <soap:address location="http://localhost:50369/PlayerCellService.asmx" />
     </wsdl:port>
-    <wsdl:port name="Service1Soap12" binding="tns:Service1Soap12">
-      <soap12:address location="http://localhost:50369/Service1.asmx" />
+    <wsdl:port name="PlayerCellServiceSoap12" binding="tns:PlayerCellServiceSoap12">
+      <soap12:address location="http://localhost:50369/PlayerCellService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
