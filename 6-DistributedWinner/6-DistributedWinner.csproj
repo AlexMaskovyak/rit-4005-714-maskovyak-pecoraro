@@ -30,33 +30,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DegC, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="1-Poker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\refs\DegC.dll</HintPath>
+      <HintPath>..\1-Poker\bin\Debug\1-Poker.exe</HintPath>
     </Reference>
-    <Reference Include="DegF, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="2-PokerPuzzle, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\refs\DegF.dll</HintPath>
+      <HintPath>..\2-PokerPuzzle\bin\Debug\2-PokerPuzzle.exe</HintPath>
     </Reference>
-    <Reference Include="game, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="5-SelectingAWinner-ConsoleApplication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\refs\game.dll</HintPath>
+      <HintPath>..\5-SelectingAWinner-ConsoleApplication\bin\Debug\5-SelectingAWinner-ConsoleApplication.exe</HintPath>
     </Reference>
-    <Reference Include="IReversibleFunction, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="5-SelectingAWinner-GUIApplication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\refs\IReversibleFunction.dll</HintPath>
+      <HintPath>..\5-SelectingAWinner-GUIApplication\bin\Debug\5-SelectingAWinner-GUIApplication.exe</HintPath>
     </Reference>
-    <Reference Include="Poker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="5-SelectingAWinner-UserControlLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\refs\Poker.dll</HintPath>
-    </Reference>
-    <Reference Include="PokerPuzzle, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\refs\PokerPuzzle.dll</HintPath>
-    </Reference>
-    <Reference Include="ReversibleLinearFunction, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\refs\ReversibleLinearFunction.dll</HintPath>
+      <HintPath>..\5-SelectingAWinner-UserControlLibrary\bin\Debug\5-SelectingAWinner-UserControlLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
