@@ -11,7 +11,6 @@ using System.Xml.Linq;
 
 using _5_SelectingAWinner_ConsoleApplication;
 
-
 namespace _6_DistributedWinner
 {
     /// <summary>Summary description for Service</summary>
