@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using ATS.Winner;
 
 namespace _6_DistributedWinner_Client
 {
     /// <summary></summary>
-    public class ProxyPlayer : IView
+    public class ProxyPlayer
     {
         public ProxyPlayer()
         {

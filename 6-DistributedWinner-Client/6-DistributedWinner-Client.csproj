@@ -35,17 +35,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="game, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="1-Poker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\6-DistributedWinner\bin\refs\game.dll</HintPath>
+      <HintPath>..\1-Poker\bin\Debug\1-Poker.exe</HintPath>
     </Reference>
-    <Reference Include="Poker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="2-PokerPuzzle, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\6-DistributedWinner\bin\refs\Poker.dll</HintPath>
+      <HintPath>..\2-PokerPuzzle\bin\Debug\2-PokerPuzzle.exe</HintPath>
     </Reference>
-    <Reference Include="PokerPuzzle, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="5-SelectingAWinner-ConsoleApplication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\6-DistributedWinner\bin\refs\PokerPuzzle.dll</HintPath>
+      <HintPath>..\5-SelectingAWinner-ConsoleApplication\bin\Debug\5-SelectingAWinner-ConsoleApplication.exe</HintPath>
+    </Reference>
+    <Reference Include="5-SelectingAWinner-GUIApplication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\5-SelectingAWinner-GUIApplication\bin\Debug\5-SelectingAWinner-GUIApplication.exe</HintPath>
+    </Reference>
+    <Reference Include="5-SelectingAWinner-UserControlLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\5-SelectingAWinner-UserControlLibrary\bin\Debug\5-SelectingAWinner-UserControlLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
