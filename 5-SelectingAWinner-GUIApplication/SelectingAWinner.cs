@@ -71,58 +71,29 @@ namespace _5_SelectingAWinner_GUIApplication
         /// <summary> run the game. </summary>
         public virtual void Run() {
 
-            App app = new App();
-
-            // Run the Referee in this thread
+            // Create Referee
             _referee = CreateReferee(_numCards, _numPlayers, _seed);
 
+            // Create Views            
             for (int i = 0; i < _numPlayers; ++i) {
                 CardGameViewWindow view = (CardGameViewWindow)CreateView(_numCards, _imageURI);
-                view.Show();
                 _referee.Join(view);
+                view.Show();
             }
 
-            // Create Views in their own threads
-            /*            for (int i=0; i<_numPlayers; ++i) {
-                            Thread t = new Thread(new ThreadStart(delegate {
-                                CardGameViewWindow view = (CardGameViewWindow)CreateView(_numCards, _imageURI);
-                                _referee.Join(view);
-                                TriggerStart();
-                                view.ShowDialog();
-                            }));
-                            t.SetApartmentState(System.Threading.ApartmentState.STA);
-                            t.Start();
-                        }
-            */
-            // run referee in background
+            // run referee in background thread
             BackgroundWorker worker = new BackgroundWorker();
-
-            worker.DoWork += new DoWorkEventHandler(delegate
-            {
-                _referee.Start();
-            });
+            worker.DoWork += new DoWorkEventHandler(delegate { _referee.Start(); });
             worker.RunWorkerAsync();
 
-            // run event loop
+            // run event loop in this thread
+            App app = new App();
             app.Run();
-        }
-
-        /// <summary> Only start once all the Views have Joined the Referee</summary>
-        protected virtual void TriggerStart() {
-            lock (monitor) {
-                _created++;
-                if (_created == _numPlayers) {
-                    Thread t = new Thread(new ThreadStart( () => _referee.Start() ));
-                    t.IsBackground = true; // Referee has no GUI, allow the application to close if all GUIs are closed
-                    t.Start();
-                }
-            }
         }
 
         /// <summary> run the game </summary>
         [System.STAThreadAttribute()]
-        public static void Main(string[] args)
-        {
+        public static void Main(string[] args) {
 
             // Debug Mode: 1 command line argument "debug"
             if (args.Length == 1 && args[0] == "debug") {
