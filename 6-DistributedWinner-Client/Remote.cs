@@ -21,10 +21,13 @@ namespace _6_DistributedWinner_Client
         /// <summary>Is First Player or not (Assumes two player game)</summary>
         protected bool _isFirst;
 
+        protected bool _skipTell;
+
 // Constructors
 
         /// <summary>Default Constructor</summary>
         public Remote() {
+            _skipTell = false;
             _proxy = new SelectingAWinnerService.PlayerCellServiceSoapClient();
             _id = _proxy.Login();
             _isFirst = _proxy.IsFirst(_id);
@@ -35,7 +38,7 @@ namespace _6_DistributedWinner_Client
 // Properties
 
         /// <summary> is this the first player or the second player? </summary>
-        public bool IsFirst {
+        public virtual bool IsFirst {
             get { return _isFirst; }
         }
 
@@ -44,26 +47,40 @@ namespace _6_DistributedWinner_Client
         /// <summary> return <c>0..m-1</c>, index of chosen (and unexposed) card. </summary>
         /// <remarks> calls the Web Service (via the Proxy) to get the complementing Player's selection. </remarks>
         /// <returns> the other players selection. </returns>
-        public int Choose() {
-            return _proxy.Get(_id);
+        public virtual int Choose() {
+            Console.WriteLine("Proxy is Fetching");
+            int i = _proxy.Get(_id);
+            _skipTell = true;
+            Console.WriteLine("Proxy got {0}", i);
+            return i;
         }
 
         /// <summary> find out about a chosen card. </summary>
         /// <remarks> calls the Web Service (via the Proxy) to set this Player's selection </remarks>
-        public void Tell(int index, int suit, int value) {
+        public virtual void Tell(int index, int suit, int value) {
+            if (_skipTell) {
+                _skipTell = false;
+                return;
+            }
+
+            Console.WriteLine("Proxy is Sending");
             _proxy.Set(_id, index);
+            Console.WriteLine("Proxy sent {0}", index);
+            //_proxy.Get(_id); // should come right back due to symmetry
         }
 
         /// <summary> find out about a round's outcome. </summary>
         /// <remarks> ignored, the symmetric Referees will let the real players know. </remarks>
-        public void Winner(bool yes) {
+        public virtual void Winner(bool yes) {
             // ignored
         }
 
         /// <summary> return once view is ready for a new round. </summary>
-        public void Ready() {
-            // ignored
-            // FIXME: should block on the cell for a dummy value for "ready"?
+        public virtual void Ready() {
+            if (IsFirst)
+                _proxy.Get(_id); // get dummy value that other player is ready
+            else
+                _proxy.Set(_id, 0); // set dummy value that player is ready
         }
     }
 }
