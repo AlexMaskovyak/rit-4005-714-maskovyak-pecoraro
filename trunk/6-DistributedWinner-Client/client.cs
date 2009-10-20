@@ -42,6 +42,8 @@ namespace _6_DistributedWinner_Client
             return new Remote();
         }
 
+// Overriden Methods
+
         /// <summary> run the game. </summary>
         public override void Run() {
 
@@ -55,13 +57,13 @@ namespace _6_DistributedWinner_Client
             // Create Referee and have the players join in the proper order
             _referee = CreateReferee(_numCards, 2, _seed);
             if (proxyPlayer.IsFirst) {
-                Console.WriteLine("I am player 1");
-                _referee.Join(proxyPlayer);
+                Console.WriteLine("This side is player 1");
                 _referee.Join(realPlayer);
+                _referee.Join(proxyPlayer);
             } else {
-                Console.WriteLine("I am player 2");
-                _referee.Join(realPlayer);
+                Console.WriteLine("This side is player 2");
                 _referee.Join(proxyPlayer);
+                _referee.Join(realPlayer);
             }
 
             // run referee in background thread
@@ -74,6 +76,8 @@ namespace _6_DistributedWinner_Client
             app.Run();
 
         }
+
+// Driver
 
         /// <summary> run the game </summary>
         [System.STAThreadAttribute()]

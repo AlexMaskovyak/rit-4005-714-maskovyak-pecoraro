@@ -68,7 +68,6 @@ namespace _6_DistributedWinner
             Application.UnLock();
 
             return complement.Value;
-            
         }
 
         /// <summary> sets the integer value into the player's cell. </summary>
@@ -77,7 +76,7 @@ namespace _6_DistributedWinner
         [WebMethod]
         public virtual void Set(int playerId, int selection ) {
             Application.Lock();
-            ((Cell<int>)Application[playerId]).Value = selection;
+            ((Cell<int>)Application[playerId.ToString()]).Value = selection;
             Application.UnLock();
         }
 
