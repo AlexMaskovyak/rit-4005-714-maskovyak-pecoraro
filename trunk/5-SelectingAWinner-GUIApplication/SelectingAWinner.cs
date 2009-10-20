@@ -76,8 +76,7 @@ namespace _5_SelectingAWinner_GUIApplication
             // Run the Referee in this thread
             _referee = CreateReferee(_numCards, _numPlayers, _seed);
 
-            for (int i = 0; i < _numPlayers; ++i)
-            {
+            for (int i = 0; i < _numPlayers; ++i) {
                 CardGameViewWindow view = (CardGameViewWindow)CreateView(_numCards, _imageURI);
                 view.Show();
                 _referee.Join(view);
