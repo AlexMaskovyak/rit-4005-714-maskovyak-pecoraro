@@ -10,6 +10,9 @@ namespace _6_DistributedWinner_Client
     /// <summary>Proxy Player</summary>
     public class Remote : IView {
 
+        /// <summary>Dummy value used occasionally</summary>
+        protected const int Dummy = -1;
+
 // Fields
 
         /// <summary>SOAP Service Proxy built from WSDL</summary>
@@ -102,9 +105,8 @@ namespace _6_DistributedWinner_Client
             if (IsFirst) {
                 _proxy.Get(_id); // get dummy value that other player is ready
             } else {
-                _proxy.Set(_id, 0); // set dummy value that player is ready
+                _proxy.Set(_id, Dummy); // set dummy value that player is ready
             }
-            
         }
     }
 }
