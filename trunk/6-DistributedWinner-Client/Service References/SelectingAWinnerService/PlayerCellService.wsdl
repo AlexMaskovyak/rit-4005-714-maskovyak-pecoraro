@@ -2,16 +2,6 @@
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.cs.rit.edu/axel/conversions/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.cs.rit.edu/axel/conversions/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://www.cs.rit.edu/axel/conversions/">
-      <s:element name="HelloWorld">
-        <s:complexType />
-      </s:element>
-      <s:element name="HelloWorldResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="HelloWorldResult" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
       <s:element name="Login">
         <s:complexType />
       </s:element>
@@ -47,14 +37,22 @@
       <s:element name="SetResponse">
         <s:complexType />
       </s:element>
+      <s:element name="IsFirst">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="playerId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsFirstResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IsFirstResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
     </s:schema>
   </wsdl:types>
-  <wsdl:message name="HelloWorldSoapIn">
-    <wsdl:part name="parameters" element="tns:HelloWorld" />
-  </wsdl:message>
-  <wsdl:message name="HelloWorldSoapOut">
-    <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
-  </wsdl:message>
   <wsdl:message name="LoginSoapIn">
     <wsdl:part name="parameters" element="tns:Login" />
   </wsdl:message>
@@ -73,11 +71,13 @@
   <wsdl:message name="SetSoapOut">
     <wsdl:part name="parameters" element="tns:SetResponse" />
   </wsdl:message>
+  <wsdl:message name="IsFirstSoapIn">
+    <wsdl:part name="parameters" element="tns:IsFirst" />
+  </wsdl:message>
+  <wsdl:message name="IsFirstSoapOut">
+    <wsdl:part name="parameters" element="tns:IsFirstResponse" />
+  </wsdl:message>
   <wsdl:portType name="PlayerCellServiceSoap">
-    <wsdl:operation name="HelloWorld">
-      <wsdl:input message="tns:HelloWorldSoapIn" />
-      <wsdl:output message="tns:HelloWorldSoapOut" />
-    </wsdl:operation>
     <wsdl:operation name="Login">
       <wsdl:input message="tns:LoginSoapIn" />
       <wsdl:output message="tns:LoginSoapOut" />
@@ -90,18 +90,13 @@
       <wsdl:input message="tns:SetSoapIn" />
       <wsdl:output message="tns:SetSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="IsFirst">
+      <wsdl:input message="tns:IsFirstSoapIn" />
+      <wsdl:output message="tns:IsFirstSoapOut" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="PlayerCellServiceSoap" type="tns:PlayerCellServiceSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="HelloWorld">
-      <soap:operation soapAction="http://www.cs.rit.edu/axel/conversions/HelloWorld" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="Login">
       <soap:operation soapAction="http://www.cs.rit.edu/axel/conversions/Login" style="document" />
       <wsdl:input>
@@ -129,18 +124,18 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="IsFirst">
+      <soap:operation soapAction="http://www.cs.rit.edu/axel/conversions/IsFirst" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="PlayerCellServiceSoap12" type="tns:PlayerCellServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="HelloWorld">
-      <soap12:operation soapAction="http://www.cs.rit.edu/axel/conversions/HelloWorld" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="Login">
       <soap12:operation soapAction="http://www.cs.rit.edu/axel/conversions/Login" style="document" />
       <wsdl:input>
@@ -161,6 +156,15 @@
     </wsdl:operation>
     <wsdl:operation name="Set">
       <soap12:operation soapAction="http://www.cs.rit.edu/axel/conversions/Set" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsFirst">
+      <soap12:operation soapAction="http://www.cs.rit.edu/axel/conversions/IsFirst" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
