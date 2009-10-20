@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -16,10 +17,11 @@ using ThreadStart = System.Threading.ThreadStart;
 
 using _5_SelectingAWinner_ConsoleApplication;
 
-namespace _5_SelectingAWinner_GUIApplication {
+namespace _5_SelectingAWinner_GUIApplication
+{
 
     /// <summary> driver program </summary>
-    class SelectingAWinner {
+    public class SelectingAWinner {
 
         /// <summary> number of cards in the game </summary>
         protected int _numCards;
@@ -69,55 +71,76 @@ namespace _5_SelectingAWinner_GUIApplication {
         /// <summary> run the game. </summary>
         public virtual void Run() {
 
+            App app = new App();
+
             // Run the Referee in this thread
             _referee = CreateReferee(_numCards, _numPlayers, _seed);
 
-            // Create Views in their own threads
-            for (int i=0; i<_numPlayers; ++i) {
-                Thread t = new Thread(new ThreadStart(delegate {
-                    CardGameViewWindow view = (CardGameViewWindow)CreateView(_numCards, _imageURI);
-                    _referee.Join(view);
-                    TriggerStart();
-                    view.ShowDialog();
-                }));
-                t.SetApartmentState(System.Threading.ApartmentState.STA);
-                t.Start();
+            for (int i = 0; i < _numPlayers; ++i)
+            {
+                CardGameViewWindow view = (CardGameViewWindow)CreateView(_numCards, _imageURI);
+                view.Show();
+                _referee.Join(view);
             }
-            
+
+            // Create Views in their own threads
+            /*            for (int i=0; i<_numPlayers; ++i) {
+                            Thread t = new Thread(new ThreadStart(delegate {
+                                CardGameViewWindow view = (CardGameViewWindow)CreateView(_numCards, _imageURI);
+                                _referee.Join(view);
+                                TriggerStart();
+                                view.ShowDialog();
+                            }));
+                            t.SetApartmentState(System.Threading.ApartmentState.STA);
+                            t.Start();
+                        }
+            */
+            // run referee in background
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += new DoWorkEventHandler(delegate
+            {
+                _referee.Start();
+            });
+            worker.RunWorkerAsync();
+
+            // run event loop
+            app.Run();
         }
 
         /// <summary> Only start once all the Views have Joined the Referee</summary>
-        protected void TriggerStart() {
+        protected virtual void TriggerStart() {
             lock (monitor) {
                 _created++;
                 if (_created == _numPlayers) {
-                    new Thread(new ThreadStart(delegate { _referee.Start(); })).Start();
+                    Thread t = new Thread(new ThreadStart( () => _referee.Start() ));
+                    t.IsBackground = true; // Referee has no GUI, allow the application to close if all GUIs are closed
+                    t.Start();
                 }
             }
         }
 
         /// <summary> run the game </summary>
         [System.STAThreadAttribute()]
-        public static void Main(string[] args) {
+        public static void Main(string[] args)
+        {
 
-            // TODO: Remove this, it is helper debug code
-            // ----------
-            if (args.Length == 0) {
+            // Debug Mode: 1 command line argument "debug"
+            if (args.Length == 1 && args[0] == "debug") {
                 args = new string[] { "5", "2", "http://www.cs.rit.edu/~ats/cs-2009-1/2/Release/images/", "1" };
             }
-            // ----------
 
             // Usage
             if (args == null || args.Length < 2) {
-                Console.WriteLine("usage: SelectingAWinner <numCards> <numPlayers> <imageURI> [ <seed> ]");
+                Console.WriteLine("usage: SelectingAWinner <numCards> <numPlayers> [ <imageURI> <seed> ]");
                 Environment.Exit(1);
             }
 
             // Arguments
             int numCards = int.Parse(args[0]);
             int numPlayers = int.Parse(args[1]);
-            string imageURI = args[2];
-            int seed = (args.Length == 4) ? int.Parse(args[3]) : (int)DateTime.Now.Ticks;
+            string imageURI = (args.Length > 2) ? args[2] : "http://www.cs.rit.edu/~ats/cs-2009-1/2/Release/images/";
+            int seed = (args.Length > 3) ? int.Parse(args[3]) : (int)DateTime.Now.Ticks;
 
             // Launch the Driver
             SelectingAWinner driver = new SelectingAWinner(numCards, numPlayers, imageURI, seed);
