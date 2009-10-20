@@ -18,7 +18,7 @@ namespace _6_DistributedWinner_Client
         /// <summary> return <c>0..m-1</c>, index of chosen (and unexposed) card. </summary>
         public int Choose()
         {
-
+            return 0;
         }
 
         /// <summary> find out about a chosen card. </summary>

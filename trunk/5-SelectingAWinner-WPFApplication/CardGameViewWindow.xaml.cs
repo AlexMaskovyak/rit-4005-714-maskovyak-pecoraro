@@ -58,6 +58,8 @@ namespace _5_SelectingAWinner_WPFApplication {
         /// <param name="numCards"> number of cards to display </param>
         /// <param name="imagePrefixURI"> URI Prefix for the card images </param>
         public CardGameViewWindow(int numCards, string imagePrefixURI) {
+            InitializeComponent(); 
+            
             _cards = new List<CardUserControl>(numCards);
             _readyCell = new Cell<bool>();
             _chooseCell = new Cell<int>();
@@ -66,7 +68,7 @@ namespace _5_SelectingAWinner_WPFApplication {
             _isMyTurn = false;
             _cache = new PlayingCardCache(imagePrefixURI, ".png");
 
-            InitializeComponent();
+
             InitializeUI();
             _readyCell.Value = true;
         }

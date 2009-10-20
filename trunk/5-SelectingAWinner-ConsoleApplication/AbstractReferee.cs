@@ -14,6 +14,8 @@ namespace _5_SelectingAWinner_ConsoleApplication
 
 // fields
 
+        protected Object _lock;
+
         /// <summary> maximum number of players. </summary>
         protected int _maxPlayers;
 
@@ -32,6 +34,8 @@ namespace _5_SelectingAWinner_ConsoleApplication
             }
             _maxPlayers = maxPlayers;
             _players = new List<T>(_maxPlayers);
+
+            _lock = "lock";
         }
 
 // IReferee interface
@@ -39,10 +43,14 @@ namespace _5_SelectingAWinner_ConsoleApplication
         /// <summary> joins a player to this game. </summary>
         /// <param name="player"> player to add. </param>
         public virtual void Join(T player) {
-            if (_players.Count == _maxPlayers) {
-                throw new InvalidOperationException("This referee has reached the maximum number of players.");
+            lock (_lock)
+            {
+                if (_players.Count == _maxPlayers)
+                {
+                    throw new InvalidOperationException("This referee has reached the maximum number of players.");
+                }
+                _players.Add(player);
             }
-            _players.Add(player);
         }
 
         /// <summary> remove a player from this game. </summary>
