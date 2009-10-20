@@ -51,11 +51,12 @@ namespace _6_DistributedWinner_Client
             CardGameViewWindow realPlayer = (CardGameViewWindow)CreateView(_numCards, _imageURI);
             realPlayer.Show();
 
-            // Create Proxy Player
+            // Create Proxy Player and Exchange Seeds
             Remote proxyPlayer = (Remote)CreateProxyPlayer();
+            int agreedSeed = proxyPlayer.ExchangeSeed(_seed);
 
             // Create Referee and have the players join in the proper order
-            _referee = CreateReferee(_numCards, 2, _seed);
+            _referee = CreateReferee(_numCards, 2, agreedSeed);
             if (proxyPlayer.IsFirst) {
                 Console.WriteLine("This side is player 1");
                 _referee.Join(realPlayer);
@@ -86,7 +87,7 @@ namespace _6_DistributedWinner_Client
             // Debug Mode: 1 command line argument "debug" or NO command line arguments
             // NOTE: Hardcoded seed
             if (args == null || args.Length == 0 || (args.Length == 1 && args[0] == "debug")) {
-                args = new string[] { "5", "http://www.cs.rit.edu/~ats/cs-2009-1/2/Release/images/", "1" };
+                args = new string[] { "5", "http://www.cs.rit.edu/~ats/cs-2009-1/2/Release/images/", "999" };
             }
 
             // Usage
@@ -97,8 +98,8 @@ namespace _6_DistributedWinner_Client
 
             // Arguments
             int numCards = int.Parse(args[0]);
-            string imageURI = (args.Length > 2) ? args[1] : "http://www.cs.rit.edu/~ats/cs-2009-1/2/Release/images/";
-            int seed = (args.Length > 3) ? int.Parse(args[2]) : (int)DateTime.Now.Ticks;
+            string imageURI = (args.Length > 1) ? args[1] : "http://www.cs.rit.edu/~ats/cs-2009-1/2/Release/images/";
+            int seed = (args.Length > 2) ? int.Parse(args[2]) : (int)DateTime.Now.Ticks;
 
             // Launch the Driver
             DistributedSelectingAWinner driver = new DistributedSelectingAWinner(numCards, imageURI, seed);

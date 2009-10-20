@@ -25,14 +25,15 @@ namespace _6_DistributedWinner_Client
 
 // Constructors
 
-        /// <summary>Default Constructor</summary>
-        public Remote() {
+        /// <summary> Default Constructor </summary>
+        public Remote() : this((int)DateTime.Now.Ticks) { }
+
+        /// <summary> Constructor with Known Seed </summary>
+        public Remote(int seed) {
             _skipTell = false;
             _proxy = new SelectingAWinnerService.PlayerCellServiceSoapClient();
             _id = _proxy.Login();
             _isFirst = _proxy.IsFirst(_id);
-            Console.WriteLine(_id);
-            Console.WriteLine(_isFirst ? "First" : "Second");
         }
 
 // Properties
@@ -40,6 +41,25 @@ namespace _6_DistributedWinner_Client
         /// <summary> is this the first player or the second player? </summary>
         public virtual bool IsFirst {
             get { return _isFirst; }
+        }
+
+// Connection Protocol
+
+        /// <summary> exchange of seed between connected players. </summary>
+        /// <remarks> player one's seed gets used, player two's seed is ignored. </remarks>
+        /// <param name="seed"> the seed to send. </param>
+        /// <returns> the agreed seed. </returns>
+        public virtual int ExchangeSeed(int seed) {
+            if (IsFirst) {
+                Console.WriteLine("Sending seed: {0}", seed);
+                _proxy.Set(_id, seed);
+                return seed;
+            } else {
+                Console.WriteLine("Fetching seed");
+                int newSeed = _proxy.Get(_id);
+                Console.WriteLine("Got seed: {0}", seed);
+                return newSeed;
+            }
         }
 
 // IView Interface
