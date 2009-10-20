@@ -22,18 +22,14 @@ namespace _6_DistributedWinner
     // [System.Web.Script.Services.ScriptService]
     public class PlayerCellService : System.Web.Services.WebService
     {
-        /// <summary> current id to hand-off to a player. </summary>
-        protected int _playerId;
- 
-        [WebMethod]
-        public string HelloWorld()
-        {
-            return "Hello World";
-        }
+        /// <summary>Key into Application to get the Next Player Id to hand out</summary>
+        protected const string NextPlayerIdKey = "NextPlayerId";
 
         /// <summary> default constructor. </summary>
         public PlayerCellService () {
-            _playerId = 0;
+            if (Application[NextPlayerIdKey] == null) {
+                Application[NextPlayerIdKey] = 0;
+            }
         }
 
         /// <summary> login protocol for a joining player. </summary>
@@ -42,16 +38,18 @@ namespace _6_DistributedWinner
         public virtual int Login() {
             Application.Lock();
 
-            int newPlayerId = _playerId;
+            // New Player Id and Increment for the next player
+            int newPlayerId = (int)Application[NextPlayerIdKey];
+            Application[NextPlayerIdKey] = 1 + newPlayerId;
+
+            // create new cell pairs and store it in the repository
+            // only if this this is the first player, the second player
+            // will just pass through.
             if (IsFirst(newPlayerId)) {
-                // create a new cell and store it in the repository 
                 Cell<int> c1 = new Cell<int>();
                 Cell<int> c2 = new Cell<int>();
-                Application.Add(_playerId.ToString(), c1);
-                Application.Add((++_playerId).ToString(), c2);
-            }
-            else {
-                _playerId++;
+                Application.Add(newPlayerId.ToString(), c1);
+                Application.Add((1+newPlayerId).ToString(), c2);
             }
 
             Application.UnLock();
@@ -87,7 +85,7 @@ namespace _6_DistributedWinner
         /// <param name="playerId"> player ID for which to determine firstness. </param>
         /// <returns> true if this is the first player, false otherwise. </returns>
         [WebMethod]
-        public bool IsFirst( int playerId ) {
+        public virtual bool IsFirst( int playerId ) {
             return ( playerId % 2 == 0 );
         }
 
@@ -101,7 +99,7 @@ namespace _6_DistributedWinner
         /// <summary> obtain the id of the partner cell. </summary>
         /// <param name="cellId"> player ID for which to obtain the corresponding partner id</param>
         /// <returns> ID of the partner player. </returns>
-        protected int GetComplementId( int playerId ) {
+        protected virtual int GetComplementId( int playerId ) {
             return (IsFirst(playerId))
                     ? playerId + 1
                     : playerId - 1;
