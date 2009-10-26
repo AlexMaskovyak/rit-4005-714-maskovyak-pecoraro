@@ -46,10 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DB.cs" />
+    <Compile Include="DBDelegateFactory.cs" />
     <Compile Include="DBTest.cs" />
     <Compile Include="IDB.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="LocalDB.cs" />
+    <Compile Include="LocalDBTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
