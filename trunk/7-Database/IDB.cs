@@ -27,7 +27,7 @@ namespace _7_Database
         ///   the "report" function to tranform the tuple to a desired representation.
         /// </summary>
         /// <param name="match"> delegate specifying if a tuple matches. </param>
-        /// <param name="result"> delegate describing how to represent an extracted tuple. </param>
+        /// <param name="report"> delegate describing how to represent an extracted tuple. </param>
         /// <returns> an array, possibly empty, of transformed tuples. </returns>
         R[] Extract<R>( Predicate<T[]> match, Func<T[], R> report );
 

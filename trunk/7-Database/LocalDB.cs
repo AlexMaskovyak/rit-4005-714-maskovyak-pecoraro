@@ -10,6 +10,7 @@ namespace _7_Database
 
 // Constructors
 
+        /// <summary> default constructor. </summary>
         public LocalDB() : base() { }
 
 // IModel interface
