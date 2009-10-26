@@ -6,7 +6,7 @@ using System.Text;
 namespace _7_Database {
 
     // Generic Acccess to a DB from the command line
-    public class CommandLineDBAccess<T> {
+    public abstract class CommandLineDBAccess<T> {
 
         /// <summary> the database </summary>
         protected DB<T> _db;
