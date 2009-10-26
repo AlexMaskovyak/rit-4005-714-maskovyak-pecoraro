@@ -23,6 +23,8 @@ namespace _7_Database
 
 // Factory methods
 
+        /// <summary> collection is just a list. </summary>
+        /// <returns> returns a new list. </returns>
         protected virtual ICollection<T[]> CreateTupleCollection() {
             return new List<T[]>();
         }

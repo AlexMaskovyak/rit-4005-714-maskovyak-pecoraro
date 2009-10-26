@@ -111,7 +111,6 @@ namespace _7_Database
 
         /// <summary> identity function. </summary>
         /// <typeparam name="T"> the type of the input (and therefore output). </typeparam>
-        /// <param name="record"> the record to be returned unmodified. </param>
         /// <returns> the record unmodified. </returns>
         public static Func<T,T> Identity<T>() {
             return record => record;

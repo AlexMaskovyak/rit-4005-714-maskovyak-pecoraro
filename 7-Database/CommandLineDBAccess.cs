@@ -5,7 +5,8 @@ using System.Text;
 
 namespace _7_Database {
 
-    // Generic Acccess to a DB from the command line
+    /// <summary> Generic Acccess to a DB from the command line </summary>
+    /// <typeparam name="T"> type of database. </typeparam>
     public abstract class CommandLineDBAccess<T> {
 
         /// <summary> the database </summary>
@@ -54,9 +55,7 @@ namespace _7_Database {
 
         /// <summary> template method for running commands. </summary>
         /// <param name="commands"> the command lines </param>
-        protected virtual void RunCommands(List<string> commands) {
-            // meant to be overridden in a subclass
-        }
+        protected abstract void RunCommands(List<string> commands);
 
     }
 }

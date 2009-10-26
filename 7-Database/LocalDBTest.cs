@@ -5,6 +5,7 @@ using System.Text;
 
 namespace _7_Database {
 
+    /// <summary> test class for LocalDB. </summary>
     public class LocalDBTest : DBTest {
 
 // Constructor and Factory for DB
