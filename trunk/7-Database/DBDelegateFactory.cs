@@ -29,6 +29,28 @@ namespace _7_Database
             };
         }
 
+        /// <summary> factory method to create a predicate matcher for simple strings and wildcards </summary>
+        /// <param name="recordTemplate"> the input strings. </param>
+        /// <returns> true if non empty strings match corresponding indexes in the input record </returns>
+        public static Predicate<string[]> CreateSimpleWordMatcher(string[] recordTemplate) {
+            int length = recordTemplate.Length;
+            return delegate(string[] record) {
+                if (record.Length < length)
+                    return false;
+
+                for (int i = 0; i < length; ++i) {
+                    // Empty is a wildcard
+                    if (recordTemplate[i].Length == 0)
+                        continue;
+
+                    // Exact String Match
+                    if (recordTemplate[i] != record[i])
+                        return false;
+                }
+                return true;
+            };
+        }
+
         /// <summary> factory method to create a predicate matcher for a T[] record with wildcards </summary>
         /// <remarks> wildcards are specified by a null element in the array </remarks>
         /// <param name="recordTemplate"> the record to be matching against </param>
@@ -49,13 +71,13 @@ namespace _7_Database
         /// <param name="field"> the field index </param>
         /// <param name="str"> the pattern to match against the field value </param>
         /// <returns> true if matched, false otherwise </returns>
-        public static Predicate<string[]> CreateSingleFieldRegexMatcher(int field, string str)
-        {
+        public static Predicate<string[]> CreateSingleFieldRegexMatcher(int field, string str) {
             Regex regex = new Regex(str);
             return delegate(string[] record) {
                 return (field < record.Length && regex.IsMatch(record[field]));
             };
         }
+
 
         /// <summary> factory method to create a predicate matcher for a string[] recordTemplate containing regexes </summary>
         /// <param name="newRecord"> the record to be matching against </param>

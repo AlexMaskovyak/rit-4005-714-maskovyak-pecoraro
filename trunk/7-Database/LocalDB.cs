@@ -8,7 +8,7 @@ namespace _7_Database
     /// <summary> facade for an IModel database. </summary>
     public class LocalDB : DB<string>, IModel<string> {
 
-// constructors
+// Constructors
 
         public LocalDB() : base() { }
 
@@ -20,13 +20,14 @@ namespace _7_Database
         }
 
         /// <summary> finds matching tuples. </summary>
+        /// <param name="keys"> search keys. </param>
         /// <returns> words to be shown in each field. </returns>
         public virtual string[][] Search(string[] keys) {
             IList<string[]> result = new List<string[]>();
             for( int i = 0; i < keys.Length; ++i ) {
                 string[] field = 
                     base.Extract<string>(
-                        DBDelegateFactory.CreateRegexMatcher(keys), 
+                        DBDelegateFactory.CreateSimpleWordMatcher(keys), 
                         DBDelegateFactory.CreateIndexExtractingReporter(i));
                 result.Add(field);
             }
@@ -35,19 +36,17 @@ namespace _7_Database
         }
 
         /// <summary> adds (or replaces) a tuple. </summary>
+        /// <param name="tuple"> input keys. </param>
         /// <returns> true if something was added (not replaced). </returns>
         public virtual bool Enter(string[] tuple) {
             return !base.Add(DBDelegateFactory.CreateSimpleMatcher(tuple), tuple);
         }
 
         /// <summary> removes tuples. </summary>
+        /// <param name="keys"> search keys. </param>
         /// <returns> returns true if something was removed. </returns>
         public virtual bool Remove(string[] keys) {
-            return (0 < base.Delete(DBDelegateFactory.CreateSimpleMatcher(keys)));
+            return (0 < base.Delete(DBDelegateFactory.CreateSimpleWordMatcher(keys)));
         }
-
-        //public static void Main(string[] args) {
-
-        //}
     }
 }
