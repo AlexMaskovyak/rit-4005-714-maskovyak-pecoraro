@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 namespace _7_Database
 {
     /// <summary> contains methods for producing delegates to be used with the IDB interface. </summary>
-    public abstract class DBDelegateFactory {
+    public static class DBDelegateFactory {
 
-        // Delegate Factory Methods
+// Predicate Methods
 
         /// <summary> factory method to create a predicate matcher for a T[] record </summary>
         /// <param name="recordTemplate"> the record to be matching against </param>
@@ -80,7 +80,7 @@ namespace _7_Database
 
 
         /// <summary> factory method to create a predicate matcher for a string[] recordTemplate containing regexes </summary>
-        /// <param name="newRecord"> the record to be matching against </param>
+        /// <param name="recordTemplate"> the record to be matching against </param>
         /// <returns> a predicate returning true when a given record matches newRecord </returns>
         public static Predicate<string[]> CreateRegexMatcher(string[] recordTemplate) {
 
@@ -107,13 +107,21 @@ namespace _7_Database
 
         }
 
+// Reporting Methods
+
+        /// <summary> identity function. </summary>
+        /// <typeparam name="T"> the type of the input (and therefore output). </typeparam>
+        /// <param name="record"> the record to be returned unmodified. </param>
+        /// <returns> the record unmodified. </returns>
+        public static Func<T,T> Identity<T>() {
+            return record => record;
+        }
+
         /// <summary> creates a reporter which extracts the specified word from the tuple. </summary>
         /// <param name="desiredFieldIndex"> index of the word to extract. </param>
         /// <returns> a func which extracts a word from a tuple </returns>
         public static Func<string[], string> CreateIndexExtractingReporter(int desiredFieldIndex) {
-            return delegate(string[] record) {
-                return (desiredFieldIndex < record.Length) ? record[desiredFieldIndex] : null;
-            };
+            return record => record[desiredFieldIndex];
         }
     }
 }
