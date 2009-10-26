@@ -35,5 +35,6 @@ namespace _7_Database
         /// <param name="match"> delegate specifying if a tuple matches. </param>
         /// <returns> number of tuples that were removed. </returns>
         int Delete( Predicate<T[]> match );
+
     }
 }
