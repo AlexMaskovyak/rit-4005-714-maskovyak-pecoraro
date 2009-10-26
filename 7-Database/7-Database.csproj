@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DBTest-input.txt" />
-    <Content Include="LocalDB-input.txt" />
+    <Content Include="LocalDBTest-input.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
