@@ -43,6 +43,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="7-Database-LocalDB, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\7-Database-LocalDB\bin\Debug\7-Database-LocalDB.exe</HintPath>
+    </Reference>
     <Reference Include="DaveSexton.DocProject, Version=1.11.0.0, Culture=neutral, PublicKeyToken=af1a4bab65cc4ece, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -59,7 +63,7 @@
   </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties ExternalSources="" Sandcastle_PresentationName="Visual Studio 2005" Sandcastle_Version="2.4.10520.1" BuildEngineProviderName="Sandcastle" DocProjectVersion="1.11.0.0" IsDocProject="true" ProcessComponentTypeName="_7_Database_DocProject.BuildProcess" />
+      <UserProperties ProcessComponentTypeName="_7_Database_DocProject.BuildProcess" IsDocProject="true" DocProjectVersion="1.11.0.0" BuildEngineProviderName="Sandcastle" Sandcastle_Version="2.4.10520.1" Sandcastle_PresentationName="Visual Studio 2005" ExternalSources="" />
     </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
@@ -250,7 +254,7 @@
     <None Include="Help\Settings\Projects\help1x.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\7-Database\7-Database.csproj">
+    <ProjectReference Include="..\7-Database-DB\7-Database-DB.csproj">
       <Project>{6525D033-E7FC-43CB-9257-73DF050D09CE}</Project>
       <Name>7-Database</Name>
     </ProjectReference>
