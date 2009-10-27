@@ -1,0 +1,13 @@
+﻿enter	joe	pecoraro
+enter	joe	cool
+enter	joe	cool
+enter	alex	maskovyak
+enter	axel	schreiner
+debug
+size
+search	joe	
+debug
+remove	joe	
+remove	bill	clinton
+debug
+size
