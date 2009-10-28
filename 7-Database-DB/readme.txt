@@ -8,17 +8,18 @@
 ========================================
 == Table of Contents ==
 ========================================
-= 1. Structure of the Archive ==
-= 2. Resources Used for Development ==
-= 3. Setup ==
-= 4. Executing the Program ==
-= 5. Design and CRC ==
+= 1. Structure of the Archive =
+= 2. Resources Used for Development =
+= 3. Setup =
+= 4. Executing the Program =
+= 5. Design Decisions =
+= 6. CRC
 ========================================
 
 
-===================================
+=======================================================================
 == 1. Structure of the Archive ==
-===================================
+=======================================================================
 == Meta ==
 readme.txt			-- this file, which describes the contents of
 					-- this deliverable and details written
@@ -100,7 +101,27 @@ shell> cat LocalDBTest-input.txt | 7-Database-LocalDB.exe
 
 
 =======================================================================
-== 5. Design and CRC ==
+== 5. Design Decisions ==
+=======================================================================
+= Add behavior =
+
+Spec: "adds a tuple and returns true if it replaces a tuple with equal 
+content as determined by the match argument." 
+Interpretation: remove ALL tuples with equal content as determined by 
+the match argument, add the given tuple, and return true if any were 
+removed (read as "replaced").
+
+
+= Search behavior =
+Spec: "display all tuples where all corresponding fields are equal to 
+the non-empty words in the command." / 
+"words to be shown in each field"
+Interpretation: creates modified tuples for display where every nth
+tuple returned is formed from the nth word of all matching tuples
+
+
+=======================================================================
+== 6. CRC ==
 =======================================================================
 _7_Database {
 	
