@@ -11,7 +11,7 @@ namespace _7_Database
 
 // Predicate Methods
 
-        /// <summary> factory method to create a predicate matcher for a T[] record </summary>
+        /// <summary> factory method to create a predicate matcher for a string[] record </summary>
         /// <param name="recordTemplate"> the record to be matching against </param>
         /// <returns> a predicate returning true when a given record matches newRecord </returns>
         public static Predicate<string[]> CreateSimpleMatcher(string[] recordTemplate) {
@@ -32,13 +32,17 @@ namespace _7_Database
         /// <summary> factory method to create a predicate matcher for simple strings and wildcards </summary>
         /// <param name="recordTemplate"> the input strings. </param>
         /// <returns> true if non empty strings match corresponding indexes in the input record </returns>
-        public static Predicate<string[]> CreateSimpleWordMatcher(string[] recordTemplate) {
+        public static Predicate<string[]> CreateWildCardMatcher(string[] recordTemplate) {
             int length = recordTemplate.Length;
             return delegate(string[] record) {
                 if (record.Length < length)
                     return false;
 
                 for (int i = 0; i < length; ++i) {
+                    if (recordTemplate == null) {
+                        continue;
+                    }
+
                     // Empty is a wildcard
                     if (recordTemplate[i].Length == 0)
                         continue;
@@ -51,21 +55,6 @@ namespace _7_Database
             };
         }
 
-        /// <summary> factory method to create a predicate matcher for a T[] record with wildcards </summary>
-        /// <remarks> wildcards are specified by a null element in the array </remarks>
-        /// <param name="recordTemplate"> the record to be matching against </param>
-        /// <returns> a prediate returning true when a given record matches newRecord </returns>
-        public static Predicate<string[]> CreateWildCardMatcher(string[] recordTemplate) {
-            int length = recordTemplate.Length;
-            return delegate(string[] record) {
-                for (int i = 0; i < length; ++i) {
-                    if (record[i] != null && record[i] != recordTemplate[i])
-                        return false;
-                }
-
-                return true;
-            };
-        }
 
         /// <summary> factory method to create a predicate matcher for a single field </summary>
         /// <param name="field"> the field index </param>
