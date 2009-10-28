@@ -15,7 +15,7 @@ namespace _7_Database {
 
         /// <summary> this tests a LocalDB database. </summary>
         /// <returns> a new database. </returns>
-        protected override DB<string> createDatabase() {
+        protected override IDB<string> CreateDatabase() {
             return new LocalDB();
         }
 
