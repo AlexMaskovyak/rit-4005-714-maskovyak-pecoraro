@@ -15,6 +15,14 @@ namespace _7_Database
         /// <summary> default constructor. </summary>
         public DBTest() : base() { }
 
+// Factory methods
+
+        /// <summary> factory for creating the Database </summary>
+        /// <returns> a new DB </returns>
+        protected override IDB<string> CreateDatabase() {
+            return new DB<string>();
+        }
+
 // Protected Methods
 
         /// <summary>Read all commands and process each individually.</summary>

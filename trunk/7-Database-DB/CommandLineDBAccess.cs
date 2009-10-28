@@ -10,22 +10,20 @@ namespace _7_Database {
     public abstract class CommandLineDBAccess<T> {
 
         /// <summary> the database </summary>
-        protected DB<T> _db;
+        protected IDB<T> _db;
 
 // Constructors
 
         /// <summary> default constructor. </summary>
         public CommandLineDBAccess() {
-            _db = createDatabase();
+            _db = CreateDatabase();
         }
 
 // Factory Methods
 
         /// <summary> factory for creating the Database </summary>
         /// <returns> a new DB </returns>
-        protected virtual DB<T> createDatabase() {
-            return new DB<T>();
-        }
+        protected abstract IDB<T> CreateDatabase();
 
 // Methods
 
