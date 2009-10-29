@@ -53,25 +53,25 @@ namespace _7_Database {
 
         /// <summary> entries in database. </summary>
         protected virtual int Size {
-            get { return ((LocalDB) _db).Size; }
+            get { return ((IModel<string>) _db).Size; }
         }
 
         /// <summary> finds matching tuples. </summary>
         /// <returns> words to be shown in each field. </returns>
         protected virtual string[][] Search(string[] keys) {
-            return ((LocalDB)_db).Search(keys);
+            return ((IModel<string>)_db).Search(keys);
         }
 
         /// <summary> adds (or replaces) a tuple. </summary>
         /// <returns> true if something was removed. </returns>
         protected virtual bool Enter(string[] tuple) {
-            return ((LocalDB)_db).Enter(tuple);
+            return ((IModel<string>)_db).Enter(tuple);
         }
 
         /// <summary> removes tuples. </summary>
         /// <returns> returns true if something was removed. </returns>
         protected virtual bool Remove(string[] keys) {
-            return ((LocalDB)_db).Remove(keys);
+            return ((IModel<string>)_db).Remove(keys);
         }
 
 // Driver
