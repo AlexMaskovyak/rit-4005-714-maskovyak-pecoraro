@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 using _7_Database;
 
-namespace _8_DatabaseWebService_Service
+namespace _8_DatabaseWebService
 {
     /// <summary>
     /// Summary description for Service1

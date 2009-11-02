@@ -12,7 +12,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace _8_DatabaseService_WPFApplication
+using _7_Database;
+
+namespace _8_DatabaseWebService
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
