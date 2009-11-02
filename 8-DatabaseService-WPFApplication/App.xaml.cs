@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace _8_DatabaseService_WPFApplication
+namespace _8_DatabaseWebService
 {
     /// <summary>
     /// Interaction logic for App.xaml

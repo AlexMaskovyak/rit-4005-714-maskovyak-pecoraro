@@ -20,13 +20,13 @@ namespace _8_DatabaseWebService
     [ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class Service1 : System.Web.Services.WebService, IModel<string>
+    public class DatabaseWebService : System.Web.Services.WebService, IModel<string>
     {
         /// <summary> key into Application to get the database object. </summary>
         protected const string Database = "Database";
 
         /// <summary> default constructor. </summary>
-        public Service1() {
+        public DatabaseWebService() {
             Application.Lock();
             try {
                 if (Application[Database] == null) {
