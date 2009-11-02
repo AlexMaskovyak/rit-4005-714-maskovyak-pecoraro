@@ -8,6 +8,8 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
 
+using _7_Database;
+
 namespace _8_DatabaseWebService_Service
 {
     /// <summary>
@@ -18,13 +20,49 @@ namespace _8_DatabaseWebService_Service
     [ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class Service1 : System.Web.Services.WebService
+    public class Service1 : System.Web.Services.WebService, IModel<string>
     {
+        /// <summary> key into Application to get the database object. </summary>
+        protected const string Database = "Database";
 
+        /// <summary> default constructor. </summary>
+        public Service1() {
+            Application.Lock();
+            try {
+                if (Application[Database] == null) {
+                    Application[Database] = new LocalDB();
+                }
+            }
+            finally {
+                Application.UnLock();
+            }
+        }
+
+        /// <summary> size of entries in database. </summary>
+        public int Size {
+            [WebMethod]
+            get { return ((IModel<string>)Application[Database]).Size; }
+        }
+
+        /// <summary> finds matching tuples. </summary>
+        /// <returns> words to be shown in each field. </returns>
         [WebMethod]
-        public string HelloWorld()
-        {
-            return "Hello World";
+        public string[][] Search(string[] keys) {
+            return ((IModel<string>)Application[Database]).Search(keys);
+        }
+        
+        /// <summary> adds (or replaces) a tuple. </summary>
+        /// <returns> true if something was added (not replaced). </returns>
+        [WebMethod]
+        public bool Enter(string[] tuple) {
+            return ((IModel<string>)Application[Database]).Enter(tuple);
+        }
+
+        /// <summary> removes tuples. </summary>
+        /// <returns> returns true if something was removed. </returns>
+        [WebMethod]
+        public bool Remove(string[] keys) {
+            return ((IModel<string>)Application[Database]).Remove(keys);
         }
     }
 }
