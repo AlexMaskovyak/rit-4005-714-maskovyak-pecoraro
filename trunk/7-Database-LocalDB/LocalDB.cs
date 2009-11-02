@@ -8,6 +8,10 @@ namespace _7_Database
     /// <summary> facade for an IModel database. </summary>
     public class LocalDB : DB<string>, IModel<string> {
 
+// Fields
+        /// <summary> provide item to lock upon for thread-safety. </summary>
+        protected object Monitor = new object();
+
 // Constructors
 
         /// <summary> default constructor. </summary>
@@ -25,12 +29,14 @@ namespace _7_Database
         /// <returns> words to be shown in each field. </returns>
         public virtual string[][] Search(string[] keys) {
             IList<string[]> result = new List<string[]>();
-            for( int i = 0; i < keys.Length; ++i ) {
-                string[] field = 
-                    base.Extract<string>(
-                        DBDelegateFactory.CreateRegexMatcher(keys), 
-                        DBDelegateFactory.CreateIndexExtractingReporter(i));
-                result.Add(field);
+            lock (Monitor){
+                for (int i = 0; i < keys.Length; ++i) {
+                    string[] field =
+                        base.Extract<string>(
+                            DBDelegateFactory.CreateRegexMatcher(keys),
+                            DBDelegateFactory.CreateIndexExtractingReporter(i));
+                    result.Add(field);
+                }
             }
 
             return result.ToArray<string[]>();
@@ -40,14 +46,18 @@ namespace _7_Database
         /// <param name="tuple"> input keys. </param>
         /// <returns> true if something was added (not replaced). </returns>
         public virtual bool Enter(string[] tuple) {
-            return !base.Add(DBDelegateFactory.CreateRegexMatcher(tuple), tuple);
+            lock (Monitor) {
+                return !base.Add(DBDelegateFactory.CreateRegexMatcher(tuple), tuple);
+            }
         }
 
         /// <summary> removes tuples. </summary>
         /// <param name="keys"> search keys. </param>
         /// <returns> returns true if something was removed. </returns>
         public virtual bool Remove(string[] keys) {
-            return (0 < base.Delete(DBDelegateFactory.CreateRegexMatcher(keys)));
+            lock (Monitor) {
+                return (0 < base.Delete(DBDelegateFactory.CreateRegexMatcher(keys)));
+            }
         }
     }
 }
