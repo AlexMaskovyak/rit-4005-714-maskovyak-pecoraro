@@ -19,12 +19,14 @@ namespace _8_DatabaseWebService
     /// <summary>
     /// Interaction logic for TupleFieldsUserControl.xaml
     /// </summary>
-    public partial class TupleFieldsUserControl : System.Windows.Controls.UserControl, IEnumerable<string>
-    {
-        // Fields
+    public partial class TupleFieldsUserControl : System.Windows.Controls.UserControl, IEnumerable<string> {
+        
+// Fields
+
         /// <summary> holds quick access to the TextBoxes of this control. </summary>
         protected ICollection<TextBox> _textBoxes;
 
+// Constructors
        
         /// <summary> convenience constructor. </summary>
         public TupleFieldsUserControl() : this(0) {}
@@ -42,21 +44,23 @@ namespace _8_DatabaseWebService
             InitializeComponent();
             AddFields(fieldNames);
         }
+
+// Public Methods
         
         /// <summary> adds a single blank field. </summary>
-        public void AddField() {
+        public virtual void AddField() {
             AddFields(1);
         }
 
         /// <summary> adds a number of blank fields. </summary>
         /// <param name="numberOfFields"> number of fields to add. </param>
-        public void AddFields(int numberOfFields) {
+        public virtual void AddFields(int numberOfFields) {
             AddFields(new string[numberOfFields]);
         }
 
         /// <summary> adds a number of fields with the specific headers. </summary>
         /// <param name="fieldNames"> collection of field names. </param>
-        public void AddFields(IEnumerable<string> fieldNames) {
+        public virtual void AddFields(IEnumerable<string> fieldNames) {
             foreach (string name in fieldNames) {
 
                 // placement
@@ -85,6 +89,16 @@ namespace _8_DatabaseWebService
 
             this.UpdateLayout();
         }
+
+        /// <summary> clear the textboxes </summary>
+        public void Clear() {
+            foreach (TextBox t in _textBoxes) {
+                t.Clear();
+            }
+        }
+
+
+// Enumeration
 
         /// <summary>
         /// Obtain genericized enumerator for the PlayingCards in this Deck.
