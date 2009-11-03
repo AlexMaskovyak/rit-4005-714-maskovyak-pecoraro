@@ -10,7 +10,7 @@ namespace _7_Database
 
 // Fields
         /// <summary> provide item to lock upon for thread-safety. </summary>
-        protected object Monitor = new object();
+        protected object _monitor = new object();
 
 // Constructors
 
@@ -29,7 +29,7 @@ namespace _7_Database
         /// <returns> words to be shown in each field. </returns>
         public virtual string[][] Search(string[] keys) {
             IList<string[]> result = new List<string[]>();
-            lock (Monitor){
+            lock (_monitor){
                 for (int i = 0; i < keys.Length; ++i) {
                     string[] field =
                         base.Extract<string>(
@@ -46,7 +46,7 @@ namespace _7_Database
         /// <param name="tuple"> input keys. </param>
         /// <returns> true if something was added (not replaced). </returns>
         public virtual bool Enter(string[] tuple) {
-            lock (Monitor) {
+            lock (_monitor) {
                 return !base.Add(DBDelegateFactory.CreateRegexMatcher(tuple), tuple);
             }
         }
@@ -55,7 +55,7 @@ namespace _7_Database
         /// <param name="keys"> search keys. </param>
         /// <returns> returns true if something was removed. </returns>
         public virtual bool Remove(string[] keys) {
-            lock (Monitor) {
+            lock (_monitor) {
                 return (0 < base.Delete(DBDelegateFactory.CreateRegexMatcher(keys)));
             }
         }
