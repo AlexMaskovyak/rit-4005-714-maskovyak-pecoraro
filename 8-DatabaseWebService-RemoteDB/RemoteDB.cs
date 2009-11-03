@@ -12,7 +12,7 @@ namespace _8_DatabaseWebService {
     
     /// <summary> serves as a proxy for calls on a database webservice. </summary>
     /// <remarks> asynchronously communicates with the server; fielding only one request at a time. </remarks>
-    public class RemoteDB : IModel<string> {
+    public class RemoteDB : LocalDB {
 
 // fields
 
@@ -90,7 +90,7 @@ namespace _8_DatabaseWebService {
 // IModel interface
 
         /// <summary> entries in database. </summary>
-        public int Size { 
+        public override int Size { 
             get {
                 lock (_monitor) {
                     // do asynchronous call
@@ -109,7 +109,7 @@ namespace _8_DatabaseWebService {
         
         /// <summary> finds matching tuples. </summary>
         /// <returns> words to be shown in each field. </returns>
-        public string[][] Search(string[] keys) {
+        public override string[][] Search(string[] keys) {
             lock (_monitor) {
                 // do asynchronous call
                 ArrayOfString corrected = new ArrayOfString();
@@ -128,7 +128,7 @@ namespace _8_DatabaseWebService {
         
         /// <summary> adds (or replaces) a tuple. </summary>
         /// <returns> true if something was added (not replaced). </returns>
-        public bool Enter(string[] tuple) {
+        public override bool Enter(string[] tuple) {
             lock (_monitor) {
                 // do asynchronous call
                 ArrayOfString corrected = new ArrayOfString();
@@ -147,7 +147,7 @@ namespace _8_DatabaseWebService {
         
         /// <summary> removes tuples. </summary>
         /// <returns> returns true if something was removed. </returns>
-        public bool Remove(string[] keys) {
+        public override bool Remove(string[] keys) {
             lock (_monitor) {
                 // do asynchronous call
                 ArrayOfString corrected = new ArrayOfString();

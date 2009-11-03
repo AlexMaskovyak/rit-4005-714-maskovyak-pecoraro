@@ -1,13 +1,13 @@
-﻿add	joe	pecoraro
-add	alex	maskovyak
-add	axel	schreiner
+﻿enter	joe	pecoraro
+enter	joe	cool
+enter	joe	cool
+enter	alex	maskovyak
+enter	axel	schreiner
 debug
-extract	0	^a	1
+size
+search	joe	
 debug
-delete	1	^s
+remove	joe	
+remove	bill	clinton
 debug
-extract	0	joe	0
-extract	0	^j	1
-extract	0		0
-extract	1		1
-debug
+size
