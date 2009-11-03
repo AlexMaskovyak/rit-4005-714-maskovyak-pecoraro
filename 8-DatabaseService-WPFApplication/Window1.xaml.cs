@@ -39,6 +39,9 @@ namespace _8_DatabaseWebService
         /// <summary> remote database facade </summary>
         protected IModel<string> _remote;
 
+        /// <summary> current database to use </summary>
+        protected IModel<string> _active;
+
         /// <summary> state of the UI </summary>
         protected bool _isLocal;
 
@@ -56,9 +59,10 @@ namespace _8_DatabaseWebService
             // NOTE: These are created lazily, as needed, in switchTo*()
             _local = null;
             _remote = null;
+            _active = null;
 
-            // Initialize with Local
-            switchToLocal();
+            // Initialize with Local, sets active as well
+            SwitchToLocal();
         }
 
 // Factory Methods
@@ -79,7 +83,7 @@ namespace _8_DatabaseWebService
 // NOTE: Each of these should be called from the GUI thread
 
         /// <summary> display the local database </summary>
-        protected virtual void switchToLocal() {
+        protected virtual void SwitchToLocal() {
             if (_isLocal)
                 return;
 
@@ -88,11 +92,11 @@ namespace _8_DatabaseWebService
 
             _isLocal = true;
             DBMode.Text = LocalDBMode;
-            switchToDatabase(_local);
+            SwitchToDatabase(_local);
         }
 
         /// <summary> display the remote database </summary>
-        protected virtual void switchToRemote() {
+        protected virtual void SwitchToRemote() {
             if (!_isLocal)
                 return;
 
@@ -101,12 +105,15 @@ namespace _8_DatabaseWebService
 
             _isLocal = false;
             DBMode.Text = RemoteDBMode;
-            switchToDatabase(_remote);
+            SwitchToDatabase(_remote);
         }
 
         /// <summary> generic method for displaying a database </summary>
         /// <param name="database"> the database to display information for </param>
-        protected virtual void switchToDatabase(IModel<string> database) {
+        protected virtual void SwitchToDatabase(IModel<string> database) {
+
+            // Set the current
+            _active = database;
 
             // UI Updates - Clear fields, disable buttons
             ToggleButtons(false);
@@ -135,15 +142,56 @@ namespace _8_DatabaseWebService
             Remove.IsEnabled = enabled;
         }
 
+// Helpers
+
+        /// <summary> get the first lines from each textbox </summary>
+        /// <returns> an array of the first lines </returns>
+        protected virtual string[] GetFirstLines() {
+            List<string> keys = new List<string>();
+            foreach (string s in FieldsControl) {
+                int index = s.IndexOf("\n");
+                if (index < 0) {
+                    keys.Add(s);
+                } else {
+                    keys.Add(s.Substring(0, index));
+                }
+            }
+            return keys.ToArray<string>();
+        }
+
 // Button Listeners
 
-        /// <summary> clicked Toggle Button </summary>
-        private void Toggle_Click(object sender, RoutedEventArgs e) {
+        /// <summary> clicked Toggle Button - Switch Databases </summary>
+        protected virtual void Toggle_Click(object sender, RoutedEventArgs e) {
             if (_isLocal) {
-                switchToRemote();
+                SwitchToRemote();
             } else {
-                switchToLocal();
+                SwitchToLocal();
             }
+        }
+
+        /// <summary> clicked Enter Button - Add Tuple </summary>
+        protected virtual void Enter_Click(object sender, RoutedEventArgs e) {
+
+            // Get Values to Send
+            string[] tuple = GetFirstLines();
+            ToggleButtons(false);
+
+            // DEBUG - Remove after testing.
+            Console.WriteLine(tuple.Length);
+            foreach (string s in tuple) Console.WriteLine("[{0}]", s);
+
+            // Add and Update Size
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += delegate(object s, DoWorkEventArgs d) {
+                _active.Enter(tuple);
+                int size = _active.Size;
+                Size.Dispatcher.BeginInvoke(new Action(delegate() {
+                    Size.Text = size.ToString();
+                    ToggleButtons(true);
+                }));
+            };
+            worker.RunWorkerAsync();
         }
 
     }
