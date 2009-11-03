@@ -20,16 +20,18 @@ namespace _8_DatabaseWebService
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class Window1 : Window
-    {
+    public partial class Window1 : Window {
 
+// Constructors
 
-        public Window1() : this( "Name", "Phone", "Room" ) {
-        }
+        /// <summary> default constructor </summary>
+        public Window1() : this( "Name", "Phone", "Room" ) { }
 
-        public Window1(params string[] fields)
-        {
+        /// <summary> constructor with names for tuple fields </summary>
+        /// <param name="fields"> the tuple field names </param>
+        public Window1(params string[] fields) {
             InitializeComponent();
+            FieldsControl.AddFields(fields);
         }
 
     }
