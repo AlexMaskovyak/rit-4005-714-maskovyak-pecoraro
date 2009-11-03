@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Effects;
+using System.ComponentModel;
 
 using _7_Database;
 
@@ -24,7 +25,10 @@ namespace _8_DatabaseWebService
 
 // Constants
 
+        /// <summary> mode to display for the Local Database </summary>
         const string LocalDBMode = "Local";
+
+        /// <summary> mode to display for the Remote Database </summary>
         const string RemoteDBMode = "Remote";
 
 // Fields
@@ -72,6 +76,7 @@ namespace _8_DatabaseWebService
         }
 
 // UI Methods
+// NOTE: Each of these should be called from the GUI thread
 
         /// <summary> display the local database </summary>
         protected virtual void switchToLocal() {
@@ -82,7 +87,7 @@ namespace _8_DatabaseWebService
                 _local = createLocalDatabase();
 
             _isLocal = true;
-            DBMode.Text = LocalDBMode; // needs GUI thread
+            DBMode.Text = LocalDBMode;
             switchToDatabase(_local);
         }
 
@@ -95,16 +100,40 @@ namespace _8_DatabaseWebService
                 _remote = createRemoteDatabase();
 
             _isLocal = false;
-            DBMode.Text = RemoteDBMode; // needs GUI thread
+            DBMode.Text = RemoteDBMode;
             switchToDatabase(_remote);
         }
 
         /// <summary> generic method for displaying a database </summary>
-        /// <param name="database"> the database to display </param>
+        /// <param name="database"> the database to display information for </param>
         protected virtual void switchToDatabase(IModel<string> database) {
-            // TODO: Joe is implementing now
+
+            // UI Updates - Clear fields, disable buttons
+            ToggleButtons(false);
+            FieldsControl.Clear();
+
+            // Get the Size and Reupdate the UI once we've gotten that information
+            // NOTE: this is in a background worker because the DB may be remote.
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += delegate(object sender, DoWorkEventArgs e) {
+                int size = database.Size;
+                Size.Dispatcher.BeginInvoke(new Action(delegate() {
+                    Size.Text = size.ToString();
+                    ToggleButtons(true);
+                }));
+            };
+            worker.RunWorkerAsync();
+
         }
 
+        /// <summary> Toggle the IsEnabled state of all UI buttons </summary>
+        /// <param name="enabled"> true to enable, false to disable </param>
+        protected virtual void ToggleButtons(bool enabled) {
+            Toggle.IsEnabled = enabled;
+            Search.IsEnabled = enabled;
+            Enter.IsEnabled  = enabled;
+            Remove.IsEnabled = enabled;
+        }
 
 // Button Listeners
 
@@ -116,8 +145,6 @@ namespace _8_DatabaseWebService
                 switchToLocal();
             }
         }
-
-
 
     }
 }
