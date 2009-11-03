@@ -5,22 +5,50 @@ using System.Text;
 
 using _7_Database;
 
-using DatabaseWebServiceSoap = _8_DatabaseWebService_RemoteDB._8_DatabaseWebService.DatabaseWebServiceSoap;
+using DatabaseWebServiceSoapClient = _8_DatabaseWebService.DatabaseWebServiceSoapClient;
 
 namespace _8_DatabaseWebService {
     
     /// <summary> serves as a proxy for calls on a database webservice. </summary>
+    /// <remarks> asynchronously communicates with the server, and fields only one request at a time. </remarks>
     public class RemoteDB : IModel<string> {
 
 // fields
-        DatabaseWebServiceSoap _service;
+        protected DatabaseWebServiceSoapClient _service;
 
 // constructors
 
         public RemoteDB()
         {
-            _service = new DatabaseWebServiceSoap();
+            _service = new DatabaseWebServiceSoapClient();
+            _service.get_SizeCompleted += new EventHandler<get_SizeCompletedEventArgs>(Handle_getSizeCompleted);
+            _service.SearchAsync += new EventHandler<SearchCompletedEventArgs>(Handle_SearchCompleted);
+            _service.EnterAsync += new EventHandler<EnterCompletedEventArgs>(Handle_EnterCompleted);
+            _service.RemoveAsync += new EventHandler<RemoveCompletedEventArgs>(Handle_RemoveCompeted);
+
+            //_service.get_SizeCompleted += new EventHandler<_8_DatabaseWebService_RemoteDB._8_DatabaseWebService.get_SizeCompletedEventArgs
            
+        }
+
+// event handlers
+
+        /// <summary> handler for size method call returns. </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        protected void Handle_getSizeCompleted(object sender, get_SizeCompletedEventArgs args) {
+
+        }
+
+        protected void Handle_SearchCompleted(object sender, SearchCompletedEventArgs args) {
+
+        }
+
+        protected void Handle_EnterCompleted(object sender, EnterCompletedEventArgs args) {
+
+        }
+
+        protected void Handle_RemoveCompeted(object sender, RemoveCompletedEventArgs args) {
+
         }
 
 // IModel interface
