@@ -100,20 +100,16 @@ namespace _8_DatabaseWebService
 
 // Enumeration
 
-        /// <summary>
-        /// Obtain genericized enumerator for the PlayingCards in this Deck.
-        /// </summary>
-        /// <returns>IEnumerator of PlayingCards.</returns>
+        /// <summary> obtain genericized enumerator for the strings held in the fields of this control. </summary>
+        /// <returns> enumerator of strings. </returns>
         public virtual IEnumerator<string> GetEnumerator() {
             foreach (TextBox textBox in _textBoxes) {
                 yield return textBox.Text;
             }
         }
 
-        /// <summary>
-        /// Obtain an enumerator for the PlayingCards in this Deck.
-        /// </summary>
-        /// <returns>IEnumerator of PlayingCards.</returns>
+        /// <summary> obtain an enumerator for the strings contained in the fields of this control. </summary>
+        /// <returns> enumerator of strings. </returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
             return this.GetEnumerator();
         }
