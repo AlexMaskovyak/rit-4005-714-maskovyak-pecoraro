@@ -91,7 +91,7 @@ namespace _8_DatabaseWebService
         }
 
         /// <summary> clear the textboxes </summary>
-        public void Clear() {
+        public virtual void Clear() {
             foreach (TextBox t in _textBoxes) {
                 t.Clear();
             }
@@ -99,7 +99,7 @@ namespace _8_DatabaseWebService
 
         /// <summary> set textbox values for as many textboxes as are available </summary>
         /// <param name="values"> the strings to add to textfields </param>
-        public void Set(string[] values) {
+        public virtual void Set(string[] values) {
             int count = 0;
             foreach (TextBox t in _textBoxes) {
                 t.Text = values[count++];
