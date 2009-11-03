@@ -122,9 +122,9 @@ namespace _8_DatabaseWebService
             // Get the Size and Reupdate the UI once we've gotten that information
             // NOTE: this is in a background worker because the DB may be remote.
             BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += delegate(object sender, DoWorkEventArgs e) {
+            worker.DoWork += (object sender, DoWorkEventArgs e) => {
                 int size = database.Size;
-                Size.Dispatcher.BeginInvoke(new Action(delegate() {
+                Size.Dispatcher.BeginInvoke(new Action(() => {
                     Size.Text = size.ToString();
                     ToggleButtons(true);
                 }));
@@ -183,10 +183,10 @@ namespace _8_DatabaseWebService
             // Add and Update Size
             ToggleButtons(false);
             BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += delegate(object s, DoWorkEventArgs d) {
+            worker.DoWork += (object s, DoWorkEventArgs d) => {
                 _active.Enter(tuple);
                 int size = _active.Size;
-                Size.Dispatcher.BeginInvoke(new Action(delegate() {
+                Size.Dispatcher.BeginInvoke(new Action(() => {
                     Size.Text = size.ToString();
                     ToggleButtons(true);
                 }));
@@ -204,10 +204,10 @@ namespace _8_DatabaseWebService
             // Remove and Update Size
             ToggleButtons(false);
             BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += delegate(object s, DoWorkEventArgs d) {
+            worker.DoWork += (object s, DoWorkEventArgs d) => {
                 _active.Remove(tuple);
                 int size = _active.Size;
-                Size.Dispatcher.BeginInvoke(new Action(delegate() {
+                Size.Dispatcher.BeginInvoke(new Action(() => {
                     Size.Text = size.ToString();
                     ToggleButtons(true);
                 }));
@@ -225,7 +225,7 @@ namespace _8_DatabaseWebService
             // Search and Display Results
             ToggleButtons(false);
             BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += delegate(object s, DoWorkEventArgs d) {
+            worker.DoWork += (object s, DoWorkEventArgs d) => {
 
                 // Get Search Results
                 string[][] results = _active.Search(tuple);
@@ -237,7 +237,7 @@ namespace _8_DatabaseWebService
                 }
 
                 // Display
-                FieldsControl.Dispatcher.BeginInvoke(new Action(delegate() {
+                FieldsControl.Dispatcher.BeginInvoke(new Action(() => {
                     FieldsControl.Set(displayableResults);
                     ToggleButtons(true);
                 }));
