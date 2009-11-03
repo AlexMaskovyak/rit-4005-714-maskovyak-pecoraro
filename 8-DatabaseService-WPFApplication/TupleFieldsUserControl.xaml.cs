@@ -97,6 +97,16 @@ namespace _8_DatabaseWebService
             }
         }
 
+        /// <summary> set textbox values for as many textboxes as are available </summary>
+        /// <param name="values"> the strings to add to textfields </param>
+        public void Set(string[] values) {
+            int count = 0;
+            foreach (TextBox t in _textBoxes) {
+                t.Text = values[count++];
+                if (count == values.Length)
+                    break;
+            }
+        }
 
 // Enumeration
 

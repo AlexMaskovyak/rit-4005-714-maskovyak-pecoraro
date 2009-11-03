@@ -206,13 +206,47 @@ namespace _8_DatabaseWebService
             Console.WriteLine(tuple.Length);
             foreach (string s in tuple) Console.WriteLine("[{0}]", s);
 
-            // Add and Update Size
+            // Remove and Update Size
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += delegate(object s, DoWorkEventArgs d) {
                 _active.Remove(tuple);
                 int size = _active.Size;
                 Size.Dispatcher.BeginInvoke(new Action(delegate() {
                     Size.Text = size.ToString();
+                    ToggleButtons(true);
+                }));
+            };
+            worker.RunWorkerAsync();
+
+        }
+
+        /// <summary> clicked Search Button - Search Database </summary>
+        private void Search_Click(object sender, RoutedEventArgs e) {
+
+            // Get Values to Send
+            string[] tuple = GetFirstLines();
+            ToggleButtons(false);
+
+            // DEBUG - Remove after testing.
+            Console.WriteLine(tuple.Length);
+            foreach (string s in tuple) Console.WriteLine("[{0}]", s);
+
+            // Search and Displa Results
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += delegate(object s, DoWorkEventArgs d) {
+
+                // Get Search Results
+                string[][] results = _active.Search(tuple);
+
+                // Turn into Displayable Strings
+                List<string> displayableResults = new List<string>(results.Length);
+                foreach (string[] arr in results) {
+                    displayableResults.Add(String.Join("\n", arr));
+                }
+
+                // Display
+                FieldsControl.Dispatcher.BeginInvoke(new Action(delegate() {
+                    FieldsControl.Set(displayableResults.ToArray<string>());
                     ToggleButtons(true);
                 }));
             };
