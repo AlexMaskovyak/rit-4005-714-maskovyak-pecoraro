@@ -27,14 +27,12 @@ namespace _8_DatabaseWebService
 
        
         /// <summary> convenience constructor. </summary>
-        public TupleFieldsUserControl() : this(3) {}
+        public TupleFieldsUserControl() : this(0) {}
 
         /// <summary> convenience constructor. </summary>
         /// <param name="numberOfFields"> number of blank fields to create. </param>
         public TupleFieldsUserControl(int numberOfFields)
-            : this(new string[numberOfFields])
-        {
-        }
+            : this(new string[numberOfFields]) {}
 
         /// <summary> main constructor. </summary>
         /// <param name="fieldNames"></param>
@@ -44,7 +42,6 @@ namespace _8_DatabaseWebService
             InitializeComponent();
             AddFields(fieldNames);
         }
-
         
         /// <summary> adds a single blank field. </summary>
         public void AddField() {
@@ -61,20 +58,31 @@ namespace _8_DatabaseWebService
         /// <param name="fieldNames"> collection of field names. </param>
         public void AddFields(IEnumerable<string> fieldNames) {
             foreach (string name in fieldNames) {
-                // create groupbox with header, could be blank
+
+                // placement
+                int top = _textBoxes.Count * 100;
+
+                // create groupbox with header, could be blanks
                 GroupBox groupBox = new GroupBox();
                 groupBox.Header = name;
                 groupBox.Visibility = Visibility.Visible;
-                Grid grid = new Grid();
-                grid.Visibility = Visibility.Visible;
-                groupBox.Content = grid;
+                groupBox.VerticalAlignment = VerticalAlignment.Top;
+                groupBox.Margin = new Thickness(0, top, 0, 0);
+                groupBox.Height = 100;
+                
+                // create the textfield and save it
                 TextBox textBox = new TextBox();
                 textBox.Visibility = Visibility.Visible;
                 textBox.Height = 50;
-                grid.Children.Add(textBox);
+                textBox.Margin = new Thickness(0);
+                groupBox.Content = textBox;
+                _textBoxes.Add(textBox);
+                
+                // update the UI
                 FieldsGrid.Children.Add(groupBox);
-                this.Height += 50;
+                this.Height += 100;
             }
+
             this.UpdateLayout();
         }
 
