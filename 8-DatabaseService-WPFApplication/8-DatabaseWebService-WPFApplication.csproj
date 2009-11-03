@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9DB0EA1E-94E5-49B4-8B9B-1C83CA8B4EA5}</ProjectGuid>
+    <ProjectGuid>{0A52F57F-A0DC-47CA-887B-677840432CD3}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>_8_DatabaseWebService</RootNamespace>
