@@ -30,12 +30,18 @@ namespace _8_DatabaseWebService
             Application.Lock();
             try {
                 if (Application[Database] == null) {
-                    Application[Database] = new LocalDB();
+                    Application[Database] = createDatabase();
                 }
             }
             finally {
                 Application.UnLock();
             }
+        }
+
+        /// <summary> factory method for a database. </summary>
+        /// <returns> a new IModel database of strings. </returns>
+        protected virtual IModel<string> createDatabase() {
+            return new LocalDB();
         }
 
         /// <summary> size of entries in database. </summary>
