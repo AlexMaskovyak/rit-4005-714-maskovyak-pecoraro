@@ -5,10 +5,9 @@ using System.Text;
 using System.Threading;
 
 using _7_Database;
+using _8_DatabaseWebService.service;
 
-using _8_DatabaseWebService._8_DatabaseWebService;
-
-using DatabaseWebServiceSoapClient = _8_DatabaseWebService._8_DatabaseWebService.DatabaseWebServiceSoapClient;
+using DatabaseWebServiceSoapClient = _8_DatabaseWebService.service.DatabaseWebServiceSoapClient;
 
 namespace _8_DatabaseWebService {
     
