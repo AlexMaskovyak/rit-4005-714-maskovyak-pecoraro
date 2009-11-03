@@ -47,7 +47,7 @@ namespace _7_Database
         /// <returns> true if something was added (not replaced). </returns>
         public virtual bool Enter(string[] tuple) {
             lock (_monitor) {
-                return !base.Add(DBDelegateFactory.CreateRegexMatcher(tuple), tuple);
+                return !base.Add(DBDelegateFactory.CreateWildCardMatcher(tuple), tuple);
             }
         }
 
@@ -56,7 +56,7 @@ namespace _7_Database
         /// <returns> returns true if something was removed. </returns>
         public virtual bool Remove(string[] keys) {
             lock (_monitor) {
-                return (0 < base.Delete(DBDelegateFactory.CreateRegexMatcher(keys)));
+                return (0 < base.Delete(DBDelegateFactory.CreateWildCardMatcher(keys)));
             }
         }
     }
