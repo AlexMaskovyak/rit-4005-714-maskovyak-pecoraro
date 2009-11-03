@@ -192,6 +192,32 @@ namespace _8_DatabaseWebService
                 }));
             };
             worker.RunWorkerAsync();
+
+        }
+
+        /// <summary> clicked Remove Button - Remove Tuple </summary>
+        private void Remove_Click(object sender, RoutedEventArgs e) {
+
+            // Get Values to Send
+            string[] tuple = GetFirstLines();
+            ToggleButtons(false);
+
+            // DEBUG - Remove after testing.
+            Console.WriteLine(tuple.Length);
+            foreach (string s in tuple) Console.WriteLine("[{0}]", s);
+
+            // Add and Update Size
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += delegate(object s, DoWorkEventArgs d) {
+                _active.Remove(tuple);
+                int size = _active.Size;
+                Size.Dispatcher.BeginInvoke(new Action(delegate() {
+                    Size.Text = size.ToString();
+                    ToggleButtons(true);
+                }));
+            };
+            worker.RunWorkerAsync();
+
         }
 
     }

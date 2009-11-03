@@ -22,15 +22,16 @@
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50*"/>
-                <ColumnDefinition Width="50*"/>
-                <ColumnDefinition Width="50*"/>
-                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="72*"/>
+                <ColumnDefinition Width="21*"/>
+                <ColumnDefinition Width="51.5*" />
+                <ColumnDefinition Width="72*"/>
+                <ColumnDefinition Width="72*"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Name="Search" Content="search" Margin="5"/>
-            <Button Grid.Column="1" Name="Enter" Content="enter" Margin="5" Click="Enter_Click" />
-            <Button Grid.Column="2" Name="Remove" Content="remove" Margin="5" />
-            <TextBox Grid.Column="3" Name="Size" IsReadOnly="True" Margin="5" TextAlignment="Center"/>
+            <Button Grid.Column="1" Name="Enter" Content="enter" Margin="5.126,5,5.251,5" Click="Enter_Click" Grid.ColumnSpan="2" />
+            <Button Grid.Column="3" Name="Remove" Content="remove" Margin="5" Click="Remove_Click" />
+            <TextBox Grid.Column="4" Name="Size" IsReadOnly="True" Margin="5" TextAlignment="Center"/>
         </Grid>
     </Grid>
 </Window>
