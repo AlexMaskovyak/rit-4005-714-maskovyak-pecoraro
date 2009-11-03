@@ -8,7 +8,7 @@
     <ProjectGuid>{0A52F57F-A0DC-47CA-887B-677840432CD3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>_8_DatabaseService_WPFApplication</RootNamespace>
+    <RootNamespace>_8_DatabaseWebService</RootNamespace>
     <AssemblyName>8-DatabaseService-WPFApplication</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
