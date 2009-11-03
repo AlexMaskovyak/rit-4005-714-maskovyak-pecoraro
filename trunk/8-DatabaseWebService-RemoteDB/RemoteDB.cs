@@ -6,7 +6,9 @@ using System.Threading;
 
 using _7_Database;
 
-using DatabaseWebServiceSoapClient = _8_DatabaseWebService.DatabaseWebServiceSoapClient;
+using _8_DatabaseWebService._8_DatabaseWebService;
+
+using DatabaseWebServiceSoapClient = _8_DatabaseWebService._8_DatabaseWebService.DatabaseWebServiceSoapClient;
 
 namespace _8_DatabaseWebService {
     
@@ -118,11 +120,16 @@ namespace _8_DatabaseWebService {
                 // wait for result
                 Monitor.Wait(_monitor);
                 // grab it
-                string[][] result = (string[][])_asyncResult;
+                ArrayOfString[] result = (ArrayOfString[])_asyncResult;
+                string[][] correctedResult = new string[result.Length][];
+                for (int i = 0; i < result.Length; ++i) {
+                    correctedResult[i] = result[i].ToArray();
+                }
+
                 // give someone else access
                 Monitor.Pulse(_monitor);
 
-                return result;
+                return correctedResult;
             } 
         }
         
