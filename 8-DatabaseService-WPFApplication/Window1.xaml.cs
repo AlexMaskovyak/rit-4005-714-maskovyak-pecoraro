@@ -173,15 +173,19 @@ namespace _8_DatabaseWebService
         /// <summary> clicked Enter Button - Add Tuple </summary>
         protected virtual void Enter_Click(object sender, RoutedEventArgs e) {
 
-            // Get Values to Send
+            // Get Values to Send and Only Send Complete Records (whitespace is allowed)
             string[] tuple = GetFirstLines();
-            ToggleButtons(false);
+            foreach (string s in tuple) {
+                if (s == "") // allowed for string comparison
+                    return;
+            }
 
             // DEBUG - Remove after testing.
             Console.WriteLine(tuple.Length);
             foreach (string s in tuple) Console.WriteLine("[{0}]", s);
 
             // Add and Update Size
+            ToggleButtons(false);
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += delegate(object s, DoWorkEventArgs d) {
                 _active.Enter(tuple);
