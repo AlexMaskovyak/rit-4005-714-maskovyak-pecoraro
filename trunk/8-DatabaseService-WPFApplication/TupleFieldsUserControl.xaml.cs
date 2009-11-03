@@ -64,12 +64,18 @@ namespace _8_DatabaseWebService
                 // create groupbox with header, could be blank
                 GroupBox groupBox = new GroupBox();
                 groupBox.Header = name;
+                groupBox.Visibility = Visibility.Visible;
                 Grid grid = new Grid();
+                grid.Visibility = Visibility.Visible;
                 groupBox.Content = grid;
                 TextBox textBox = new TextBox();
+                textBox.Visibility = Visibility.Visible;
+                textBox.Height = 50;
                 grid.Children.Add(textBox);
                 FieldsGrid.Children.Add(groupBox);
+                this.Height += 50;
             }
+            this.UpdateLayout();
         }
 
         /// <summary>
