@@ -39,7 +39,6 @@ namespace _7_Database {
             string input;
             List<string> rows = new List<string>();
             while ((input = Console.ReadLine()) != null) {
-                input = input.Trim();
                 if (input.Equals("")) {
                     break;
                 } else {
