@@ -5,9 +5,9 @@ enter	alex	maskovyak
 enter	axel	schreiner
 debug
 size
-search	joe	
+search	joe
 debug
-remove	joe	
+remove	joe
 remove	bill	clinton
 debug
 size
