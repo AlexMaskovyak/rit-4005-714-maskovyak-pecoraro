@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Media.Effects;
 
 using _7_Database;
 
@@ -21,9 +22,21 @@ namespace _8_DatabaseWebService
     /// </summary>
     public partial class Window1 : Window
     {
-        public Window1()
+
+
+        public Window1() : this( "Name", "Phone", "Room" ) {
+        }
+
+        public Window1(params string[] fields)
         {
             InitializeComponent();
+            InitFields(fields);
+        }
+
+        protected void InitFields(params string[] fields) {
+            foreach (string field in fields) {
+                
+            }
         }
     }
 }
