@@ -4,7 +4,7 @@ using System.Text;
 using DaveSexton.DocProject;
 using DaveSexton.DocProject.Engine;
 
-namespace _7_Database_DocProject
+namespace _7_Database
 {
     /// <summary>
     /// Hooks into the DocProject build process for the project in which it's defined.
