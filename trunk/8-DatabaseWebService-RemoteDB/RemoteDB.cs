@@ -112,7 +112,9 @@ namespace _8_DatabaseWebService {
         public string[][] Search(string[] keys) {
             lock (_monitor) {
                 // do asynchronous call
-                _service.SearchAsync(keys);
+                ArrayOfString corrected = new ArrayOfString();
+                corrected.AddRange(keys);
+                _service.SearchAsync(corrected);
                 // wait for result
                 Monitor.Wait(_monitor);
                 // grab it
@@ -129,7 +131,9 @@ namespace _8_DatabaseWebService {
         public bool Enter(string[] tuple) {
             lock (_monitor) {
                 // do asynchronous call
-                _service.EnterAsync(tuple);
+                ArrayOfString corrected = new ArrayOfString();
+                corrected.AddRange(tuple);
+                _service.EnterAsync(corrected);
                 // wait for result
                 Monitor.Wait(_monitor);
                 // grab it
@@ -146,19 +150,18 @@ namespace _8_DatabaseWebService {
         public bool Remove(string[] keys) {
             lock (_monitor) {
                 // do asynchronous call
-                _service.RemoveAsync(keys);
+                ArrayOfString corrected = new ArrayOfString();
+                corrected.AddRange(keys);
+                _service.RemoveAsync(corrected);
                 // wait for result
                 Monitor.Wait(_monitor);
                 // grab it
-                int result = (int)_asyncResult;
+                bool result = (bool)_asyncResult;
                 // give someone else access
                 Monitor.Pulse(_monitor);
 
                 return result;
             }
-        }
-
-        public static void Main(string[] args) {
         }
     }
 }

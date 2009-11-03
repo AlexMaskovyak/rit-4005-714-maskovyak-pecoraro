@@ -30,13 +30,7 @@ namespace _8_DatabaseWebService
         public Window1(params string[] fields)
         {
             InitializeComponent();
-            InitFields(fields);
         }
 
-        protected void InitFields(params string[] fields) {
-            foreach (string field in fields) {
-                
-            }
-        }
     }
 }

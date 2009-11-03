@@ -18,7 +18,7 @@ namespace _8_DatabaseWebService
         /// <summary> this tests a RemoteDB database. </summary>
         /// <returns> a new database. </returns>
         protected override IDB<string> CreateDatabase() {
-            return new RemoteDB();
+            return (IDB<string>)new RemoteDB();
         }
 
 
