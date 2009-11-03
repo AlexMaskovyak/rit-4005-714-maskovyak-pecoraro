@@ -42,6 +42,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\7-Database-LocalDB\bin\Debug\7-Database-LocalDB.exe</HintPath>
     </Reference>
+    <Reference Include="8-DatabaseWebService-RemoteDB, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\8-DatabaseWebService-RemoteDB\bin\Debug\8-DatabaseWebService-RemoteDB.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
