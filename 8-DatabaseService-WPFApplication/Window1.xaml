@@ -17,8 +17,8 @@
             <Button Grid.Column="0" Name="Toggle" Content="Toggle DB:" Margin="5" Click="Toggle_Click" />
             <TextBox Grid.Column="1" Name="DBMode" Margin="5" TextAlignment="Center"/>
         </Grid>
-        <Grid Grid.Row="1" Name="Fields" Height="300">
-            <custom:TupleFieldsUserControl x:Name="FieldsControl" Margin="0,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" />
+        <Grid Grid.Row="1" Name="Fields" Margin="0,6">
+            <custom:TupleFieldsUserControl x:Name="FieldsControl" Margin="20 0 20 0" VerticalAlignment="Top" HorizontalAlignment="Stretch" />
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
