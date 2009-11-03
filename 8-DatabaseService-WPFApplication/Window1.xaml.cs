@@ -180,10 +180,6 @@ namespace _8_DatabaseWebService
                     return;
             }
 
-            // DEBUG - Remove after testing.
-            Console.WriteLine(tuple.Length);
-            foreach (string s in tuple) Console.WriteLine("[{0}]", s);
-
             // Add and Update Size
             ToggleButtons(false);
             BackgroundWorker worker = new BackgroundWorker();
@@ -200,17 +196,13 @@ namespace _8_DatabaseWebService
         }
 
         /// <summary> clicked Remove Button - Remove Tuple </summary>
-        private void Remove_Click(object sender, RoutedEventArgs e) {
+        protected virtual void Remove_Click(object sender, RoutedEventArgs e) {
 
             // Get Values to Send
             string[] tuple = GetFirstLines();
-            ToggleButtons(false);
-
-            // DEBUG - Remove after testing.
-            Console.WriteLine(tuple.Length);
-            foreach (string s in tuple) Console.WriteLine("[{0}]", s);
 
             // Remove and Update Size
+            ToggleButtons(false);
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += delegate(object s, DoWorkEventArgs d) {
                 _active.Remove(tuple);
@@ -225,17 +217,13 @@ namespace _8_DatabaseWebService
         }
 
         /// <summary> clicked Search Button - Search Database </summary>
-        private void Search_Click(object sender, RoutedEventArgs e) {
+        protected virtual void Search_Click(object sender, RoutedEventArgs e) {
 
             // Get Values to Send
             string[] tuple = GetFirstLines();
+
+            // Search and Display Results
             ToggleButtons(false);
-
-            // DEBUG - Remove after testing.
-            Console.WriteLine(tuple.Length);
-            foreach (string s in tuple) Console.WriteLine("[{0}]", s);
-
-            // Search and Displa Results
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += delegate(object s, DoWorkEventArgs d) {
 
@@ -243,14 +231,14 @@ namespace _8_DatabaseWebService
                 string[][] results = _active.Search(tuple);
 
                 // Turn into Displayable Strings
-                List<string> displayableResults = new List<string>(results.Length);
-                foreach (string[] arr in results) {
-                    displayableResults.Add(String.Join("\n", arr));
+                string[] displayableResults = new string[results.Length];
+                for (int i = 0; i < results.Length; ++i) {
+                    displayableResults[i] = String.Join("\n", results[i]);
                 }
 
                 // Display
                 FieldsControl.Dispatcher.BeginInvoke(new Action(delegate() {
-                    FieldsControl.Set(displayableResults.ToArray<string>());
+                    FieldsControl.Set(displayableResults);
                     ToggleButtons(true);
                 }));
             };
