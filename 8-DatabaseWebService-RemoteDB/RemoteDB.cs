@@ -21,10 +21,7 @@ namespace _8_DatabaseWebService {
         protected DatabaseWebServiceSoapClient _service;
 
         /// <summary> current result from an event. </summary>
-        protected object _asyncResult;
-
-        /// <summary> controls access via locks. </summary>
-        protected object _monitor;
+        protected Cell<object> _asyncResult;
 
 // constructors
         
@@ -38,7 +35,7 @@ namespace _8_DatabaseWebService {
             _service.RemoveCompleted += new EventHandler<RemoveCompletedEventArgs>(Handle_RemoveCompeted);
 
             // initialize fields
-            _asyncResult = null;
+            _asyncResult = new Cell<object>();
             _monitor = new object();
         }
 
@@ -48,44 +45,32 @@ namespace _8_DatabaseWebService {
         /// <param name="sender"> object which triggered this handler. </param>
         /// <param name="args"> values associated with this completed event. </param>
         protected void Handle_getSizeCompleted(object sender, get_SizeCompletedEventArgs args) {
-            lock (_monitor) {
                 // get result and notify everyone waiting for a value
-                _asyncResult = args.Result;
-                Monitor.PulseAll(_monitor);
-            }
+                _asyncResult.Value = args.Result;
         }
 
         /// <summary> handler for search method call returns. </summary>
         /// <param name="sender"> object which triggered this handler. </param>
         /// <param name="args"> values associated with this completed event. </param>
         protected void Handle_SearchCompleted(object sender, SearchCompletedEventArgs args) {
-            lock (_monitor) {
                 // get result and notify everyone waiting for a value
-                _asyncResult = args.Result;
-                Monitor.PulseAll(_monitor);
-            }
+                _asyncResult.Value = args.Result;
         }
 
         /// <summary> handler for enter method call returns. </summary>
         /// <param name="sender"> object which triggered this handler. </param>
         /// <param name="args"> values associated with this completed event. </param>
         protected void Handle_EnterCompleted(object sender, EnterCompletedEventArgs args) {
-            lock (_monitor) {
                 // get result and notify everyone waiting for a value
-                _asyncResult = args.Result;
-                Monitor.PulseAll(_monitor);
-            }
+                _asyncResult.Value = args.Result;
         }
 
         /// <summary> handler for remove method call returns. </summary>
         /// <param name="sender"> object which triggered this handler. </param>
         /// <param name="args"> values associated with this completed event. </param>
         protected void Handle_RemoveCompeted(object sender, RemoveCompletedEventArgs args) {
-            lock (_monitor) {
                 // get result and notify everyone waiting for a value
-                _asyncResult = args.Result;
-                Monitor.PulseAll(_monitor);
-            }
+                _asyncResult.Value = args.Result;
         }
 
 // IModel interface
@@ -93,81 +78,51 @@ namespace _8_DatabaseWebService {
         /// <summary> entries in database. </summary>
         public override int Size { 
             get {
-                lock (_monitor) {
-                    // do asynchronous call
-                    _service.get_SizeAsync();
-                    // wait for result
-                    Monitor.Wait(_monitor);
-                    // grab it
-                    int result = (int)_asyncResult;
-                    // give someone else access
-                    Monitor.Pulse(_monitor);
-
-                    return result;
-                }
+                // do asynchronous call
+                _service.get_SizeAsync();
+                // wait for result
+                return (int)_asyncResult.Value;
             }  
         }
         
         /// <summary> finds matching tuples. </summary>
         /// <returns> words to be shown in each field. </returns>
         public override string[][] Search(string[] keys) {
-            lock (_monitor) {
-                // do asynchronous call
-                ArrayOfString corrected = new ArrayOfString();
-                corrected.AddRange(keys);
-                _service.SearchAsync(corrected);
-                // wait for result
-                Monitor.Wait(_monitor);
-                // grab it
-                ArrayOfString[] result = (ArrayOfString[])_asyncResult;
-                string[][] correctedResult = new string[result.Length][];
-                for (int i = 0; i < result.Length; ++i) {
-                    correctedResult[i] = result[i].ToArray();
-                }
+            // do asynchronous call
+            ArrayOfString corrected = new ArrayOfString();
+            corrected.AddRange(keys);
+            _service.SearchAsync(corrected);
 
-                // give someone else access
-                Monitor.Pulse(_monitor);
+            // wait for result and transform it
+            ArrayOfString[] result = (ArrayOfString[])_asyncResult.Value;
+            string[][] correctedResult = new string[result.Length][];
+            for (int i = 0; i < result.Length; ++i) {
+                correctedResult[i] = result[i].ToArray();
+            }
 
-                return correctedResult;
-            } 
+            return correctedResult;
         }
         
         /// <summary> adds (or replaces) a tuple. </summary>
         /// <returns> true if something was added (not replaced). </returns>
         public override bool Enter(string[] tuple) {
-            lock (_monitor) {
-                // do asynchronous call
-                ArrayOfString corrected = new ArrayOfString();
-                corrected.AddRange(tuple);
-                _service.EnterAsync(corrected);
-                // wait for result
-                Monitor.Wait(_monitor);
-                // grab it
-                bool result = (bool)_asyncResult;
-                // give someone else access
-                Monitor.Pulse(_monitor);
-
-                return result;
-            } 
+            // do asynchronous call
+            ArrayOfString corrected = new ArrayOfString();
+            corrected.AddRange(tuple);
+            _service.EnterAsync(corrected);
+            // wait for result and return it
+            return (bool)_asyncResult.Value;
         }
         
         /// <summary> removes tuples. </summary>
         /// <returns> returns true if something was removed. </returns>
         public override bool Remove(string[] keys) {
-            lock (_monitor) {
-                // do asynchronous call
-                ArrayOfString corrected = new ArrayOfString();
-                corrected.AddRange(keys);
-                _service.RemoveAsync(corrected);
-                // wait for result
-                Monitor.Wait(_monitor);
-                // grab it
-                bool result = (bool)_asyncResult;
-                // give someone else access
-                Monitor.Pulse(_monitor);
-
-                return result;
-            }
+            // do asynchronous call
+            ArrayOfString corrected = new ArrayOfString();
+            corrected.AddRange(keys);
+            _service.RemoveAsync(corrected);
+            // wait for result and return it
+            return (bool)_asyncResult.Value;
         }
     }
 }
