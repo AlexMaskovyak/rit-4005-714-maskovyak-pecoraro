@@ -29,48 +29,14 @@ namespace _8_DatabaseWebService {
         public RemoteDB() {
             // setup service and events
             _service = new DatabaseWebServiceSoapClient();
-            _service.get_SizeCompleted += new EventHandler<get_SizeCompletedEventArgs>(Handle_getSizeCompleted);
-            _service.SearchCompleted += new EventHandler<SearchCompletedEventArgs>(Handle_SearchCompleted);
-            _service.EnterCompleted += new EventHandler<EnterCompletedEventArgs>(Handle_EnterCompleted);
-            _service.RemoveCompleted += new EventHandler<RemoveCompletedEventArgs>(Handle_RemoveCompeted);
+            _service.get_SizeCompleted += new EventHandler<get_SizeCompletedEventArgs>( (object sender, get_SizeCompletedEventArgs args) => _asyncResult.Value = args.Result );
+            _service.SearchCompleted += new EventHandler<SearchCompletedEventArgs>( (object sender, SearchCompletedEventArgs args) => _asyncResult.Value = args.Result );
+            _service.EnterCompleted += new EventHandler<EnterCompletedEventArgs>( (object sender, EnterCompletedEventArgs args) => _asyncResult.Value = args.Result );
+            _service.RemoveCompleted += new EventHandler<RemoveCompletedEventArgs>( (object sender, RemoveCompletedEventArgs args) => _asyncResult.Value = args.Result );
 
             // initialize fields
             _asyncResult = new Cell<object>();
             _monitor = new object();
-        }
-
-// event handlers
-
-        /// <summary> handler for size method call returns. </summary>
-        /// <param name="sender"> object which triggered this handler. </param>
-        /// <param name="args"> values associated with this completed event. </param>
-        protected void Handle_getSizeCompleted(object sender, get_SizeCompletedEventArgs args) {
-                // get result and notify everyone waiting for a value
-                _asyncResult.Value = args.Result;
-        }
-
-        /// <summary> handler for search method call returns. </summary>
-        /// <param name="sender"> object which triggered this handler. </param>
-        /// <param name="args"> values associated with this completed event. </param>
-        protected void Handle_SearchCompleted(object sender, SearchCompletedEventArgs args) {
-                // get result and notify everyone waiting for a value
-                _asyncResult.Value = args.Result;
-        }
-
-        /// <summary> handler for enter method call returns. </summary>
-        /// <param name="sender"> object which triggered this handler. </param>
-        /// <param name="args"> values associated with this completed event. </param>
-        protected void Handle_EnterCompleted(object sender, EnterCompletedEventArgs args) {
-                // get result and notify everyone waiting for a value
-                _asyncResult.Value = args.Result;
-        }
-
-        /// <summary> handler for remove method call returns. </summary>
-        /// <param name="sender"> object which triggered this handler. </param>
-        /// <param name="args"> values associated with this completed event. </param>
-        protected void Handle_RemoveCompeted(object sender, RemoveCompletedEventArgs args) {
-                // get result and notify everyone waiting for a value
-                _asyncResult.Value = args.Result;
         }
 
 // IModel interface
