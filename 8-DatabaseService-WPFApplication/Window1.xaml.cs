@@ -69,13 +69,13 @@ namespace _8_DatabaseWebService
 
         /// <summary> factory method to create the "local" database </summary>
         /// <returns> a new database </returns>
-        protected virtual IModel<string> createLocalDatabase() {
+        protected virtual IModel<string> CreateLocalDatabase() {
             return new LocalDB();
         }
 
         /// <summary> factory method to create the "remote" database </summary>
         /// <returns> a new database </returns>
-        protected virtual IModel<string> createRemoteDatabase() {
+        protected virtual IModel<string> CreateRemoteDatabase() {
             return new RemoteDB();
         }
 
@@ -88,7 +88,7 @@ namespace _8_DatabaseWebService
                 return;
 
             if (_local == null)
-                _local = createLocalDatabase();
+                _local = CreateLocalDatabase();
 
             _isLocal = true;
             DBMode.Text = LocalDBMode;
@@ -101,7 +101,7 @@ namespace _8_DatabaseWebService
                 return;
 
             if (_remote == null)
-                _remote = createRemoteDatabase();
+                _remote = CreateRemoteDatabase();
 
             _isLocal = false;
             DBMode.Text = RemoteDBMode;
