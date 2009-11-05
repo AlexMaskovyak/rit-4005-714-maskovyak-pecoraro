@@ -45,7 +45,7 @@ namespace _8_DatabaseWebService
         }
 
         /// <summary> size of entries in database. </summary>
-        public int Size {
+        public virtual int Size {
             [WebMethod]
             get { return ((IModel<string>)Application[Database]).Size; }
         }
@@ -53,21 +53,21 @@ namespace _8_DatabaseWebService
         /// <summary> finds matching tuples. </summary>
         /// <returns> words to be shown in each field. </returns>
         [WebMethod]
-        public string[][] Search(string[] keys) {
+        public virtual string[][] Search(string[] keys) {
             return ((IModel<string>)Application[Database]).Search(keys);
         }
         
         /// <summary> adds (or replaces) a tuple. </summary>
         /// <returns> true if something was added (not replaced). </returns>
         [WebMethod]
-        public bool Enter(string[] tuple) {
+        public virtual bool Enter(string[] tuple) {
             return ((IModel<string>)Application[Database]).Enter(tuple);
         }
 
         /// <summary> removes tuples. </summary>
         /// <returns> returns true if something was removed. </returns>
         [WebMethod]
-        public bool Remove(string[] keys) {
+        public virtual bool Remove(string[] keys) {
             return ((IModel<string>)Application[Database]).Remove(keys);
         }
     }
