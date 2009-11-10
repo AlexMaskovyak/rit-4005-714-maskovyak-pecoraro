@@ -14,11 +14,11 @@
         <br />
     </div>
     <div>
-        <asp:TextBox ID="Names" Height="65"  Width="420" runat="server" />
+        <asp:TextBox ID="Names" Height="65"  Width="420" runat="server" TextMode="MultiLine" />
         <br /><br />
-        <asp:TextBox ID="Phones" Height="65" Width="420" runat="server" />
+        <asp:TextBox ID="Phones" Height="65" Width="420" runat="server" TextMode="MultiLine" />
         <br /><br />
-        <asp:TextBox ID="Rooms" Height="65" Width="420" runat="server" />
+        <asp:TextBox ID="Rooms" Height="65" Width="420" runat="server" TextMode="MultiLine" />
     </div>
     <div>
         <asp:Button ID="Search" Text="search" Height="22" Width="120" runat="server"/> 
