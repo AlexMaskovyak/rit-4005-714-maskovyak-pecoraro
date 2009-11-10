@@ -57,5 +57,10 @@ namespace ATS.Database {
       if (click[3] != null) click[3]((sender, e) => controller[current].doRemove(sender, e));
       if (click[4] != null) click[4]((sender, e) => controller[current].doSize(null, null));
     }
+    /// <summary> access the current index. </summary>
+    public int Current {
+        get { return current; }
+        set { current = value; }
+    }
   }
 }
