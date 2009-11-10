@@ -1,0 +1,11 @@
+﻿add	record	1	field 2
+add	record	2	fld 2	fld 3
+add	record	3	f2	f3	f4
+extract	0	eco	1
+delete	1	2
+extract	0	.	1
+enter	other	4
+search	record	
+extract	0	.	1
+remove		1
+extract	0	.	1
