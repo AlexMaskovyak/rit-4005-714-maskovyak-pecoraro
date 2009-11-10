@@ -9,17 +9,33 @@ using ATS.Database;
 
 namespace page
 {
+
+    /// <summary> Default.aspx page handlers </summary>
     public partial class _Default : System.Web.UI.Page {
 
+        /// <summary> set the state of the switcher for this session </summary>
         protected void Page_Load(object sender, EventArgs e) {
-            int current = (int)Session["current"];
-            ((Switcher)Session["switcher"]).Current = current;
+            Application.Lock(); // substitute for Session.Lock
+            try {
+                int current = (int)Session["current"];
+                ((Switcher)Session["switcher"]).Current = current;
+            } finally {
+                Application.UnLock();
+            }
+
         }
 
+        /// <summary> store the state of the switcher for this session </summary>
         protected void Page_Unload(object sender, EventArgs e) {
-            Session["current"] = ((Switcher)Session["switcher"]).Current;
+            Application.Lock(); // substitute for Session.Lock
+            try {
+                Session["current"] = ((Switcher)Session["switcher"]).Current;
+            } finally {
+                Application.UnLock();
+            }
         }
 
+        /// <summary> setup the initial session and application databases </summary>
         protected void Page_Init(object sender, EventArgs e) {
             Application.Lock();
             try {
