@@ -12,22 +12,12 @@ namespace page
     public partial class _Default : System.Web.UI.Page {
 
         protected void Page_Load(object sender, EventArgs e) {
-            Application.Lock();
-            try {
-                int current = (int)Session["current"];
-                ((Switcher)Application["switcher"]).Current = current;
-            } finally {
-                Application.UnLock();
-            }
+            int current = (int)Session["current"];
+            ((Switcher)Session["switcher"]).Current = current;
         }
 
         protected void Page_Unload(object sender, EventArgs e) {
-            Application.Lock();
-            try {
-                Session["current"] = ((Switcher)Application["switcher"]).Current;
-            } finally {
-                Application.UnLock();
-            }
+            Session["current"] = ((Switcher)Session["switcher"]).Current;
         }
 
         protected void Page_Init(object sender, EventArgs e) {
@@ -38,7 +28,7 @@ namespace page
                 if (Application["dbLocal"] == null) Application["dbLocal"] = new LocalDB<string>();
                 if (Application["dbRemote"] == null) Application["dbRemote"] = new RemoteDB();
 
-                Application["switcher"] = new Switcher(
+                Session["switcher"] = new Switcher(
                     new Enable(isEnabled => {
                         Toggle.Enabled = Search.Enabled = Enter.Enabled = Remove.Enabled = isEnabled;
                     }),
@@ -58,6 +48,7 @@ namespace page
                         "session local DB", Session["db"], 
                         "application local DB", Application["dbLocal"], 
                         "application remote DB", Application["dbRemote"] );
+                
             } finally {
                 Application.UnLock();
             }
