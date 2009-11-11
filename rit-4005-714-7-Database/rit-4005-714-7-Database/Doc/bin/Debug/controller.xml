@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>controller</name>
+    </assembly>
+    <members>
+        <member name="T:ATS.Database.IAccess">
+            <summary> conceal access to a control. </summary>
+        </member>
+        <member name="P:ATS.Database.IAccess.Text">
+            <summary> field to input/output text. </summary>
+        </member>
+        <member name="T:ATS.Database.GetText">
+            <summary> return text from control. </summary>
+        </member>
+        <member name="T:ATS.Database.SetText">
+            <summary> set text into control. </summary>
+        </member>
+        <member name="T:ATS.Database.Access">
+            <summary> helper with convenience constructor. </summary>
+        </member>
+        <member name="F:ATS.Database.Access.get">
+            <summary> accessor. </summary>
+        </member>
+        <member name="F:ATS.Database.Access.set">
+            <summary> mutator. </summary>
+        </member>
+        <member name="M:ATS.Database.Access.#ctor(ATS.Database.GetText,ATS.Database.SetText)">
+            <summary> convenience constructor. </summary>
+        </member>
+        <member name="P:ATS.Database.Access.Text">
+            <summary> provide field access. </summary>
+        </member>
+        <member name="T:ATS.Database.Enable">
+            <summary> called to control interaction. </summary>
+        </member>
+        <member name="T:ATS.Database.Controller">
+            <summary> non-blocking controller for a database. </summary>
+            <remarks> Basic idea is to access the database with a <c>BackgroundWorker</c>
+              and let the event thread redraw upon completion. However, when the size of the
+              database changes there is more interaction. The <c>WorkQueue</c> is designed
+              to run a sequence of jobs, first completing the backgrounds, then the
+              event threads. This simplifies creating the tasks in the controller. </remarks> 
+        </member>
+        <member name="F:ATS.Database.Controller.db">
+            <summary> represents database. </summary>
+        </member>
+        <member name="F:ATS.Database.Controller.bg">
+            <summary> sequential access to a <c>BackgroundWorker</c>. </summary>
+        </member>
+        <member name="F:ATS.Database.Controller.enable">
+            <summary> controls user interaction. </summary>
+        </member>
+        <member name="F:ATS.Database.Controller.io">
+            <summary> get query fields. </summary>
+        </member>
+        <member name="M:ATS.Database.Controller.#ctor(ATS.Database.IModel{System.String},ATS.Database.WorkQueue,ATS.Database.Enable,ATS.Database.IAccess[])">
+            <summary> connect to database and view, post current count. </summary>
+            <param name="db"> database. </param>
+            <param name="bg"> for sequential background execution. </param>
+            <param name="enable"> controls user interaction in view. </param>
+            <param name="io"> access to current/size/search/enter/remove fields (can be null). </param>
+        </member>
+        <member name="M:ATS.Database.Controller.#ctor(ATS.Database.IModel{System.String},ATS.Database.WorkQueue)">
+            <summary> connect to database, start background thread. </summary>
+            <param name="db"> database. </param>
+            <param name="bg"> for sequential background execution. </param>
+        </member>
+        <member name="M:ATS.Database.Controller.Connect(ATS.Database.Enable,ATS.Database.IAccess[])">
+            <summary> connect to (current) view. </summary>
+            <param name="enable"> controls user interaction in view. </param>
+            <param name="io"> access to current/size/search/enter/remove fields (can be null). </param>
+        </member>
+        <member name="M:ATS.Database.Controller.doSize(System.Object,System.EventArgs)">
+            <summary> asynchronously handle update count request. </summary>
+            <remarks> Arguments are ignored. BUG: this should be done with an observer. </remarks>
+        </member>
+        <member name="M:ATS.Database.Controller.doSearch(System.Object,System.EventArgs)">
+            <summary> asynchronously handle search request. </summary>
+        </member>
+        <member name="M:ATS.Database.Controller.doEnter(System.Object,System.EventArgs)">
+            <summary> asynchronously handle enter request. </summary>
+        </member>
+        <member name="M:ATS.Database.Controller.doRemove(System.Object,System.EventArgs)">
+            <summary> handle remove request. </summary>
+        </member>
+        <member name="M:ATS.Database.Controller.first(ATS.Database.IAccess[],System.Int32)">
+            <summary> safely return the first line of a <c>IAccess</c>. </summary>
+        </member>
+        <member name="T:ATS.Database.SetClick">
+            <summary> adds an eventhandler to a queue. </summary>
+        </member>
+        <member name="T:ATS.Database.Switcher">
+            <summary> controller for one or more databases. </summary>
+        </member>
+        <member name="F:ATS.Database.Switcher.controller">
+            <summary> connected to each model. </summary>
+        </member>
+        <member name="F:ATS.Database.Switcher.current">
+            <summary> current controller (preserved in session, etc.). </summary>
+            <remarks> This could be a local variable in <c>Connect</c>;
+              however, it gets lost if used by a web page. </remarks>
+        </member>
+        <member name="F:ATS.Database.Switcher.name">
+            <summary> associated with each model. </summary>
+        </member>
+        <member name="M:ATS.Database.Switcher.#ctor(ATS.Database.Enable,ATS.Database.IAccess[],ATS.Database.SetClick[],ATS.Database.WorkQueue,System.Object[])">
+            <summary> create and connect controllers. </summary>
+            <param name="enable"> controls user interaction in view. </param>
+            <param name="io"> current/size/search/enter/remove fields. </param>
+            <param name="click"> add to eventhandlers, null to skip. </param>
+            <param name="bg"> for sequential background execution. </param>
+            <param name="nameModel"> one or more name/db model pairs. </param>
+        </member>
+        <member name="M:ATS.Database.Switcher.#ctor(ATS.Database.WorkQueue,System.Object[])">
+            <summary> create controllers. </summary>
+            <param name="bg"> for sequential background execution. </param>
+            <param name="nameModel"> one or more name/db model pairs. </param> 
+        </member>
+        <member name="M:ATS.Database.Switcher.Connect(ATS.Database.Enable,ATS.Database.IAccess[],ATS.Database.SetClick[])">
+            <summary> connect controllers and delegate event handlers. </summary>
+            <param name="enable"> controls user interaction in view. </param>
+            <param name="io"> current/size/search/enter/remove fields. </param>
+            <param name="click"> add to eventhandlers, null to skip. </param>
+        </member>
+        <member name="P:ATS.Database.Switcher.Current">
+            <summary> access the current index. </summary>
+        </member>
+        <member name="T:ATS.Database.WorkQueue">
+            <summary> a queue of pairs of jobs to be run
+              alternating a background and the event thread. </summary>
+        </member>
+        <member name="F:ATS.Database.WorkQueue.toDo">
+            <summary> pairs of jobs to be done in background/event thread. </summary>
+        </member>
+        <member name="F:ATS.Database.WorkQueue.worker">
+            <summary> handles a burst of job pairs. </summary>
+        </member>
+        <member name="M:ATS.Database.WorkQueue.Enqueue(System.Threading.ThreadStart[])">
+            <summary> add jobs to the queue. </summary>
+            <param name="jobs"> should be one or more pairs. </param>
+        </member>
+        <member name="M:ATS.Database.WorkQueue.Run">
+            <summary> execute jobs currently in the queue </summary>
+        </member>
+    </members>
+</doc>

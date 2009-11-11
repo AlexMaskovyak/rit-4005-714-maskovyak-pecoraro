@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>db</name>
+    </assembly>
+    <members>
+        <member name="T:ATS.Database.DB`1">
+            <summary> implements a flat database with T arrays. </summary>
+        </member>
+        <member name="F:ATS.Database.DB`1.list">
+            <summary> delegate, contains the tuples. </summary>
+        </member>
+        <member name="M:ATS.Database.DB`1.Add(System.Predicate{`0[]},`0[])">
+            <summary> add (or replace) a tuple. </summary>
+            <returns> true if a tuple with matching content is replaced. </returns>
+        </member>
+        <member name="M:ATS.Database.DB`1.Extract``1(System.Predicate{`0[]},System.Func{`0[],``0})">
+            <summary> report information from matched tuples. </summary>
+        </member>
+        <member name="M:ATS.Database.DB`1.Delete(System.Predicate{`0[]})">
+            <summary> remove matching tuples. </summary>
+        </member>
+    </members>
+</doc>
