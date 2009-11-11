@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>local</name>
+    </assembly>
+    <members>
+        <member name="T:ATS.Database.LocalDB`1">
+            <summary> wraps and synchronizes <c>DB</c> as <c>IModel</c>. </summary>
+        </member>
+        <member name="M:ATS.Database.LocalDB`1.Search(`0[])">
+            <returns> <c>[i][..]</c> fields found for i'th key. </returns>
+        </member>
+        <member name="M:ATS.Database.LocalDB`1.Enter(`0[])">
+            <remarks> Disallows adding records with empty fields. </remarks>
+            <returns> true if something was added (and not replaced). </returns>
+        </member>
+        <member name="M:ATS.Database.LocalDB`1.Remove(`0[])">
+            <returns> true if something was removed. </returns>
+        </member>
+        <member name="M:ATS.Database.LocalDB`1.Simplify(`0[])">
+            <summary> turn invisible elements into null. </summary>
+            <remarks> For string tuples, blank and empty fields are set to null. </remarks>
+        </member>
+        <member name="M:ATS.Database.LocalDB`1.Matcher(`0[])">
+            <summary> match non-empty keys for <c>Equals</c>. </summary>
+            <remarks> Just match prefix of longer tuples; never match shorter tuples. </remarks>
+        </member>
+        <member name="P:ATS.Database.LocalDB`1.Count">
+            <summary> number of tuples, delegate to <c>list</c>. </summary>
+        </member>
+    </members>
+</doc>

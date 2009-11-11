@@ -49,8 +49,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doc", "Doc\Doc.csproj", "{813FA12E-827F-4ED9-9DD9-9E32AF2E1833}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "page", "page\page.csproj", "{EB4B096D-E927-44C5-817F-6239E5323225}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5E34F68B-CC14-4E48-9D5E-29BD4EB85EC8} = {5E34F68B-CC14-4E48-9D5E-29BD4EB85EC8}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "silverlight", "silverlight\silverlight.csproj", "{7F449C26-99A5-434D-92EE-F9F4E0B37184}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5E34F68B-CC14-4E48-9D5E-29BD4EB85EC8} = {5E34F68B-CC14-4E48-9D5E-29BD4EB85EC8}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

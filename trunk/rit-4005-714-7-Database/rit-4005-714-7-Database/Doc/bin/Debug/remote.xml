@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>remote</name>
+    </assembly>
+    <members>
+        <member name="T:ATS.Cell`1">
+            <summary> producer/consumer pattern. </summary>
+        </member>
+        <member name="F:ATS.Cell`1.content">
+            <summary> value to be passed. </summary>
+        </member>
+        <member name="F:ATS.Cell`1.full">
+            <summary> state of <c>content</c>. </summary>
+        </member>
+        <member name="P:ATS.Cell`1.Value">
+            <summary> thread-safe access to <c>content</c>. </summary>
+        </member>
+        <member name="T:ATS.Database.RemoteDB">
+            <summary> facade to delegate the <c>IModel</c> methods. </summary>
+            <remarks> Only one call can be pending. All methods will block the caller.
+              This asynchronous version is needed for Silverlight.
+              It acts like a <c>Cell</c> with the server as producer and caller as consumer. </remarks>
+        </member>
+        <member name="F:ATS.Database.RemoteDB.client">
+            <summary> server handle. </summary>
+        </member>
+        <member name="F:ATS.Database.RemoteDB.mutex">
+            <summary> monitor for single access. </summary>
+        </member>
+        <member name="F:ATS.Database.RemoteDB.cell">
+            <summary> place for value exchange. </summary>
+        </member>
+        <member name="M:ATS.Database.RemoteDB.#ctor">
+            <summary> connect event handlers once. </summary>
+        </member>
+        <member name="M:ATS.Database.RemoteDB.Search(System.String[])">
+            <summary> delegated to service. </summary>
+        </member>
+        <member name="M:ATS.Database.RemoteDB.Enter(System.String[])">
+            <summary> delegated to service. </summary>
+        </member>
+        <member name="M:ATS.Database.RemoteDB.Remove(System.String[])">
+            <summary> delegated to service. </summary>
+        </member>
+        <member name="M:ATS.Database.RemoteDB.Main(System.String[])">
+            <summary> process using console i/o. </summary>
+            <remarks> Can pass an input file name as argument to simplify debugging. </remarks>
+        </member>
+        <member name="P:ATS.Database.RemoteDB.Count">
+            <summary> delegated to service. </summary>
+        </member>
+    </members>
+</doc>

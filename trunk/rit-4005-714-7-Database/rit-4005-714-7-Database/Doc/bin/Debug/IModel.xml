@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IModel</name>
+    </assembly>
+    <members>
+        <member name="T:ATS.Database.IModel`1">
+            <summary> abstracts <c>DB</c> for a view. </summary>
+        </member>
+        <member name="M:ATS.Database.IModel`1.Search(`0[])">
+            <summary> finds matching tuples. </summary>
+            <returns> words to be shown in each field. </returns>
+        </member>
+        <member name="M:ATS.Database.IModel`1.Enter(`0[])">
+            <summary> adds (or replaces) a tuple. </summary>
+            <returns> true if something was added (not replaced). </returns>
+        </member>
+        <member name="M:ATS.Database.IModel`1.Remove(`0[])">
+            <summary> removes tuples. </summary>
+            <returns> returns true if something was removed. </returns>
+        </member>
+        <member name="P:ATS.Database.IModel`1.Count">
+            <summary> entries in database. </summary>
+        </member>
+    </members>
+</doc>

@@ -19,7 +19,7 @@ namespace ATS.Database
         public MainPage()
         {
             InitializeComponent();
-              new Switcher(
+            new Switcher(
                 new Enable(isEnabled => {
                   Toggle.IsEnabled = Search.IsEnabled = Enter.IsEnabled = Remove.IsEnabled = isEnabled; }),
                 new IAccess[]{

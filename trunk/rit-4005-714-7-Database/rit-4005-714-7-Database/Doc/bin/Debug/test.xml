@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>test</name>
+    </assembly>
+    <members>
+        <member name="T:ATS.Database.Program">
+            <summary> tests a flat database and the facade with string arrays. </summary>
+            <remarks> <c>Test</c> is implemented as extension methods. </remarks>
+        </member>
+        <member name="M:ATS.Database.Program.Main(System.String[])">
+            <summary> process using console i/o. </summary>
+        </member>
+        <member name="M:ATS.Database.Program.Test(ATS.Database.IModel{System.String},System.String[])">
+            <summary> process commands until end of file. </summary>
+            <remarks> Can pass an input file name as argument to simplify use from VS 2008. </remarks>
+        </member>
+        <member name="M:ATS.Database.Program.Test(ATS.Database.IModel{System.String},System.IO.TextReader,System.IO.TextWriter)">
+            <summary> process commands until end of file. </summary>
+        </member>
+    </members>
+</doc>
